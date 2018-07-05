@@ -10,7 +10,7 @@ package it.unicam.cs.pa.ConnectFour;
 public class Cell {
 	
 	private Piece piece;
- //ciao
+
 	public Cell() {
 	}
 

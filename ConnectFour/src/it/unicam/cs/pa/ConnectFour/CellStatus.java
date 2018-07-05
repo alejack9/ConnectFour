@@ -8,15 +8,15 @@ package it.unicam.cs.pa.ConnectFour;
  *
  */
 public enum CellStatus {
-	RED,
-	YELLOW,
+	P1,
+	P2,
 	EMPTY;
 	
 	@Override
 	public String toString() {
 		switch ( this ) {
-			case RED: return "X";
-			case YELLOW: return "O";
+			case P1: return "X";
+			case P2: return "O";
 			case EMPTY: return " ";
 		}
 		return "";
