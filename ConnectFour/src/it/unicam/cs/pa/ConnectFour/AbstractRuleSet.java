@@ -21,7 +21,7 @@ public abstract class AbstractRuleSet {
 		this.DEFAULT_SIZE = DEFAULT_SIZE;
 		this.insertFun = insertFun;
 	}
-	//random comment
+	
 	/**
 	 * @param column
 	 * @return
