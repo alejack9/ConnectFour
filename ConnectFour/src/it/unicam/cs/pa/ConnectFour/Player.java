@@ -10,8 +10,6 @@ package it.unicam.cs.pa.ConnectFour;
 public interface Player {
 	
 	PieceLocation arrange(Piece piece);
-	
-	void init(int pid, int size);
 
 	void winForError(Throwable e);
 
@@ -22,5 +20,7 @@ public interface Player {
 	void youWin();
 
 	void youLose();
+
+	void init(int pid, AbstractRuleSet referee);
 	
 }
