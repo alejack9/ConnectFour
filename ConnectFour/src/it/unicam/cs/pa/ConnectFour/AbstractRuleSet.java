@@ -14,7 +14,7 @@ public abstract class AbstractRuleSet {
 	protected final BiFunction<Cell[][], Integer, PieceLocation> insertFun;
 	/**
 	 * rows,columns
-	 */ 
+	 */
 	protected final int[] DEFAULT_SIZE;
 
 	public AbstractRuleSet ( BiFunction<Cell[][], Integer, PieceLocation> insertFun , int[] DEFAULT_SIZE ) {
