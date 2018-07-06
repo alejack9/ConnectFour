@@ -9,26 +9,26 @@ package it.unicam.cs.pa.ConnectFour;
  */
 public class PieceLocation {
 	
-	private final int x;
-	private final int y;
+	private final int row;
+	private final int column;
 	
-	public PieceLocation ( int x , int y ) {
-		this.x = x;
-		this.y = y;
+	public PieceLocation ( int row , int column ) {
+		this.row = row;
+		this.column = column;
 	}
 
 	/**
-	 * @return the x
+	 * @return the row
 	 */
-	public int getX() {
-		return x;
+	public int getRow() {
+		return row;
 	}
 
 	/**
-	 * @return the y
+	 * @return the column
 	 */
-	public int getY() {
-		return y;
+	public int getColumn() {
+		return column;
 	}
 	
 }

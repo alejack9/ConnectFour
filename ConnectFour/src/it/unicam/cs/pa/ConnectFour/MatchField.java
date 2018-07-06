@@ -32,7 +32,7 @@ public class MatchField {
 		this( referee.getDefaultSize() , referee );
 	}
 	public MatchField ( ) {
-		this(new DefaultRuleSet());
+		this( new DefaultRuleSet() );
 	}
 	
 	public CellStatus getStatus ( int row , int column ) {
@@ -44,36 +44,41 @@ public class MatchField {
 	 * @return
 	 */
 	public boolean insert ( int column , Piece piece ) {
-		if(this.referee.isValidInsert( this.field, column )) {
-			this.insert(column, piece, referee.getInsertFun());
+		if(!referee.isInBound(column, this.getColums())) return false;
+		if(this.referee.isValidInsert( this.field, column ) && this.insert( piece, referee.getInsertFun().apply( field , column ))) {
 			this.pieces++;
 			return true;
 		}
 		return false;
 	}
 	
-	private void insert ( int column, Piece piece, BiFunction<Cell[][],Integer,PieceLocation> insertFun) {
-		// FIXME use insertFun to get the location, than add the piece to the cell.
+	private boolean insert ( Piece piece , PieceLocation location ) {
+		return this.field[location.getRow()][location.getColumn()].setPiece(piece);
 	}
 	
 	private void fill() {
-		for( int i=0 ; i< this.size[0] ; i++ ) {
-			for( int j=0 ; j<this.size[1] ; j++ ) {
+		for( int i=0 ; i < this.getRows() ; i++ )
+			for( int j=0 ; j < this.getColums() ; j++ )
 				this.field[i][j] = new Cell();
-			}
-		}
 	}
 	/**
 	 * @return
 	 */
 	public BiFunction<Integer, Integer, CellStatus> getView() {
 		return (x,y) -> {
-			if (!referee.isInBound(y)) {
+			if (!referee.isInBound(y,this.getColums())) {
 				return null;
 			}
 			return getStatus(x, y);
 		};
 	}
+	
+	public boolean isValidAt ( int column ) {
+		if(referee.isInBound(column, getColums()))
+			return referee.isValidInsert(field, column);
+		return true;
+	}
+	
 	/**
 	 * @return
 	 */

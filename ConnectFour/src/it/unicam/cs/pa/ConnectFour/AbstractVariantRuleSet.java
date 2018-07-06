@@ -15,6 +15,7 @@ public abstract class AbstractVariantRuleSet extends AbstractRuleSet {
 	
 	/**
 	 * @param insertFun
+	 * @param DEFAULT_SIZE
 	 */
 	public AbstractVariantRuleSet(BiFunction<Cell[][], Integer, PieceLocation> insertFun , int[] DEFAULT_SIZE ) {
 		super( insertFun , DEFAULT_SIZE );

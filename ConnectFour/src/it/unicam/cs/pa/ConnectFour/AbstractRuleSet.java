@@ -11,11 +11,11 @@ import java.util.function.BiFunction;
  */
 public abstract class AbstractRuleSet {
 	
-	protected final BiFunction<Cell[][], Integer, PieceLocation> insertFun;
 	/**
 	 * rows,columns
 	 */
-	protected final int[] DEFAULT_SIZE;
+	private final int[] DEFAULT_SIZE;
+	private final BiFunction<Cell[][], Integer, PieceLocation> insertFun;
 
 	public AbstractRuleSet ( BiFunction<Cell[][], Integer, PieceLocation> insertFun , int[] DEFAULT_SIZE ) {
 		this.DEFAULT_SIZE = DEFAULT_SIZE;
@@ -26,11 +26,13 @@ public abstract class AbstractRuleSet {
 	 * @param column
 	 * @return
 	 */
-	public abstract boolean isValidInsert( Cell[][] field, int column );
+	public abstract boolean isValidInsert ( Cell[][] field, int column ) throws IndexOutOfBoundsException;
 
 	public abstract boolean isInBound ( int column , int columns );
-	
-	public abstract int[] getDefaultSize();
+		
+	public int[] getDefaultSize() {
+		return DEFAULT_SIZE;
+	}
 	
 	public BiFunction<Cell[][], Integer, PieceLocation> getInsertFun () {
 		return insertFun;

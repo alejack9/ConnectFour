@@ -3,8 +3,6 @@
  */
 package it.unicam.cs.pa.ConnectFour;
 
-import java.util.function.BiFunction;
-
 /**
  * @author giacchè
  *
@@ -18,14 +16,14 @@ public class DefaultRuleSet extends AbstractRuleSet {
 	 */
 	public DefaultRuleSet() {
 		// TODO Set default insertFun
-		super((x,y) -> new PieceLocation(0,0) , DEFAULT_SIZE );
+		super( (x,y) -> new PieceLocation(0,0) , DEFAULT_SIZE );
 	}
 	
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.AbstractRuleSet#isValidInsert(int, it.unicam.cs.pa.ConnectFour.Piece)
 	 */
 	@Override
-	public boolean isValidInsert( Cell[][] filed, int column ) {
+	public boolean isValidInsert( Cell[][] filed, int column ) throws IndexOutOfBoundsException {
 		// TODO Set default ConnectFour rules.
 		return false;
 	}
