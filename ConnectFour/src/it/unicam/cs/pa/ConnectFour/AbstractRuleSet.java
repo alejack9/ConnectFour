@@ -16,7 +16,7 @@ public abstract class AbstractRuleSet {
 	 * rows,columns
 	 */
 	protected final int[] DEFAULT_SIZE;
-	
+	///imiom
 	public AbstractRuleSet ( BiFunction<Cell[][], Integer, PieceLocation> insertFun , int[] DEFAULT_SIZE ) {
 		this.DEFAULT_SIZE = DEFAULT_SIZE;
 		this.insertFun = insertFun;
