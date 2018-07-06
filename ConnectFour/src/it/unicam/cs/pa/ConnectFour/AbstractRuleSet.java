@@ -14,11 +14,11 @@ public abstract class AbstractRuleSet {
 	/**
 	 * rows,columns
 	 */
-	private final int[] DEFAULT_SIZE;
+	private final int[] SIZE;
 	private final BiFunction<Cell[][], Integer, PieceLocation> insertFun;
 
-	public AbstractRuleSet ( BiFunction<Cell[][], Integer, PieceLocation> insertFun , int[] DEFAULT_SIZE ) {
-		this.DEFAULT_SIZE = DEFAULT_SIZE;
+	public AbstractRuleSet ( BiFunction<Cell[][], Integer, PieceLocation> insertFun , int[] SIZE ) {
+		this.SIZE = SIZE;
 		this.insertFun = insertFun;
 	}
 	
@@ -28,14 +28,30 @@ public abstract class AbstractRuleSet {
 	 */
 	public abstract boolean isValidInsert ( Cell[][] field, int column ) throws IndexOutOfBoundsException;
 
-	public abstract boolean isInBound ( int column , int columns );
+	public abstract boolean isInBound ( int column );
 		
-	public int[] getDefaultSize() {
-		return DEFAULT_SIZE;
+	public int[] getSize() {
+		return SIZE;
 	}
+
+	public abstract int[] getDefaultSize();
 	
 	public BiFunction<Cell[][], Integer, PieceLocation> getInsertFun () {
 		return insertFun;
+	}
+
+	/**
+	 * @return
+	 */
+	public int getRows() {
+		return SIZE[0];
+	}
+
+	/**
+	 * @return
+	 */
+	public int getColumns() {
+		return SIZE[1];
 	}
 
 }

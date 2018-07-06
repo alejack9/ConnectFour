@@ -27,6 +27,12 @@ public class Cell {
 		}
 	}
 	
+	public Piece pop () {
+		Piece toReturn = getPiece();
+		this.piece = null;
+		return toReturn;
+	}
+	
 	public Piece getPiece() {
 		return this.piece;
 	}

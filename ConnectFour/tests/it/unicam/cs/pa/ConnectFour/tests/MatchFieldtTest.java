@@ -3,9 +3,16 @@
  */
 package it.unicam.cs.pa.ConnectFour.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
+
+import it.unicam.cs.pa.ConnectFour.CellStatus;
+import it.unicam.cs.pa.ConnectFour.DefaultRuleSet;
+import it.unicam.cs.pa.ConnectFour.MatchField;
+import it.unicam.cs.pa.ConnectFour.Piece;
+import it.unicam.cs.pa.ConnectFour.Utils;
 
 /**
  * @author giacchè
@@ -13,12 +20,17 @@ import org.junit.jupiter.api.Test;
  */
 class MatchFieldtTest {
 
+	MatchField mf;
+	int[] size = { 8 , 8 };
+	
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.MatchField#MatchField(int[], it.unicam.cs.pa.ConnectFour.AbstractRuleSet)}.
 	 */
 	@Test
 	void testMatchFieldIntArrayAbstractRuleSet() {
-		fail("Not yet implemented");
+		mf = new MatchField( new DefaultRuleSet(size) );
+		Utils.printField(mf);
+		assertNotNull(mf);
 	}
 
 	/**
@@ -26,7 +38,9 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testMatchFieldIntArray() {
-		fail("Not yet implemented");
+		mf = new MatchField( size );
+		Utils.printField(mf);
+		assertNotNull(mf);
 	}
 
 	/**
@@ -34,7 +48,9 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testMatchFieldAbstractRuleSet() {
-		fail("Not yet implemented");
+		mf = new MatchField( new DefaultRuleSet() );
+		Utils.printField(mf);
+		assertNotNull(mf);
 	}
 
 	/**
@@ -42,7 +58,9 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testMatchField() {
-		fail("Not yet implemented");
+		mf = new MatchField( );
+		Utils.printField(mf);
+		assertNotNull(mf);
 	}
 
 	/**
@@ -50,7 +68,10 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testGetStatus() {
-		fail("Not yet implemented");
+		testMatchFieldIntArray();
+		for( int i = 0; i < size[0]; i++)
+			for (int j = 0; j < size[1] ; j++)
+				assertTrue(mf.getStatus(i, j) == CellStatus.EMPTY);
 	}
 
 	/**
@@ -58,7 +79,8 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testInsert() {
-		fail("Not yet implemented");
+		testMatchFieldIntArray();
+		assertTrue(mf.insert(2, new Piece(0, CellStatus.P1)));
 	}
 
 	/**
@@ -66,7 +88,8 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testGetView() {
-		fail("Not yet implemented");
+		testMatchFieldIntArray();
+		assertNotNull(mf.getView());
 	}
 
 	/**
@@ -74,7 +97,8 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testIsValidAt() {
-		fail("Not yet implemented");
+		testMatchFieldIntArray();
+		assertTrue(mf.isValidAt(1));
 	}
 
 	/**
@@ -82,7 +106,8 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testGetRows() {
-		fail("Not yet implemented");
+		testMatchFieldIntArray();
+		assertTrue(mf.getRows() == 8);
 	}
 
 	/**
@@ -90,7 +115,8 @@ class MatchFieldtTest {
 	 */
 	@Test
 	void testGetColums() {
-		fail("Not yet implemented");
+		testMatchFieldIntArray();
+		assertTrue(mf.getColums() == 8);
 	}
 
 }

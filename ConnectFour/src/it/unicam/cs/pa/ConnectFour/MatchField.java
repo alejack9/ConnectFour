@@ -10,26 +10,19 @@ import java.util.function.BiFunction;
  *
  */
 
-// FIXME should each game rule have a specific size or is it better to allow the user to choose the match's size?
-
 public class MatchField {
 
 	private final Cell[][] field;
-	private int[] size;
 	private int pieces;
 	private AbstractRuleSet referee;
 
-	public MatchField ( int[] size , AbstractRuleSet referee ) {
-		this.size = size;
+	public MatchField ( AbstractRuleSet referee ) {
 		this.referee = referee;
 		this.field = new Cell[getRows()][getColums()];
 		fill();
 	}
-	public MatchField ( int[] size ) {
-		this( size , new DefaultRuleSet() );
-	}
-	public MatchField ( AbstractRuleSet referee ) {
-		this( referee.getDefaultSize() , referee );
+	public MatchField(int[] size) {
+		this(new DefaultRuleSet(size));
 	}
 	public MatchField ( ) {
 		this( new DefaultRuleSet() );
@@ -44,7 +37,7 @@ public class MatchField {
 	 * @return
 	 */
 	public boolean insert ( int column , Piece piece ) {
-		if(!referee.isInBound(column, this.getColums())) return false;
+		if(!referee.isInBound( column )) return false;
 		if(this.referee.isValidInsert( this.field, column ) && this.insert( piece, referee.getInsertFun().apply( field , column ))) {
 			this.pieces++;
 			return true;
@@ -65,31 +58,31 @@ public class MatchField {
 	 * @return
 	 */
 	public BiFunction<Integer, Integer, CellStatus> getView() {
-		return (x,y) -> {
-			if (!referee.isInBound(y,this.getColums())) {
+		return ( row , column ) -> {
+			if ( !referee.isInBound( column ) ) {
 				return null;
 			}
-			return getStatus(x, y);
+			return getStatus( row , column );
 		};
 	}
 	
 	public boolean isValidAt ( int column ) {
-		if(referee.isInBound(column, getColums()))
+		if(referee.isInBound( column ))
 			return referee.isValidInsert(field, column);
-		return true;
+		return false;
 	}
 	
 	/**
 	 * @return
 	 */
 	public int getRows() {
-		return size[0];
+		return referee.getRows();
 	}
 	/**
 	 * @return
 	 */
 	public int getColums() {
-		return size[1];
+		return referee.getColumns();
 	}
 	
 }

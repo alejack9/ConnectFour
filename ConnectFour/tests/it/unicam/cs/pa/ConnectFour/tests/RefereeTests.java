@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import it.unicam.cs.pa.ConnectFour.AbstractRuleSet;
+import it.unicam.cs.pa.ConnectFour.Cell;
 import it.unicam.cs.pa.ConnectFour.DefaultRuleSet;
 
 /**
@@ -16,6 +17,7 @@ import it.unicam.cs.pa.ConnectFour.DefaultRuleSet;
  */
 class RefereeTests {
 	AbstractRuleSet rs = new DefaultRuleSet();
+	Cell[][] field = new Cell[rs.getDefaultSize()[0]][rs.getDefaultSize()[1]];
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.AbstractRuleSet#AbstractRuleSet(java.util.function.BiFunction, int[])}.
 	 */
@@ -29,8 +31,7 @@ class RefereeTests {
 	 */
 	@Test
 	void testIsValidInsert() {
-		assert(rs.isValidInsert(field, column))
-		fail("Not yet implemented");
+		assertTrue(rs.isValidInsert(field, 10));
 	}
 
 	/**
@@ -38,7 +39,7 @@ class RefereeTests {
 	 */
 	@Test
 	void testIsInBound() {
-		fail("Not yet implemented");
+		assertTrue(rs.isValidInsert(field, 10));
 	}
 
 	/**
@@ -46,7 +47,7 @@ class RefereeTests {
 	 */
 	@Test
 	void testGetDefaultSize() {
-		fail("Not yet implemented");
+		assertTrue(true);
 	}
 
 	/**
@@ -54,7 +55,7 @@ class RefereeTests {
 	 */
 	@Test
 	void testGetInsertFun() {
-		fail("Not yet implemented");
+		assertNotNull(rs.getInsertFun());
 	}
 
 }

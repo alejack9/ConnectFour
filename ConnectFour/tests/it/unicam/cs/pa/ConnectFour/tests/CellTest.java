@@ -7,26 +7,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import it.unicam.cs.pa.ConnectFour.Cell;
+import it.unicam.cs.pa.ConnectFour.CellStatus;
+import it.unicam.cs.pa.ConnectFour.Piece;
+
 /**
  * @author giacchè
  *
  */
 class CellTest {
-
+	Cell c = new Cell();
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.Cell#Cell()}.
 	 */
 	@Test
 	void testCell() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link it.unicam.cs.pa.ConnectFour.Cell#getStatus()}.
-	 */
-	@Test
-	void testGetStatus() {
-		fail("Not yet implemented");
+		Cell c = new Cell();
+		assertNotNull(c);
 	}
 
 	/**
@@ -34,7 +31,29 @@ class CellTest {
 	 */
 	@Test
 	void testSetPiece() {
-		fail("Not yet implemented");
+		testCell();
+		assertTrue(c.setPiece(new Piece(0,CellStatus.P1)));
+		assertTrue(c.getStatus() == CellStatus.P1);
+	}
+
+	/**
+	 * Test method for {@link it.unicam.cs.pa.ConnectFour.Cell#getStatus()}.
+	 */
+	@Test
+	void testGetStatus() {
+		testCell();
+		assertTrue(c.getStatus() == CellStatus.EMPTY);
+		assertTrue(c.setPiece(new Piece(0,CellStatus.P1)));
+		assertTrue(c.getStatus() == CellStatus.P1);
+		assertFalse(c.setPiece(new Piece(1,CellStatus.P2)));
+		assertTrue(c.getStatus() == CellStatus.P1);
+		
+		Piece p = c.pop();
+		assertNotNull(p);
+		assertTrue(p.getId() == 0);
+		assertTrue(p.getColor() == CellStatus.P1);
+		assertTrue(c.setPiece(new Piece(1,CellStatus.P2)));
+		assertTrue(c.getStatus() == CellStatus.P2);
 	}
 
 	/**
@@ -42,7 +61,10 @@ class CellTest {
 	 */
 	@Test
 	void testGetPiece() {
-		fail("Not yet implemented");
+		testCell();
+		assertNull(c.getPiece());
+		c.setPiece(new Piece(0,CellStatus.P1));
+		assertNotNull(c.getPiece());
 	}
 
 	/**
@@ -50,7 +72,8 @@ class CellTest {
 	 */
 	@Test
 	void testIsEmpty() {
-		fail("Not yet implemented");
+		testCell();
+		assertTrue(c.isEmpty());
 	}
 
 }
