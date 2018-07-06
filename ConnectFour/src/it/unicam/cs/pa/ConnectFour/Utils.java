@@ -13,7 +13,7 @@ import java.util.function.BiFunction;
 public class Utils {
 
 	// TODO Printer methods.
-	public static void printField(MatchField field ) {
+/*	public static void printField(MatchField field ) {
 		printField( System.out , field.getView() , field.getRows() , field.getColums() );
 	}
 	//random comment
@@ -48,5 +48,5 @@ public class Utils {
 		}
 		writer.println("|");
 	}
-	
+*/
 }
