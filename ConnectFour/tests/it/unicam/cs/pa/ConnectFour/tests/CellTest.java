@@ -1,7 +1,7 @@
 /**
  * 
  */
-package it.uncam.cs.pa.ConnectFour.tests;
+package it.unicam.cs.pa.ConnectFour.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
