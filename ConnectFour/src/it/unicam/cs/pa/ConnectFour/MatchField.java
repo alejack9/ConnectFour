@@ -22,7 +22,7 @@ public class MatchField {
 		fill();
 	}
 	public MatchField(int[] size) {
-		this(new DefaultRuleSet(size));
+		this( new DefaultRuleSet( size ) );
 	}
 	public MatchField ( ) {
 		this( new DefaultRuleSet() );
@@ -38,7 +38,7 @@ public class MatchField {
 	 */
 	public boolean insert ( int column , Piece piece ) {
 		if(!referee.isInBound( column )) return false;
-		if(this.referee.isValidInsert( this.field, column ) && this.insert( piece, referee.getInsertFun().apply( field , column ))) {
+		if(this.referee.isValidInsert( this.field, column ) && this.insert( piece , referee.getInsertFun().apply( field , column ))) {
 			this.pieces++;
 			return true;
 		}
@@ -68,7 +68,7 @@ public class MatchField {
 	
 	public boolean isValidAt ( int column ) {
 		if(referee.isInBound( column ))
-			return referee.isValidInsert(field, column);
+			return referee.isValidInsert( field , column );
 		return false;
 	}
 	
