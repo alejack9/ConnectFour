@@ -40,7 +40,7 @@ public class InteractivePlayer implements Player {
 	};
 
 	@Override
-	public PieceLocation arrange(Piece piece) {
+	public PieceLocation insert(Piece piece) {
 		while(true) {
 			Utils.printField(this.field);
 			print("Place a checker");
@@ -77,9 +77,9 @@ public class InteractivePlayer implements Player {
 	}
 
 	@Override
-	public void init(int pid, AbstractRuleSet referee) {
+	public void init(int pid, AbstractRuleSet ruleSet) {
 		this.ID = pid;
-		this.field = new MatchField(referee);
+		this.field = new MatchField(ruleSet);
 	}
 
 	@Override

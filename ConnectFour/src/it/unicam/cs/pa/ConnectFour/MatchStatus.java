@@ -8,6 +8,7 @@ package it.unicam.cs.pa.ConnectFour;
  *
  */
 public enum MatchStatus {
+	INIT,
 	ARRANGE,
 	END;
 }

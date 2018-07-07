@@ -14,10 +14,10 @@ public class MatchField {
 
 	private final Cell[][] field;
 	private int pieces;
-	private AbstractRuleSet referee;
+	private AbstractRuleSet ruleSet;
 
-	public MatchField ( AbstractRuleSet referee ) {
-		this.referee = referee;
+	public MatchField ( AbstractRuleSet ruleSet ) {
+		this.ruleSet = ruleSet;
 		this.field = new Cell[getRows()][getColums()];
 		fill();
 	}
@@ -37,15 +37,15 @@ public class MatchField {
 	 * @return
 	 */
 	public boolean insert ( int column , Piece piece ) {
-		if(!referee.isInBound( column )) return false;
-		if(this.referee.isValidInsert( this.field, column ) && this.insert( piece , referee.getInsertFun().apply( field , column ))) {
+		if(!this.ruleSet.isInBound( column )) return false;
+		if(this.ruleSet.isValidInsert( this.field, column ) && this.insert( ruleSet.getInsertFun().apply( field , column ) , piece )) {
 			this.pieces++;
 			return true;
 		}
 		return false;
 	}
 	
-	private boolean insert ( Piece piece , PieceLocation location ) {
+	public boolean insert ( PieceLocation location , Piece piece ) {
 		return this.field[location.getRow()][location.getColumn()].setPiece(piece);
 	}
 	
@@ -59,7 +59,7 @@ public class MatchField {
 	 */
 	public BiFunction<Integer, Integer, CellStatus> getView() {
 		return ( row , column ) -> {
-			if ( !referee.isInBound( column ) ) {
+			if ( !this.ruleSet.isInBound( column ) ) {
 				return null;
 			}
 			return getStatus( row , column );
@@ -67,8 +67,8 @@ public class MatchField {
 	}
 	
 	public boolean isValidAt ( int column ) {
-		if(referee.isInBound( column ))
-			return referee.isValidInsert( field , column );
+		if(this.ruleSet.isInBound( column ))
+			return this.ruleSet.isValidInsert( field , column );
 		return false;
 	}
 	
@@ -76,13 +76,19 @@ public class MatchField {
 	 * @return
 	 */
 	public int getRows() {
-		return referee.getRows();
+		return this.ruleSet.getRows();
 	}
 	/**
 	 * @return
 	 */
 	public int getColums() {
-		return referee.getColumns();
+		return this.ruleSet.getColumns();
+	}
+	/**
+	 * @return
+	 */
+	public AbstractRuleSet getRuleSet() {
+		return this.ruleSet;
 	}
 	
 }

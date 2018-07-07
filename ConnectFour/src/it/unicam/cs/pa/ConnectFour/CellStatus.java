@@ -21,4 +21,13 @@ public enum CellStatus {
 		}
 		return "";
 	}
+	
+	public static CellStatus parse( int p ) {
+		switch ( p ) {
+			case 0: return CellStatus.P1;
+			case 1: return CellStatus.P2;
+			default: 
+				throw new IllegalArgumentException("'p' must be 0 or 1, '" + p + "' is not allowed.");
+		}
+	}
 }
