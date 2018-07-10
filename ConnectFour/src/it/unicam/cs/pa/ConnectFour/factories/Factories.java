@@ -1,7 +1,7 @@
 /**
  * 
  */
-package it.unicam.cs.pa.ConnectFour;
+package it.unicam.cs.pa.ConnectFour.factories;
 
 /**
  * @author giacchè

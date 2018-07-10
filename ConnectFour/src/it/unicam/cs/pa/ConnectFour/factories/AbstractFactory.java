@@ -16,8 +16,8 @@ import it.unicam.cs.pa.ConnectFour.Player;
  */
 public abstract class AbstractFactory {
 
-	abstract Player getPlayer(PlayerType type , String name , InputStream in , PrintStream out);
-	abstract Player getPlayer(PlayerType type , String name );
-	abstract Piece getPiece(CellStatus color);
+	public abstract Player getPlayer(PlayerType type , String name , InputStream in , PrintStream out);
+	public abstract Player getPlayer(PlayerType type , String name );
+	public abstract Piece getPiece(CellStatus color);
 	
 }

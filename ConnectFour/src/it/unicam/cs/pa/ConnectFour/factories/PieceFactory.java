@@ -28,7 +28,7 @@ public class PieceFactory extends AbstractFactory {
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPlayer(java.lang.String, java.io.InputStream, java.io.PrintStream)
 	 */
 	@Override
-	Player getPlayer(PlayerType type , String name, InputStream in, PrintStream out) {
+	public Player getPlayer(PlayerType type , String name, InputStream in, PrintStream out) {
 		return null;
 	}
 
@@ -36,7 +36,7 @@ public class PieceFactory extends AbstractFactory {
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPlayer(java.lang.String)
 	 */
 	@Override
-	Player getPlayer(PlayerType type , String name) {
+	public Player getPlayer(PlayerType type , String name) {
 		return getPlayer(type , name, null,null);
 	}
 
@@ -44,7 +44,7 @@ public class PieceFactory extends AbstractFactory {
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPiece(it.unicam.cs.pa.ConnectFour.CellStatus)
 	 */
 	@Override
-	Piece getPiece(CellStatus color) {
+	public Piece getPiece(CellStatus color) {
 		return new Piece(this.id++, color);
 	}
 

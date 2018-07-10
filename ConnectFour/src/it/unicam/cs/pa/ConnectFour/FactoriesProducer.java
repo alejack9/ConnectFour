@@ -4,6 +4,7 @@
 package it.unicam.cs.pa.ConnectFour;
 
 import it.unicam.cs.pa.ConnectFour.factories.AbstractFactory;
+import it.unicam.cs.pa.ConnectFour.factories.Factories;
 import it.unicam.cs.pa.ConnectFour.factories.PieceFactory;
 import it.unicam.cs.pa.ConnectFour.factories.PlayerFactory;
 

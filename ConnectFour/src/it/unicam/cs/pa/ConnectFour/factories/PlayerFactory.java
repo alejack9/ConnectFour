@@ -22,7 +22,7 @@ public class PlayerFactory extends AbstractFactory {
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPlayer(java.lang.String, java.io.InputStream, java.io.PrintStream)
 	 */
 	@Override
-	Player getPlayer(PlayerType type , String name, InputStream in, PrintStream out) {
+	public Player getPlayer(PlayerType type , String name, InputStream in, PrintStream out) {
 		switch(type) {
 		case INTERACTIVE:	return new InteractivePlayer( name , in , out );
 		case RANDOM:		return new RandomPlayer( name , in , out );
@@ -34,7 +34,7 @@ public class PlayerFactory extends AbstractFactory {
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPlayer(java.lang.String)
 	 */
 	@Override
-	Player getPlayer(PlayerType type , String name) {
+	public Player getPlayer(PlayerType type , String name) {
 		return getPlayer( type, name, System.in , System.out );
 	}
 
@@ -42,7 +42,7 @@ public class PlayerFactory extends AbstractFactory {
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPiece(it.unicam.cs.pa.ConnectFour.CellStatus)
 	 */
 	@Override
-	Piece getPiece(CellStatus color) {
+	public Piece getPiece(CellStatus color) {
 		return null;
 	}
 

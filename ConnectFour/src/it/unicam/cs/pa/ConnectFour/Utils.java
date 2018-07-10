@@ -4,7 +4,11 @@
 package it.unicam.cs.pa.ConnectFour;
 
 import java.io.PrintStream;
+import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.IntSupplier;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * @author giacchè
@@ -63,6 +67,23 @@ public class Utils {
 			writer.print("| " + view.apply( row , column ) + " ");
 		}
 		writer.println("|");
+	}
+	
+	public static int[] sizeParse (String size) {
+		try {
+			int[] toReturn = Stream.of(size.split("x")).mapToInt(Integer::parseInt).takeWhile(c -> c > 1).toArray();
+
+			if(toReturn.length == 2)
+				return toReturn;
+			throw new IllegalArgumentException();
+		}
+		catch (NumberFormatException e) {
+			throw new IllegalArgumentException(e.toString());
+		}
+	}
+	
+	public static RuleSet ruleSetParse (String ruleset) {
+		return RuleSet.parse(ruleset);
 	}
 
 }

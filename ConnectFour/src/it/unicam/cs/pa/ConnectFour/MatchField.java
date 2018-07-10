@@ -16,15 +16,67 @@ public class MatchField {
 	private int pieces;
 	private AbstractRuleSet ruleSet;
 
+	public MatchField (String size) {
+		int[] intSize = Utils.sizeParse(size);
+		field = new Cell[intSize[0]][intSize[1]];
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public MatchField ( AbstractRuleSet ruleSet ) {
 		this.ruleSet = ruleSet;
 		this.field = new Cell[getRows()][getColums()];
 		fill();
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public MatchField(int[] size) {
 		this( new DefaultRuleSet( size ) );
 	}
-	public MatchField ( ) {
+	public MatchField () {
 		this( new DefaultRuleSet() );
 	}
 	
