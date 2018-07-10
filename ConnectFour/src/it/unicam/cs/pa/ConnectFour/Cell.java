@@ -11,9 +11,6 @@ public class Cell {
 	
 	private Piece piece;
 
-	public Cell() {
-	}
-
 	public CellStatus getStatus() {
 		return ( this.piece == null ? CellStatus.EMPTY : this.piece.getColor() );
 	}

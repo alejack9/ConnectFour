@@ -22,7 +22,12 @@ public enum CellStatus {
 		return "";
 	}
 	
-	public static CellStatus parse( int p ) {
+	/**
+	 * @param p must be 0 or 1
+	 * @return the relative player
+	 * @throws IllegalArgumentException if p is not 0 or 1
+	 */
+	public static CellStatus parse( int p ) throws IllegalArgumentException {
 		switch ( p ) {
 			case 0: return CellStatus.P1;
 			case 1: return CellStatus.P2;

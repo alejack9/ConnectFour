@@ -3,10 +3,9 @@
  */
 package it.unicam.cs.pa.ConnectFour;
 
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.stream.Stream;
 
 /**
  * @author giacchè
@@ -15,92 +14,76 @@ import java.util.stream.Stream;
 
 public class MatchField {
 
+	/**
+	 * first List: columns list
+	 * second List: rows list
+	 */
+	// FIXME should be 'final' removed?
 	private final List<List<Cell>> field;
+	/**
+	 * [0] = rows
+	 * [1] = columns
+	 */
 	private int[] size;
 	private int pieces;
 
+	/**
+	 * @param size the filed size
+	 */
 	public MatchField (String size) {
+		this.field = new LinkedList<>();
 		this.size = Utils.sizeParse(size);
-		//field = new Cell[intSize[0]][intSize[1]];
-	}
-
-	/*public MatchField ( AbstractRuleSet ruleSet ) {
-		this.ruleSet = ruleSet;
-		this.field = new Cell[getRows()][getColums()];
 		fill();
 	}
-	public MatchField(int[] size) {
-		this( new DefaultRuleSet( size ) );
-	}
-	public MatchField () {
-		this( new DefaultRuleSet() );
-	}*/
-	
+
 	public CellStatus getStatus ( int row , int column ) {
 		return this.field.get(column).get(row).getStatus();
 	}
 	
 	/**
-	 * @param column
-	 * @return
+	 * Enters a piece in the filed
+	 * @param location Piece location
+	 * @param piece
+	 * @return true if all's OK, false otherwise
 	 */
-	/*public boolean insert ( int column , Piece piece ) {
-		if(!this.ruleSet.isInBound( column )) return false;
-		if(this.ruleSet.isValidInsert( this.field, column ) && this.insert( ruleSet.getInsertFun().apply( field , column ) , piece )) {
-			this.pieces++;
-			return true;
-		}
-		return false;
-	}*/
-	
 	public boolean insert ( PieceLocation location , Piece piece ) {
 		return this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece);
 	}
 	
-/*	private void fill() {
-		for( int i=0 ; i < this.getRows() ; i++ )
-			for( int j=0 ; j < this.getColums() ; j++ )
-				this.field[i][j] = new Cell();
-	}*/
 	/**
-	 * @return
+	 * Makes rows x columns Cells in the field
 	 */
-	public BiFunction<Integer, Integer, CellStatus> getView() {
+	private void fill() {
+		for(int i = 0; i < getColumns() ; i++) {
+			List<Cell> toInsert = new LinkedList<>();
+			for(int j = 0 ; j < getRows(); j++) {
+				toInsert.add(new Cell());
+			}
+			field.add(toInsert);
+		}
+	}
+	
+	/**
+	 * @return The viewer BiFunction
+	 */
+	public BiFunction<Integer, Integer, CellStatus> getView(RuleSet referee) {
 		return ( row , column ) -> {
-			if ( !this.ruleSet.isInBound( column ) ) {
+			if ( !referee.isInBound( column ) ) {
 				return null;
 			}
 			return getStatus( row , column );
 		};
 	}
 
-/*	public boolean isValidAt ( int column ) {
-		if(this.ruleSet.isInBound( column ))
-			return this.ruleSet.isValidInsert( field , column );
-		return false;
-	}*/
-	
-	/**
-	 * @return
-	 */
 	public int getRows() {
-		return this.ruleSet.getRows();
+		return size[0];
 	}
-	/**
-	 * @return
-	 */
 	public int getColumns() {
-		return this.ruleSet.getColumns();
+		return size[1];
 	}
-	/**
-	 * @return
-	 */
-/*	public AbstractRuleSet getRuleSet() {
-		return this.ruleSet;
-	}*/
 
 	/**
-	 * @return
+	 * @return the filed as Cells matrix
 	 */
 	public Cell[][] getCells() {
 		Cell[][] toReturn = new Cell[getRows()][getColumns()];
@@ -114,14 +97,16 @@ public class MatchField {
 
 	/**
 	 * @param column
-	 * @return
+	 * @return the column as Cell list
 	 */
 	public List<Cell> getColumn(int column) {
 		return field.get(column);
 	}
 
 	/**
-	 * @param pop
+	 * Replace a column with another column
+	 * @param newColumn
+	 * @param column
 	 */
 	public void setColumn(List<Cell> newColumn, int column) {
 		for(int i = 0 ; i < newColumn.size() ; i++) {

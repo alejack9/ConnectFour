@@ -3,6 +3,8 @@
  */
 package it.unicam.cs.pa.ConnectFour;
 
+import java.util.List;
+
 /**
  * @author giacchè
  *
@@ -39,14 +41,6 @@ public class DefaultRuleSet implements RuleSet {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#pop(it.unicam.cs.pa.ConnectFour.Cell[])
-	 */
-	@Override
-	public Cell[] pop(Cell[] column) {
-		return column;
-	}
-
-	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
@@ -65,6 +59,14 @@ public class DefaultRuleSet implements RuleSet {
 	
 	public ActionType[] getAllowedActions() {
 		return allowedActions;
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#pop(java.util.List)
+	 */
+	@Override
+	public List<Cell> pop(List<Cell> column) {
+		return column;
 	}
 
 }

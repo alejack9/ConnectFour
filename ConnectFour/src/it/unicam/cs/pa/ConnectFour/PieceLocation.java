@@ -17,16 +17,10 @@ public class PieceLocation {
 		this.column = column;
 	}
 
-	/**
-	 * @return the row
-	 */
 	public int getRow() {
 		return row;
 	}
 
-	/**
-	 * @return the column
-	 */
 	public int getColumn() {
 		return column;
 	}

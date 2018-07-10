@@ -10,47 +10,44 @@ package it.unicam.cs.pa.ConnectFour;
 public interface Player {
 
 	/**
-	 * @param piece
-	 * @return
+	 * @return The column prompted by the player
 	 */
-	//PieceLocation insert(Piece piece);
-
 	int getColumn();
 	
 	/**
-	 * @param e
+	 * @param e The error that make player win
 	 */
 	void winForError(Throwable e);
 
 	/**
-	 * @param e
+	 * @param e The error that make player lose
 	 */
 	void loseForError(Throwable e);
 
 	/**
-	 * 
+	 * Initialize match's parameters
 	 */
 	void startMatch();
 
 	/**
-	 * 
+	 * Notify the player that he's won
 	 */
 	void youWin();
 
 	/**
-	 * 
+	 * Notify the player that he's lost
 	 */
 	void youLose();
 
 	/**
-	 * @param pid
-	 * @param ruleSet
-	 */
-	void init(int pid, RuleSet ruleSet);
-
-	/**
-	 * @return
+	 * @return The action prompted by the player
 	 */
 	ActionType chooseAction();
+
+	/**
+	 * @param pid The player' id
+	 * @param referee The referee
+	 */
+	void init(int pid , RuleSet referee );
 
 }

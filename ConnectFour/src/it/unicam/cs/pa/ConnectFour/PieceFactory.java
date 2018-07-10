@@ -13,9 +13,6 @@ import java.io.PrintStream;
 public class PieceFactory extends AbstractFactory {
 	private int id;
 	
-	/**
-	 * 
-	 */
 	public PieceFactory() {
 		this.id = 0;
 	}

@@ -17,11 +17,11 @@ import java.util.stream.Stream;
 public class Utils {
 
 	public static void printField ( MatchField field ) {
-		printField( System.out , field.getView() , field.getRows() , field.getColums() );
+		printField( System.out , field.getView() , field.getRows() , field.getColumns() );
 	}
 	
 	public static void printField ( PrintStream writer ,  MatchField field ) {
-		printField( writer , field.getView() , field.getRows() , field.getColums() );
+		printField( writer , field.getView() , field.getRows() , field.getColumns() );
 	}
 
 	public static void printField ( BiFunction<Integer, Integer, CellStatus> view, int rows , int columns ) {
