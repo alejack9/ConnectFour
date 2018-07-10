@@ -1,6 +1,3 @@
-/**
- * 
- */
 package it.unicam.cs.pa.ConnectFour;
 
 import java.util.List;
@@ -12,23 +9,17 @@ import java.util.List;
 public class DefaultRuleSet implements RuleSet {
 
 	private static final ActionType[] allowedActions = { ActionType.INSERT };
-	
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert()
-	 */
-	@Override
-	public boolean isValidInsert() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound()
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#actionsNumber()
 	 */
 	@Override
-	public boolean isInBound() {
-		// TODO Auto-generated method stub
-		return false;
+	public int actionsNumber() {
+		return allowedActions.length;
+	}
+
+	public ActionType[] getAllowedActions() {
+		return allowedActions;
 	}
 
 	/* (non-Javadoc)
@@ -41,24 +32,21 @@ public class DefaultRuleSet implements RuleSet {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(int)
 	 */
 	@Override
-	public CellStatus winner(Cell[][] field) {
+	public boolean isInBound(int column) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#actionsNumber()
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int)
 	 */
 	@Override
-	public int actionsNumber() {
-		return allowedActions.length;
-	}
-	
-	public ActionType[] getAllowedActions() {
-		return allowedActions;
+	public boolean isValidInsert(int column) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -67,6 +55,15 @@ public class DefaultRuleSet implements RuleSet {
 	@Override
 	public List<Cell> pop(List<Cell> column) {
 		return column;
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
+	 */
+	@Override
+	public CellStatus winner(Cell[][] field) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -12,11 +12,16 @@ public enum RuleSetType {
 	POP,
 	FIVEINROW;
 	
-	public static RuleSetType parse (String ruleset) {
+	/**
+	 * @param ruleset ruleSet name
+	 * @return The corresponding ruleSetType
+	 * @throws IllegalArgumentException unknown rule set
+	 */
+	public static RuleSetType parse (String ruleset) throws IllegalArgumentException {
 		switch (ruleset.toLowerCase()) {
 			case "default": return RuleSetType.DEFAULT;
 			case "pop": return RuleSetType.POP;
-			case "5inrow": return RuleSetType.FIVEINROW;
+			case "fiveinrow": return RuleSetType.FIVEINROW;
 			default: throw new IllegalArgumentException("Ruleset '" + ruleset + "' is unkown.");
 		}
 	}

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package it.unicam.cs.pa.ConnectFour;
 
 import java.util.Properties;
@@ -11,9 +8,6 @@ import java.util.Properties;
  */
 public class RandomMatch {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		AbstractFactory playerFactory = FactoriesProducer.getFactory(Factories.PLAYERS);
 		Player p1 = playerFactory.getPlayer(PlayerType.RANDOM , "Pippo");

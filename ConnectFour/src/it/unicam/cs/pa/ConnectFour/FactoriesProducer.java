@@ -1,6 +1,3 @@
-/**
- * 
- */
 package it.unicam.cs.pa.ConnectFour;
 
 /**
@@ -8,6 +5,9 @@ package it.unicam.cs.pa.ConnectFour;
  *
  */
 public class FactoriesProducer {
+	/**
+	 * @throws IllegalArgumentException if the factory is unknown
+	 */
 	public static AbstractFactory getFactory(Factories factory) throws IllegalArgumentException {
 		switch (factory) {
 		case PIECES:	return new PieceFactory();

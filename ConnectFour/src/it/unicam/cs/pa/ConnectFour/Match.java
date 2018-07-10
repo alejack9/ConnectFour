@@ -1,6 +1,3 @@
-/**
- * 
- */
 package it.unicam.cs.pa.ConnectFour;
 
 import java.util.Properties;
@@ -22,15 +19,6 @@ public class Match {
 	private int currentPlayer;
 	private AbstractFactory piecesFactory;
 
-	/*
-	 * public Match ( Player p1 , Player p2 , int firstPlayer , AbstractRuleSet
-	 * ruleSet ) { if ( firstPlayer < 0 || firstPlayer > 1 ) throw new
-	 * IllegalArgumentException(String.
-	 * format("firstPlayer must be 0 or 1, \"%d\" is not allowed.", firstPlayer));
-	 * this.players = new Player[] { p1 , p2 }; this.field = new MatchField( ruleSet
-	 * ); this.currentPlayer = firstPlayer; }
-	 */
-
 	/**
 	 * @param p1 player 1
 	 * @param p2 player 2
@@ -51,12 +39,8 @@ public class Match {
 		return this.status;
 	}
 
-	private void setStatus(MatchStatus status) {
-		this.status = status;
-	}
-
 	/**
-	 * initialize the players and start the game
+	 * Initializes the players and starts the game
 	 */
 	public void play() {
 		if (!init(PLAYER1)) {
@@ -75,8 +59,12 @@ public class Match {
 		while (doAction(selectAction()));
 	}
 
+	private void setStatus(MatchStatus status) {
+		this.status = status;
+	}
+
 	/**
-	 * @return the player's choise (if the allowed action are more than one) or the only choice
+	 * @return the player's choice (if the allowed action are more than one) or the only choice
 	 */
 	private ActionType selectAction() {
 		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction() : referee.getAllowedActions()[0];

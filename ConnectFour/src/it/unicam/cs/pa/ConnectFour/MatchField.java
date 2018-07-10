@@ -1,6 +1,3 @@
-/**
- * 
- */
 package it.unicam.cs.pa.ConnectFour;
 
 import java.util.LinkedList;
@@ -15,13 +12,13 @@ import java.util.function.BiFunction;
 public class MatchField {
 
 	/**
-	 * first List: columns list
+	 * first List: columns list<br />
 	 * second List: rows list
 	 */
 	// FIXME should be 'final' removed?
 	private final List<List<Cell>> field;
 	/**
-	 * [0] = rows
+	 * [0] = rows<br />
 	 * [1] = columns
 	 */
 	private int[] size;
@@ -41,26 +38,17 @@ public class MatchField {
 	}
 	
 	/**
-	 * Enters a piece in the filed
-	 * @param location Piece location
-	 * @param piece
+	 * Inserts a piece in the filed
 	 * @return true if all's OK, false otherwise
 	 */
 	public boolean insert ( PieceLocation location , Piece piece ) {
-		return this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece);
-	}
-	
-	/**
-	 * Makes rows x columns Cells in the field
-	 */
-	private void fill() {
-		for(int i = 0; i < getColumns() ; i++) {
-			List<Cell> toInsert = new LinkedList<>();
-			for(int j = 0 ; j < getRows(); j++) {
-				toInsert.add(new Cell());
+		if(pieces < getColumns() * getRows()) {
+			if(this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece)) {
+				pieces++;
+				return true;
 			}
-			field.add(toInsert);
 		}
+		return false;
 	}
 	
 	/**
@@ -75,15 +63,24 @@ public class MatchField {
 		};
 	}
 
-	public int getRows() {
-		return size[0];
-	}
-	public int getColumns() {
-		return size[1];
+	/**
+	 * @return The column as Cell list
+	 */
+	public List<Cell> getColumn(int column) {
+		return field.get(column);
 	}
 
 	/**
-	 * @return the filed as Cells matrix
+	 * Replace a column with another column
+	 */
+	public void setColumn(List<Cell> newColumn, int column) {
+		for(int i = 0 ; i < newColumn.size() ; i++) {
+			field.get(column).set(i, newColumn.get(i));
+		}
+	}
+
+	/**
+	 * @return The field as Cells matrix
 	 */
 	public Cell[][] getCells() {
 		Cell[][] toReturn = new Cell[getRows()][getColumns()];
@@ -95,22 +92,24 @@ public class MatchField {
 		return toReturn;
 	}
 
-	/**
-	 * @param column
-	 * @return the column as Cell list
-	 */
-	public List<Cell> getColumn(int column) {
-		return field.get(column);
+	public int getRows() {
+		return size[0];
+	}
+
+	public int getColumns() {
+		return size[1];
 	}
 
 	/**
-	 * Replace a column with another column
-	 * @param newColumn
-	 * @param column
+	 * Makes rows * columns Cells in the field
 	 */
-	public void setColumn(List<Cell> newColumn, int column) {
-		for(int i = 0 ; i < newColumn.size() ; i++) {
-			field.get(column).set(i, newColumn.get(i));
+	private void fill() {
+		for(int i = 0; i < getColumns() ; i++) {
+			List<Cell> toInsert = new LinkedList<>();
+			for(int j = 0 ; j < getRows(); j++) {
+				toInsert.add(new Cell());
+			}
+			field.add(toInsert);
 		}
 	}
 	

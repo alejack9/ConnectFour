@@ -22,15 +22,6 @@ public class RandomPlayer implements Player {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.Player#insert(it.unicam.cs.pa.ConnectFour.Piece)
-	 */
-	@Override
-	public PieceLocation insert(Piece piece) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.Player#winForError(java.lang.Throwable)
 	 */
 	@Override
@@ -76,12 +67,30 @@ public class RandomPlayer implements Player {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int, it.unicam.cs.pa.ConnectFour.AbstractRuleSet)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#getColumn()
 	 */
 	@Override
-	public void init(int pid, AbstractRuleSet ruleSet) {
+	public int getColumn() {
 		// TODO Auto-generated method stub
+		return 0;
+	}
 
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#chooseAction()
+	 */
+	@Override
+	public ActionType chooseAction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int, it.unicam.cs.pa.ConnectFour.RuleSet)
+	 */
+	@Override
+	public void init(int pid, RuleSet referee) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

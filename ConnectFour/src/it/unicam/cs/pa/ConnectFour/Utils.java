@@ -16,12 +16,12 @@ import java.util.stream.Stream;
  */
 public class Utils {
 
-	public static void printField ( MatchField field ) {
-		printField( System.out , field.getView() , field.getRows() , field.getColumns() );
+	public static void printField ( MatchField field , RuleSet ruleSet ) {
+		printField( System.out , field.getView(ruleSet) , field.getRows() , field.getColumns() );
 	}
 	
-	public static void printField ( PrintStream writer ,  MatchField field ) {
-		printField( writer , field.getView() , field.getRows() , field.getColumns() );
+	public static void printField ( PrintStream writer ,  MatchField field , RuleSet ruleSet ) {
+		printField( writer , field.getView(ruleSet) , field.getRows() , field.getColumns() );
 	}
 
 	public static void printField ( BiFunction<Integer, Integer, CellStatus> view, int rows , int columns ) {
@@ -81,9 +81,4 @@ public class Utils {
 			throw new IllegalArgumentException(e.toString());
 		}
 	}
-	
-	public static RuleSetType ruleSetParse (String ruleset) {
-		return RuleSetType.parse(ruleset);
-	}
-
 }

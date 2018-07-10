@@ -1,6 +1,3 @@
-/**
- * 
- */
 package it.unicam.cs.pa.ConnectFour;
 
 /**
@@ -15,6 +12,9 @@ public class Cell {
 		return ( this.piece == null ? CellStatus.EMPTY : this.piece.getColor() );
 	}
 
+	/**
+	 * @return true if the set is possible, false otherwise
+	 */
 	public boolean setPiece( Piece piece ) {
 		if (this.piece != null) {
 			return false;
@@ -24,6 +24,9 @@ public class Cell {
 		}
 	}
 	
+	/**
+	 * @return the {@link Piece}, removing it
+	 */
 	public Piece pop () {
 		Piece toReturn = getPiece();
 		this.piece = null;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package it.unicam.cs.pa.ConnectFour;
 
 import java.io.InputStream;
@@ -13,28 +10,18 @@ import java.io.PrintStream;
 public abstract class AbstractFactory {
 
 	/**
-	 * @param type
-	 * @param name
-	 * @param in
-	 * @param out
-	 * @return
+	 * @param name Player' name
 	 */
 	public abstract Player getPlayer(PlayerType type , String name , InputStream in , PrintStream out);
 	/**
-	 * @param type
-	 * @param name
-	 * @return
+	 * @param name Player' name
 	 */
 	public abstract Player getPlayer(PlayerType type , String name );
 	/**
-	 * @param color
-	 * @return
+	 * @param color Piece color
 	 */
 	public abstract Piece getPiece(CellStatus color);
-	/**
-	 * @param ruleset
-	 * @return
-	 */
+
 	public abstract RuleSet getReferee(RuleSetType ruleset);
 	
 }

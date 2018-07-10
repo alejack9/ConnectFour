@@ -13,47 +13,42 @@ import java.util.stream.Stream;
 public interface RuleSet {
 	
 	/**
-	 * @return
+	 * @return true if the insert is valid, false otherwise 
 	 */
-	public boolean isValidInsert ();
+	public boolean isValidInsert ( int column );
 	/**
-	 * @param column
-	 * @return
+	 * @return true if the column is in bound, false otherwise
 	 */
 	public boolean isInBound ( int column );
 	
 	/**
-	 * @param column
-	 * @param field
-	 * @return
+	 * @return Final piece location inserted in the column
 	 */
 	public PieceLocation insert(int column , Cell[][] field);
 	
 	/**
-	 * @param column
-	 * @return the column' cells
+	 * @return The column' cells popped (without the last Piece)
 	 */
 	public List<Cell> pop (List<Cell> column);
 	
 	/**
-	 * @param field the match field
+	 * @param field The match field
 	 * @return P1, P2 or EMPTY if there aren't winners
 	 */
 	public CellStatus winner (Cell[][] field);
 	
 	/**
-	 * @return
+	 * @return The number of allowed actions
 	 */
 	public int actionsNumber();
 	
 	/**
-	 * @return
+	 * @return Allowed actions
 	 */
 	public ActionType[] getAllowedActions();
 	
 	/**
-	 * @param action
-	 * @return
+	 * @return true if the action is allowed, false otherwise
 	 */
 	public default boolean isValidAction(ActionType action) {
 		return Stream.of(getAllowedActions()).anyMatch(c -> c.equals(action));
