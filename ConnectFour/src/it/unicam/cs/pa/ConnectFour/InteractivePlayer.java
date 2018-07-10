@@ -34,10 +34,6 @@ public class InteractivePlayer implements Player {
 		this.in = new BufferedReader(new InputStreamReader(in));
 		this.out = out;
 	}
-	
-	/*public InteractivePlayer( String name) {
-		this( name, System.in, System.out);
-	};*/
 
 	@Override
 	public PieceLocation insert(Piece piece) {

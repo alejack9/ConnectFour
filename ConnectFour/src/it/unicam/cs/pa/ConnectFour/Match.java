@@ -6,8 +6,6 @@ package it.unicam.cs.pa.ConnectFour;
 import java.util.Properties;
 import java.util.Random;
 
-import it.unicam.cs.pa.ConnectFour.factories.AbstractFactory;
-
 /**
  * @author giacchè
  *

@@ -5,9 +5,6 @@ package it.unicam.cs.pa.ConnectFour;
 
 import java.util.Properties;
 
-import it.unicam.cs.pa.ConnectFour.factories.AbstractFactory;
-import it.unicam.cs.pa.ConnectFour.factories.PlayerType;
-
 /**
  * @author giacchè
  *

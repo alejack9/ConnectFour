@@ -1,16 +1,10 @@
 /**
  * 
  */
-package it.unicam.cs.pa.ConnectFour.factories;
+package it.unicam.cs.pa.ConnectFour;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-
-import it.unicam.cs.pa.ConnectFour.CellStatus;
-import it.unicam.cs.pa.ConnectFour.Piece;
-import it.unicam.cs.pa.ConnectFour.Player;
-import it.unicam.cs.pa.ConnectFour.RuleSet;
-import it.unicam.cs.pa.ConnectFour.RuleSetType;
 
 /**
  * @author giacchè
