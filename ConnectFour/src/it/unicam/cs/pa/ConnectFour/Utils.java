@@ -82,8 +82,8 @@ public class Utils {
 		}
 	}
 	
-	public static RuleSet ruleSetParse (String ruleset) {
-		return RuleSet.parse(ruleset);
+	public static RuleSetType ruleSetParse (String ruleset) {
+		return RuleSetType.parse(ruleset);
 	}
 
 }

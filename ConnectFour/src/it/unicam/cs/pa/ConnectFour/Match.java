@@ -21,7 +21,7 @@ public class Match {
 	private final Player[] players;
 	private final MatchField field;
 	private MatchStatus status = MatchStatus.INIT;
-	private RuleSet ruleSet;
+	private RuleSetType ruleSet;
 	private int currentPlayer;
 	private AbstractFactory piecesFactory;
 
@@ -38,7 +38,7 @@ public class Match {
 		this.players = new Player[] { p1, p2 };
 		this.field = new MatchField(prop.getProperty("size"));
 		this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer"));
-		this.ruleSet = RuleSet.parse(prop.getProperty("ruleset"));
+		this.ruleSet = RuleSetType.parse(prop.getProperty("ruleset"));
 		this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
 	}
 

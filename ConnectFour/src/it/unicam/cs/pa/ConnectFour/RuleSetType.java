@@ -7,16 +7,16 @@ package it.unicam.cs.pa.ConnectFour;
  * @author giacchè
  *
  */
-public enum RuleSet {
+public enum RuleSetType {
 	DEFAULT,
 	POP,
 	FIVEINROW;
 	
-	public static RuleSet parse (String ruleset) {
+	public static RuleSetType parse (String ruleset) {
 		switch (ruleset.toLowerCase()) {
-			case "default": return RuleSet.DEFAULT;
-			case "pop": return RuleSet.POP;
-			case "5inrow": return RuleSet.FIVEINROW;
+			case "default": return RuleSetType.DEFAULT;
+			case "pop": return RuleSetType.POP;
+			case "5inrow": return RuleSetType.FIVEINROW;
 			default: throw new IllegalArgumentException("Ruleset '" + ruleset + "' is unkown.");
 		}
 	}
