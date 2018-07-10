@@ -1,7 +1,7 @@
 /**
  * 
  */
-package it.unicam.cs.pa.ConnectFour.factories;
+package it.unicam.cs.pa.ConnectFour;
 
 /**
  * @author giacchè
@@ -9,5 +9,6 @@ package it.unicam.cs.pa.ConnectFour.factories;
  */
 public enum Factories {
 	PLAYERS,
-	PIECES;
+	PIECES,
+	REFEREE;
 }

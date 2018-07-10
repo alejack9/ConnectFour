@@ -9,6 +9,8 @@ import java.io.PrintStream;
 import it.unicam.cs.pa.ConnectFour.CellStatus;
 import it.unicam.cs.pa.ConnectFour.Piece;
 import it.unicam.cs.pa.ConnectFour.Player;
+import it.unicam.cs.pa.ConnectFour.RuleSet;
+import it.unicam.cs.pa.ConnectFour.RuleSetType;
 
 /**
  * @author giacchè
@@ -46,6 +48,14 @@ public class PieceFactory extends AbstractFactory {
 	@Override
 	public Piece getPiece(CellStatus color) {
 		return new Piece(this.id++, color);
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getReferee(it.unicam.cs.pa.ConnectFour.RuleSetType)
+	 */
+	@Override
+	public RuleSet getReferee(RuleSetType ruleset) {
+		return null;
 	}
 
 }

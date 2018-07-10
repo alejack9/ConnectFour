@@ -25,14 +25,14 @@ public class InteractivePlayer implements Player {
 	/**
 	 * must be the same for both players
 	 */
-	private MatchField field;
+	private Cell[][] field;
 	private BufferedReader in;
 	private PrintStream out;
 	
 	public InteractivePlayer ( String name , InputStream in , PrintStream out ) {
 		this.name = name;
 		this.in = new BufferedReader(new InputStreamReader(in));
-		this.out = out;		
+		this.out = out;
 	}
 	
 	/*public InteractivePlayer( String name) {
@@ -77,9 +77,8 @@ public class InteractivePlayer implements Player {
 	}
 
 	@Override
-	public void init(int pid, AbstractRuleSet ruleSet) {
+	public void init(int pid, RuleSet ruleSet) {
 		this.ID = pid;
-		this.field = new MatchField(ruleSet);
 	}
 
 	@Override
@@ -110,6 +109,24 @@ public class InteractivePlayer implements Player {
 	public void youLose() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#chooseAction()
+	 */
+	@Override
+	public ActionType chooseAction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#getColumn()
+	 */
+	@Override
+	public int getColumn() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	

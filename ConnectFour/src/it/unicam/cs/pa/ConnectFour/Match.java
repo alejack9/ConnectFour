@@ -7,7 +7,6 @@ import java.util.Properties;
 import java.util.Random;
 
 import it.unicam.cs.pa.ConnectFour.factories.AbstractFactory;
-import it.unicam.cs.pa.ConnectFour.factories.Factories;
 
 /**
  * @author giacchè
@@ -21,7 +20,7 @@ public class Match {
 	private final Player[] players;
 	private final MatchField field;
 	private MatchStatus status = MatchStatus.INIT;
-	private RuleSetType ruleSet;
+	private RuleSet referee;
 	private int currentPlayer;
 	private AbstractFactory piecesFactory;
 
@@ -38,8 +37,8 @@ public class Match {
 		this.players = new Player[] { p1, p2 };
 		this.field = new MatchField(prop.getProperty("size"));
 		this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer"));
-		this.ruleSet = RuleSetType.parse(prop.getProperty("ruleset"));
 		this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
+		this.referee = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.parse(prop.getProperty("ruleset")));
 	}
 
 	/*
@@ -70,22 +69,29 @@ public class Match {
 	private void _play() {
 		this.players[PLAYER1].startMatch();
 		this.players[PLAYER2].startMatch();
-		while (doAction());
+		while (doAction(selectAction()));
 	}
 
 	/**
 	 * @return
 	 */
-	private boolean doAction() {
-		try {
-			Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-			PieceLocation loc = players[currentPlayer].insert(piece);
-			this.field.insert(loc, piece);
+	private ActionType selectAction() {
+		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction() : referee.getAllowedActions()[0];
+	}
 
-			if (this.field.winner() != null) {
-				win(this.currentPlayer);
-				return false;
+	/**
+	 * @return
+	 */
+	private boolean doAction(ActionType action) {
+		try {
+			if (referee.isValidAction(action)) {
+				int column = players[this.currentPlayer].getColumn();
+				if (action == ActionType.INSERT) insertAction(column);
+				if (action == ActionType.POP) popAction(column);
+				
+				if(isEnd()) return false;
 			}
+			else return true;
 		} catch (Throwable e) {
 			winForError(otherPlayer(this.currentPlayer), e);
 			return false;
@@ -94,9 +100,41 @@ public class Match {
 		return true;
 	}
 
+	/**
+	 * @return
+	 */
+	private boolean isEnd() {
+		CellStatus winner = referee.winner(field.getCells()); 
+		if(winner != null) {
+			win(winner.ordinal());
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param winner
+	 */
+	private void win(int winner) {
+		players[winner].youWin();
+		players[otherPlayer(winner)].youLose();
+	}
+
+	/**
+	 * 
+	 */
+	private void insertAction( int column ) {
+		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
+		PieceLocation loc = referee.insert(column, field.getCells());
+		field.insert(loc, piece);
+	}
+	private void popAction( int column ) {
+		field.setColumn(referee.pop(field.getColumn(column)),column);
+	}
+
 	private boolean init(int player) {
 		try {
-			this.players[player].init(player, field.getRuleSet());
+			this.players[player].init(player, referee);
 			return true;
 		} catch (Throwable e) {
 			this.winForError(otherPlayer(player), e);

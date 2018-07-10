@@ -8,19 +8,49 @@ package it.unicam.cs.pa.ConnectFour;
  *
  */
 public interface Player {
-	
-	PieceLocation insert(Piece piece);
 
+	/**
+	 * @param piece
+	 * @return
+	 */
+	//PieceLocation insert(Piece piece);
+
+	int getColumn();
+	
+	/**
+	 * @param e
+	 */
 	void winForError(Throwable e);
 
+	/**
+	 * @param e
+	 */
 	void loseForError(Throwable e);
 
+	/**
+	 * 
+	 */
 	void startMatch();
 
+	/**
+	 * 
+	 */
 	void youWin();
 
+	/**
+	 * 
+	 */
 	void youLose();
 
-	void init(int pid, AbstractRuleSet ruleSet);
-	
+	/**
+	 * @param pid
+	 * @param ruleSet
+	 */
+	void init(int pid, RuleSet ruleSet);
+
+	/**
+	 * @return
+	 */
+	ActionType chooseAction();
+
 }
