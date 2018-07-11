@@ -4,10 +4,7 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 import java.io.PrintStream;
-import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.IntSupplier;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
