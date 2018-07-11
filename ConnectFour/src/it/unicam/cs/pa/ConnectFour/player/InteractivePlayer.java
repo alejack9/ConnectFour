@@ -1,4 +1,4 @@
-package it.unicam.cs.pa.ConnectFour;
+package it.unicam.cs.pa.ConnectFour.player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +8,10 @@ import java.io.PrintStream;
 import java.util.Observable;
 import java.util.function.Function;
 import java.util.function.Predicate;
+
+import it.unicam.cs.pa.ConnectFour.core.ActionType;
+import it.unicam.cs.pa.ConnectFour.core.Cell;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
  * @author Alessandra Boccuto

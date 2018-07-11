@@ -1,8 +1,11 @@
-package it.unicam.cs.pa.ConnectFour;
+package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+
+import it.unicam.cs.pa.ConnectFour.piece.Piece;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
  * @author giacchè
@@ -15,7 +18,7 @@ public class MatchField {
 	 * first List: columns list<br />
 	 * second List: rows list
 	 */
-	// FIXME should be 'final' removed?
+	// TODO should be 'final' removed?
 	private final List<List<Cell>> field;
 	/**
 	 * [0] = rows<br />

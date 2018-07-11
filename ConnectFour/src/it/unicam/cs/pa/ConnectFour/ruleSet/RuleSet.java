@@ -1,10 +1,15 @@
 /**
  * 
  */
-package it.unicam.cs.pa.ConnectFour;
+package it.unicam.cs.pa.ConnectFour.ruleSet;
 
 import java.util.List;
 import java.util.stream.Stream;
+
+import it.unicam.cs.pa.ConnectFour.core.ActionType;
+import it.unicam.cs.pa.ConnectFour.core.Cell;
+import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.core.PieceLocation;
 
 /**
  * @author giacchè

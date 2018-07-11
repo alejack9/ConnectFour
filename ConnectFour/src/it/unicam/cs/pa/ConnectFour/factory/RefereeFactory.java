@@ -1,10 +1,18 @@
 /**
  * 
  */
-package it.unicam.cs.pa.ConnectFour;
+package it.unicam.cs.pa.ConnectFour.factory;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+
+import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.piece.Piece;
+import it.unicam.cs.pa.ConnectFour.player.Player;
+import it.unicam.cs.pa.ConnectFour.player.PlayerType;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacchè
@@ -41,6 +49,7 @@ public class RefereeFactory extends AbstractFactory {
 	 */
 	@Override
 	public RuleSet getReferee(RuleSetType ruleset) {
+		// TODO decomment the others
 		switch(ruleset) {
 		case DEFAULT:	return new DefaultRuleSet();
 	//	case POP:	return new PopRuleSet();

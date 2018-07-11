@@ -1,10 +1,13 @@
 /**
  * 
  */
-package it.unicam.cs.pa.ConnectFour;
+package it.unicam.cs.pa.ConnectFour.player;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+
+import it.unicam.cs.pa.ConnectFour.core.ActionType;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
  * @author giacchè
