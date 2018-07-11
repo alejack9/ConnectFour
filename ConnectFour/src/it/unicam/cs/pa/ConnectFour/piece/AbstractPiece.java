@@ -16,6 +16,9 @@ public abstract class AbstractPiece {
 
 	public abstract CellStatus getColor();
 
+	/**
+	 * @return The id, if there's any, an empty Optional otherwise
+	 */
 	public abstract Optional<Integer> getId();
 
 	public abstract boolean isNull();
