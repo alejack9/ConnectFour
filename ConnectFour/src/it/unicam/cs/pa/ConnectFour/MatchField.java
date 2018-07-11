@@ -1,6 +1,6 @@
 package it.unicam.cs.pa.ConnectFour;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -28,7 +28,10 @@ public class MatchField {
 	 * @param size the filed size
 	 */
 	public MatchField (String size) {
-		this.field = new LinkedList<>();
+		/**
+		 * better get and set than LinkedList, worste add but we don't care
+		 */
+		this.field = new ArrayList<>();
 		this.size = Utils.sizeParse(size);
 		fill();
 	}
@@ -105,7 +108,7 @@ public class MatchField {
 	 */
 	private void fill() {
 		for(int i = 0; i < getColumns() ; i++) {
-			List<Cell> toInsert = new LinkedList<>();
+			List<Cell> toInsert = new ArrayList<>();
 			for(int j = 0 ; j < getRows(); j++) {
 				toInsert.add(new Cell());
 			}
