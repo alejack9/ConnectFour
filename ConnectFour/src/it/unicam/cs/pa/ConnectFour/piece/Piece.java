@@ -14,8 +14,11 @@ public class Piece extends AbstractPiece {
 	private final CellStatus color;
 	
 
-	public Piece(int id, CellStatus color) {
-		this.id = id;
+	public Piece(int id, CellStatus color) throws IllegalArgumentException {
+		if(id >= 0) {
+			this.id = id;
+		}
+		else throw new IllegalArgumentException("'id' must be positive");
 		this.color = color;
 	}
 
