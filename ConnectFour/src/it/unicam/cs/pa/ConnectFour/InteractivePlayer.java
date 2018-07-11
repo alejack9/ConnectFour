@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.Observable;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -34,9 +35,19 @@ public class InteractivePlayer implements Player {
 	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int)
 	 */
 	@Override
-	public void init(int pid , RuleSet referee ) {
-		this.ID = pid;
+	public void init(int pid , RuleSet referee ) throws IllegalArgumentException {
+		this.setID(pid);
 		this.referee = referee;
+	}
+
+	/**
+	 * @param pid
+	 */
+	private void setID(int pid) throws IllegalArgumentException {
+		if(pid >= 0) {
+			this.ID = pid;
+		}
+		else throw new IllegalArgumentException("'pid' must be positive");
 	}
 
 	/* (non-Javadoc)
@@ -133,6 +144,11 @@ public class InteractivePlayer implements Player {
 	private void print(String string) {
 		this.out.println(this.name+ "> " + string);
 	}
-	
-	
+
+	/**
+	 * @return the iD
+	 */
+	public int getID() {
+		return ID;
+	}
 }

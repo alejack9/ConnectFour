@@ -1,12 +1,12 @@
 package it.unicam.cs.pa.ConnectFour;
 
 import java.util.Properties;
-import java.util.Random;
 
 /**
  * @author giacchè
  *
  */
+// REPORT si sarebbe potuto mettere match observable e player observer per caricare init del player al cambiamento di stato di match. Tuttavia e` svantaggioso perche` dovrei passare a player il proprio id e il referee e dovrei creare un nuovo oggetto per inserire questi due parametri, in piu` id e` diverso per uno e per l'altro mentre la notifica viene inviata ad entrambi
 public class Match {
 
 	private static final int PLAYER1 = 0;
@@ -59,17 +59,6 @@ public class Match {
 		while (doAction(selectAction()));
 	}
 
-	private void setStatus(MatchStatus status) {
-		this.status = status;
-	}
-
-	/**
-	 * @return the player's choice (if the allowed action are more than one) or the only choice
-	 */
-	private ActionType selectAction() {
-		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction() : referee.getAllowedActions()[0];
-	}
-
 	/**
 	 * @return false if the game ended
 	 */
@@ -92,6 +81,30 @@ public class Match {
 	}
 
 	/**
+	 * @param player Player' id
+	 * @return true if all's OK, false otherwise
+	 */
+	private boolean init(int player) {
+		try {
+			this.players[player].init(player, referee);
+			return true;
+		} catch (IllegalArgumentException e) {
+			this.winForError(otherPlayer(player), e);
+			return false;
+		}
+	}
+
+	/**
+	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
+	 * @param column The gotten column
+	 */
+	private void insertAction( int column ) {
+		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
+		PieceLocation loc = referee.insert(column, field.getCells());
+		field.insert(loc, piece);
+	}
+
+	/**
 	 * @return true if the game ended, false otherwise
 	 */
 	private boolean isEnd() {
@@ -104,22 +117,13 @@ public class Match {
 	}
 
 	/**
-	 * @param winner Winner player' id
+	 * @param player player' id
+	 * @return the other player' id
 	 */
-	private void win(int winner) {
-		players[winner].youWin();
-		players[otherPlayer(winner)].youLose();
+	private int otherPlayer(int player) {
+		return (player + 1) % 2;
 	}
 
-	/**
-	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
-	 * @param column The gotten column
-	 */
-	private void insertAction( int column ) {
-		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-		PieceLocation loc = referee.insert(column, field.getCells());
-		field.insert(loc, piece);
-	}
 	/**
 	 * Gets the column from filed, pops the column according to referee's rules and sets the returned column in the field
 	 * @param column The gotten column
@@ -129,17 +133,22 @@ public class Match {
 	}
 
 	/**
-	 * @param player Player' id
-	 * @return true if all's OK, false otherwise
+	 * @return the player's choice (if the allowed action are more than one) or the only choice
 	 */
-	private boolean init(int player) {
-		try {
-			this.players[player].init(player, referee);
-			return true;
-		} catch (Throwable e) {
-			this.winForError(otherPlayer(player), e);
-			return false;
-		}
+	private ActionType selectAction() {
+		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction() : referee.getAllowedActions()[0];
+	}
+
+	private void setStatus(MatchStatus status) {
+		this.status = status;
+	}
+
+	/**
+	 * @param winner Winner player' id
+	 */
+	private void win(int winner) {
+		players[winner].youWin();
+		players[otherPlayer(winner)].youLose();
 	}
 
 	/**
@@ -149,13 +158,5 @@ public class Match {
 	private void winForError(int player, Throwable e) {
 		this.players[player].winForError(e);
 		this.players[otherPlayer(player)].loseForError(e);
-	}
-
-	/**
-	 * @param player player' id
-	 * @return the other player' id
-	 */
-	private int otherPlayer(int player) {
-		return (player + 1) % 2;
 	}
 }

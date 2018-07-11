@@ -45,6 +45,6 @@ public interface Player {
 	 * @param pid The player' id
 	 * @param referee The referee
 	 */
-	void init(int pid , RuleSet referee );
+	void init(int pid , RuleSet referee ) throws IllegalArgumentException;
 
 }

@@ -16,7 +16,7 @@ public class RandomMatch {
 		Properties prop = new Properties();
 		prop.setProperty("size", "6x7");
 		prop.setProperty("ruleset", "default");
-		// TODO FIRSTPLAYER MUST BE 0 OR 1
+		// REPORT FIRSTPLAYER MUST BE 0 OR 1
 		prop.setProperty("firstPlayer", "0");
 		
 		Match m = new Match(p1, p2 , prop);
