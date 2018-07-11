@@ -1,18 +1,18 @@
 /**
  * 
  */
-package it.unicam.cs.pa.ConnectFour.tests;
+package it.unicam.cs.pa.ConnectFour.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import it.unicam.cs.pa.ConnectFour.CellStatus;
-import it.unicam.cs.pa.ConnectFour.DefaultRuleSet;
-import it.unicam.cs.pa.ConnectFour.MatchField;
-import it.unicam.cs.pa.ConnectFour.Piece;
-import it.unicam.cs.pa.ConnectFour.Utils;
+import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
+import it.unicam.cs.pa.ConnectFour.core.Utils;
 
 /**
  * @author giacchè

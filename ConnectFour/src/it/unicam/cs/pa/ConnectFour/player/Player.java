@@ -1,6 +1,7 @@
 package it.unicam.cs.pa.ConnectFour.player;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
@@ -48,6 +49,6 @@ public interface Player {
 	 * @param pid The player' id
 	 * @param referee The referee
 	 */
-	void init(int pid , RuleSet referee ) throws IllegalArgumentException;
+	void init(int pid , RuleSet referee ) throws IllegalIdValue;
 
 }

@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
@@ -39,7 +40,7 @@ public class InteractivePlayer implements Player {
 	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int)
 	 */
 	@Override
-	public void init(int pid , RuleSet referee ) throws IllegalArgumentException {
+	public void init(int pid , RuleSet referee ) throws IllegalIdValue {
 		this.setID(pid);
 		this.referee = referee;
 	}
@@ -47,11 +48,11 @@ public class InteractivePlayer implements Player {
 	/**
 	 * @param pid
 	 */
-	private void setID(int pid) throws IllegalArgumentException {
+	private void setID(int pid) throws IllegalIdValue {
 		if(pid >= 0) {
 			this.ID = pid;
 		}
-		else throw new IllegalArgumentException("'pid' must be positive");
+		else throw new IllegalIdValue(pid);
 	}
 
 	/* (non-Javadoc)

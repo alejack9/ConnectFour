@@ -9,16 +9,6 @@ public enum CellStatus {
 	P2,
 	EMPTY;
 	
-	@Override
-	public String toString() {
-		switch ( this ) {
-			case P1: return "X";
-			case P2: return "O";
-			case EMPTY: return " ";
-		}
-		return "";
-	}
-	
 	/**
 	 * @param p must be 0 or 1
 	 * @return the relative player
@@ -31,5 +21,18 @@ public enum CellStatus {
 			default: 
 				throw new IllegalArgumentException("'p' must be 0 or 1, '" + p + "' is not allowed.");
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+		switch ( this ) {
+			case P1: return "X";
+			case P2: return "O";
+			case EMPTY: return " ";
+		}
+		return "";
 	}
 }

@@ -76,7 +76,6 @@ public class Match {
 				int column = players[this.currentPlayer].getColumn();
 				if (action == ActionType.INSERT) insertAction(column);
 				if (action == ActionType.POP) popAction(column);
-				
 				if(isEnd()) return false;
 			}
 			else return true;
@@ -96,7 +95,7 @@ public class Match {
 		try {
 			this.players[player].init(player, referee);
 			return true;
-		} catch (IllegalArgumentException e) {
+		} catch (Throwable e) {
 			this.winForError(otherPlayer(player), e);
 			return false;
 		}

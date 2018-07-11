@@ -3,6 +3,7 @@ package it.unicam.cs.pa.ConnectFour.piece;
 import java.util.Optional;
 
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 
 /**
  * @author giacchè
@@ -14,12 +15,19 @@ public class Piece extends AbstractPiece {
 	private final CellStatus color;
 	
 
-	public Piece(int id, CellStatus color) throws IllegalArgumentException {
+	/**
+	 * @param id Must be positive
+	 * @param color EMPTY is not allowed, use {@link NullPiece} instead
+	 * @throws IllegalIdValue
+	 * @throws IllegalArgumentException Disallowed color
+	 */
+	public Piece(int id, CellStatus color) throws IllegalIdValue , IllegalArgumentException {
 		if(id >= 0) {
 			this.id = id;
-		}
-		else throw new IllegalArgumentException("'id' must be positive");
-		this.color = color;
+		} else throw new IllegalIdValue(id);
+		if(color != CellStatus.EMPTY) {
+			this.color = color;
+		} else throw new IllegalArgumentException("'color' not allowed");
 	}
 
 	/* (non-Javadoc)

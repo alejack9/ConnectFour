@@ -1,15 +1,15 @@
 /**
  * 
  */
-package it.unicam.cs.pa.ConnectFour.tests;
+package it.unicam.cs.pa.ConnectFour.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import it.unicam.cs.pa.ConnectFour.AbstractRuleSet;
-import it.unicam.cs.pa.ConnectFour.Cell;
-import it.unicam.cs.pa.ConnectFour.DefaultRuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.core.Cell;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 
 /**
  * @author giacchè
