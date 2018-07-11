@@ -29,7 +29,7 @@ public class MatchField {
 	 */
 	public MatchField (String size) {
 		/**
-		 * better get and set than LinkedList, worste add but we don't care
+		 * better get and set than LinkedList, worst add but we don't care
 		 */
 		this.field = new ArrayList<>();
 		this.size = Utils.sizeParse(size);
