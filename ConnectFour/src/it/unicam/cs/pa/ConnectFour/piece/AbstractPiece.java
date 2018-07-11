@@ -3,6 +3,8 @@
  */
 package it.unicam.cs.pa.ConnectFour.piece;
 
+import java.util.Optional;
+
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 
 /**
@@ -14,7 +16,7 @@ public abstract class AbstractPiece {
 
 	public abstract CellStatus getColor();
 
-	public abstract int getId();
+	public abstract Optional<Integer> getId();
 
 	public abstract boolean isNull();
 

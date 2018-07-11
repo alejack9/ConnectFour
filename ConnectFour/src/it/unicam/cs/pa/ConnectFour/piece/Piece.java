@@ -1,5 +1,7 @@
 package it.unicam.cs.pa.ConnectFour.piece;
 
+import java.util.Optional;
+
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 
 /**
@@ -17,12 +19,19 @@ public class Piece extends AbstractPiece {
 		this.color = color;
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#getColor()
+	 */
+	@Override
 	public CellStatus getColor() {
 		return this.color;
 	}
 
-	public int getId() {
-		return this.id;
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#getId()
+	 */
+	public Optional<Integer> getId() {
+		return Optional.of(this.id);
 	}
 
 	/* (non-Javadoc)

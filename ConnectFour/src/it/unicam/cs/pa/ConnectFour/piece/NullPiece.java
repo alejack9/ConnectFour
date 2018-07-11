@@ -3,6 +3,8 @@
  */
 package it.unicam.cs.pa.ConnectFour.piece;
 
+import java.util.Optional;
+
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 
 /**
@@ -23,8 +25,8 @@ public class NullPiece extends AbstractPiece {
 	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#getId()
 	 */
 	@Override
-	public int getId() {
-		return -1;
+	public Optional<Integer> getId() {
+		return Optional.empty();
 	}
 
 	/* (non-Javadoc)
