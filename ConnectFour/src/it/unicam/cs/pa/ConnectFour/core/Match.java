@@ -8,6 +8,7 @@ import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacchè
@@ -47,8 +48,8 @@ public class Match {
 	public boolean initMatch(Player p1 , Player p2 , Properties prop) {
 		if(!initialized) {
 			this.players = new Player[] { p1, p2 };
-			this.field = new MatchField(prop.getProperty("size") , prop.getProperty("ruleset"));
-			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer"));
+			this.field = new MatchField(prop.getProperty("size",RuleSetType.DEFAULT.defaultSize()) , prop.getProperty("ruleset","default"));
+			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer","0"));
 			if(currentPlayer < 0 || currentPlayer > 1) throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
 			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
 			this.referee = this.field.getReferee();
