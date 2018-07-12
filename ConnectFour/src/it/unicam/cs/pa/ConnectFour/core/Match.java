@@ -45,7 +45,7 @@ public class Match {
 	 * @throws NumberFormatException Unable to covert 'size' or 'firstPlayer' into Integer
 	 * @throws IllegalArgumentException Some 'prop' value/s has/have not allowed values
 	 */
-	public boolean initMatch(Player p1 , Player p2 , Properties prop) {
+	public boolean initMatch(Player p1 , Player p2 , Properties prop) throws NumberFormatException , IllegalArgumentException {
 		if(!initialized) {
 			this.players = new Player[] { p1, p2 };
 			this.field = new MatchField(prop.getProperty("size",RuleSetType.DEFAULT.defaultSize()) , prop.getProperty("ruleset","default"));
