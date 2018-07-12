@@ -64,6 +64,7 @@ public class Match {
 
 	/**
 	 * Initializes the players and starts the game
+	 * @throws IllegalStateException Match is not initialized
 	 */
 	public void play() throws IllegalStateException {
 		if(!initialized) throw new IllegalStateException("Match must be initialized");
