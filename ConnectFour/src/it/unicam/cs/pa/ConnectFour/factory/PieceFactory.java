@@ -14,7 +14,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  * @author giacchè
  *
  */
-public class PieceFactory extends AbstractFactory {
+public class PieceFactory implements AbstractFactory {
 	private int id;
 	
 	public PieceFactory() {

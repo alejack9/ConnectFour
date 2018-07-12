@@ -19,7 +19,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  * @author giacchè
  *
  */
-public class RefereeFactory extends AbstractFactory {
+public class RefereeFactory implements AbstractFactory {
 
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPlayer(it.unicam.cs.pa.ConnectFour.factories.PlayerType, java.lang.String, java.io.InputStream, java.io.PrintStream)
