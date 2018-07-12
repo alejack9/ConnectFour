@@ -1,5 +1,7 @@
 package it.unicam.cs.pa.ConnectFour.player;
 
+import java.io.IOException;
+
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
@@ -42,6 +44,7 @@ public interface Player {
 
 	/**
 	 * @return The action prompted by the player
+	 * @throws IOException 
 	 */
 	ActionType chooseAction();
 
