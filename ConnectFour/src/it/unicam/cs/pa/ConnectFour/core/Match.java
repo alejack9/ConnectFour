@@ -132,7 +132,7 @@ public class Match {
 	}
 
 	/**
-	 * Gets the column from filed, pops the column according to referee's rules and sets the returned column in the field
+	 * Gets the column from field, pops the column according to referee's rules and sets the returned column in the field
 	 * @param column The gotten column
 	 */
 	private void popAction( int column ) {
