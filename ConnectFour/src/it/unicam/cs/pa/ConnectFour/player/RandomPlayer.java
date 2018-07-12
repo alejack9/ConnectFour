@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
@@ -88,10 +90,10 @@ public class RandomPlayer implements Player {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int, it.unicam.cs.pa.ConnectFour.RuleSet)
+	 * @see it.unicam.cs.pa.ConnectFour.player.Player#init(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public void init(int pid, RuleSet referee) {
+	public void init(int pid, MatchField field) throws IllegalIdValue {
 		// TODO Auto-generated method stub
 		
 	}

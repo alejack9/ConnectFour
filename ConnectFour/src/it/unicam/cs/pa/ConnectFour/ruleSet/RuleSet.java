@@ -52,6 +52,8 @@ public interface RuleSet {
 	 */
 	public ActionType[] getAllowedActions();
 	
+	public abstract int[] getDefaultSize();
+	
 	/**
 	 * @return true if the action is allowed, false otherwise
 	 */

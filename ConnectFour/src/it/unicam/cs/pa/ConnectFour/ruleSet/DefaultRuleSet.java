@@ -70,4 +70,12 @@ public class DefaultRuleSet implements RuleSet {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getDefaultSize()
+	 */
+	@Override
+	public int[] getDefaultSize() {
+		return new int[] { 6 , 7 };
+	}
+
 }

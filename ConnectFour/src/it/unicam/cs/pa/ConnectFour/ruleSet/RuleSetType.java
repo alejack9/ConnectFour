@@ -25,7 +25,7 @@ public enum RuleSetType {
 	 */
 	public static RuleSetType parse (String rulesetName) throws IllegalArgumentException {
 		for (RuleSetType rs : RuleSetType.values()) {
-			if(rs.equals(rulesetName)) {
+			if(rs.toString().equals(rulesetName)) {
 				return rs;
 			}
 		}
@@ -36,6 +36,15 @@ public enum RuleSetType {
 //			case "fiveinrow": return RuleSetType.FIVEINROW;
 //			default: throw new IllegalArgumentException("RuleSet Type '" + rulesetName + "' is unkown.");
 //		}
+	}
+	
+	public String defaultSize() {
+		switch(this) {
+			case DEFAULT: return "6x7";
+			case POP: return "6x7";
+			case FIVEINROW: return "8x8";
+		}
+		return "0x0";
 	}
 
 	/* (non-Javadoc)

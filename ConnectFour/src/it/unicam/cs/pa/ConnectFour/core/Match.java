@@ -8,7 +8,6 @@ import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacchè
@@ -17,40 +16,56 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 // REPORT si sarebbe potuto mettere match observable e player observer per caricare init del player al cambiamento di stato di match. Tuttavia e` svantaggioso perche` dovrei passare a player il proprio id e il referee e dovrei creare un nuovo oggetto per inserire questi due parametri, in piu` id e` diverso per uno e per l'altro mentre la notifica viene inviata ad entrambi
 public class Match {
 
+	private static final Match INSTANCE = new Match();
+	
 	private static final int PLAYER1 = 0;
 	private static final int PLAYER2 = 1;
 
-	private final Player[] players;
-	private final MatchField field;
+	private Player[] players;
+	private MatchField field;
 	private MatchStatus status = MatchStatus.INIT;
-	private RuleSet referee;
 	private int currentPlayer;
 	private AbstractFactory piecesFactory;
-
+	private RuleSet referee;
+	private boolean initialized;
+	
+	private Match () {
+		this.initialized = false;
+	}
+	
+	public static Match getInstance() {
+		return INSTANCE;
+	}
+	
 	/**
 	 * @param p1 player 1
 	 * @param p2 player 2
-	 * @param prop Properties field: contains 'size' (the match field size), 'firstPlayer' (the player who starts the match) and 'ruleset' (the referee)
+	 * @param prop Properties field: must contains<ul><li>'size' (the match field size)</li><li>'firstPlayer' (the player who starts the match)</li><li>'ruleset' (the referee)</li>
 	 * @throws NumberFormatException Unable to covert 'size' or 'firstPlayer' into Integer
 	 * @throws IllegalArgumentException Some 'prop' value/s has/have not allowed values
 	 */
-	public Match(Player p1, Player p2, Properties prop) throws NumberFormatException , IllegalArgumentException {
-		this.players = new Player[] { p1, p2 };
-		this.field = new MatchField(prop.getProperty("size"));
-		this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer"));
-		if(currentPlayer < 0 || currentPlayer > 1) throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
-		this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
-		this.referee = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.parse(prop.getProperty("ruleset")));
+	public boolean initMatch(Player p1 , Player p2 , Properties prop) {
+		if(!initialized) {
+			this.players = new Player[] { p1, p2 };
+			this.field = new MatchField(prop.getProperty("size") , prop.getProperty("ruleset"));
+			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer"));
+			if(currentPlayer < 0 || currentPlayer > 1) throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
+			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
+			this.referee = this.field.getReferee();
+		}
+		return false;
 	}
 	
 	public MatchStatus getStatus() {
+		if(!initialized) return null;
 		return this.status;
 	}
 
 	/**
 	 * Initializes the players and starts the game
 	 */
-	public void play() {
+	public void play() throws IllegalStateException {
+		if(!initialized) throw new IllegalStateException("Match must be initialized");
 		if (!init(PLAYER1)) {
 			return;
 		}
@@ -72,7 +87,7 @@ public class Match {
 	 */
 	private boolean doAction(ActionType action) {
 		try {
-			if (referee.isValidAction(action)) {
+			if (this.referee.isValidAction(action)) {
 				int column = players[this.currentPlayer].getColumn();
 				if (action == ActionType.INSERT) insertAction(column);
 				if (action == ActionType.POP) popAction(column);
@@ -93,7 +108,7 @@ public class Match {
 	 */
 	private boolean init(int player) {
 		try {
-			this.players[player].init(player, referee);
+			this.players[player].init(player, field );
 			return true;
 		} catch (Throwable e) {
 			this.winForError(otherPlayer(player), e);

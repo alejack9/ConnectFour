@@ -3,6 +3,7 @@ package it.unicam.cs.pa.ConnectFour.player;
 import java.io.IOException;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
@@ -52,6 +53,6 @@ public interface Player {
 	 * @param pid The player' id
 	 * @param referee The referee
 	 */
-	void init(int pid , RuleSet referee ) throws IllegalIdValue;
-
+	void init(int pid , MatchField field ) throws IllegalIdValue;
+	
 }

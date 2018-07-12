@@ -68,7 +68,7 @@ public class Utils {
 		writer.println("|");
 	}
 	
-	public static int[] sizeParse (String size) {
+	public static int[] sizeParse (String size) throws IllegalArgumentException {
 		try {
 			int[] toReturn = Stream.of(size.split("x")).mapToInt(Integer::parseInt).takeWhile(c -> c > 1).toArray();
 
