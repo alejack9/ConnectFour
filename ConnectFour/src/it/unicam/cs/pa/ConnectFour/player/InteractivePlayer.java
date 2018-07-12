@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -24,7 +26,7 @@ public class InteractivePlayer implements Player {
 	/**
 	 * must be the same for both players
 	 */
-	private Cell[][] field;
+	private List<List<Cell>> field;
 	private BufferedReader in;
 	private PrintStream out;
 	private RuleSet referee;
@@ -59,7 +61,7 @@ public class InteractivePlayer implements Player {
 	 */
 	@Override
 	public void startMatch() {
-		// TODO Auto-generated method stub
+		this.print(this.name + "has ID " + this.ID);
 		
 	}
 
@@ -68,8 +70,29 @@ public class InteractivePlayer implements Player {
 	 */
 	@Override
 	public ActionType chooseAction() {
-		// TODO Auto-generated method stub
-		return null;
+		while(true) {
+		Integer index = 0;
+		this.print("Actions avaible: " ); //0 to insert, 1 to pop etc
+		for ( ActionType i: referee.getAllowedActions()) {
+			this.print(index.toString()+ "to " + referee.getAllowedActions().toString()+ "\n");
+			index++;
+		}
+		try {
+			int  x = doInput(("Choose the action: "), this::isExistingAction, Integer::parseUnsignedInt);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return referee.getAllowedActions()[index];
+		}
+	}
+
+	private boolean isExistingAction(String txt) {
+		try {
+			int v = Integer.parseUnsignedInt(txt);
+			return(v < referee.getAllowedActions().length);
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -77,8 +100,9 @@ public class InteractivePlayer implements Player {
 	 */
 	@Override
 	public int getColumn() {
-		// TODO Auto-generated method stub
-		return 0;
+		//FIXME getColumns()
+		int column = doInput(String.format("Choose a column from 0 to %d", field.getColumns()));
+		return column;
 	}
 
 	/* (non-Javadoc)
@@ -86,8 +110,7 @@ public class InteractivePlayer implements Player {
 	 */
 	@Override
 	public void youWin() {
-		// TODO Auto-generated method stub
-		
+		this.print("You win!");
 	}
 
 	/* (non-Javadoc)
@@ -95,8 +118,7 @@ public class InteractivePlayer implements Player {
 	 */
 	@Override
 	public void winForError(Throwable e) {
-		// TODO Auto-generated method stub
-		
+		print("The other player has made an error! You have won!");
 	}
 
 	/* (non-Javadoc)
@@ -104,8 +126,7 @@ public class InteractivePlayer implements Player {
 	 */
 	@Override
 	public void youLose() {
-		// TODO Auto-generated method stub
-		
+		this.print("You have lost!");		
 	}
 
 	/* (non-Javadoc)
@@ -113,8 +134,7 @@ public class InteractivePlayer implements Player {
 	 */
 	@Override
 	public void loseForError(Throwable e) {
-		// TODO Auto-generated method stub
-		
+		print("Oh no you have made a mistake ... You have lost! "+e.getMessage());		
 	}
 
 	/**
