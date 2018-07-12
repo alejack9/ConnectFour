@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
+import it.unicam.cs.pa.ConnectFour.factory.Factories;
+import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacchè
@@ -26,16 +29,18 @@ public class MatchField {
 	 */
 	private int[] size;
 	private int pieces;
+	private RuleSet referee;
 
 	/**
 	 * @param size the field size
 	 */
-	public MatchField (String size) {
+	public MatchField (String size , String ruleset) throws IllegalArgumentException {
 		/**
 		 * better get and set than LinkedList, worst add but we don't care
 		 */
 		this.field = new ArrayList<>();
 		this.size = Utils.sizeParse(size);
+		this.referee = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.parse(ruleset));
 		fill();
 	}
 
@@ -117,6 +122,12 @@ public class MatchField {
 			}
 			field.add(toInsert);
 		}
+	}
+	/**
+	 * @return
+	 */
+	public RuleSet getReferee() {
+		return this.referee;
 	}
 	
 }

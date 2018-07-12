@@ -21,17 +21,14 @@ public class RandomMatch {
 		Player p2 = playerFactory.getPlayer(PlayerType.RANDOM , "Pluto");
 		
 		Properties prop = new Properties();
-		prop.setProperty("size", "6x7");
+		prop.setProperty("size", RuleSetType.DEFAULT.defaultSize());
 		prop.setProperty("ruleset", RuleSetType.DEFAULT.name());
 		// REPORT FIRSTPLAYER MUST BE 0 OR 1
 		prop.setProperty("firstPlayer", "0");
 		
-		Match m = new Match(p1, p2 , prop);
-		
+		Match m = Match.getInstance();
+		m.initMatch(p1, p2, prop);
 		m.play();
-		
-		
-		// TODO play.
 	}
 
 }

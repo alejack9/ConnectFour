@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
@@ -29,6 +30,7 @@ public class InteractivePlayer implements Player {
 	private List<List<Cell>> field;
 	private BufferedReader in;
 	private PrintStream out;
+	private MatchField field1;
 	private RuleSet referee;
 	
 	public InteractivePlayer( String name , InputStream in , PrintStream out ) {
@@ -41,9 +43,10 @@ public class InteractivePlayer implements Player {
 	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int)
 	 */
 	@Override
-	public void init(int pid , RuleSet referee ) throws IllegalIdValue {
+	public void init(int pid , MatchField field ) throws IllegalIdValue {
 		this.setID(pid);
-		this.referee = referee;
+		this.field1 = field;
+		this.referee = field.getReferee();
 	}
 
 	/**
@@ -70,19 +73,20 @@ public class InteractivePlayer implements Player {
 	 */
 	@Override
 	public ActionType chooseAction() {
+		// TODO use i.orinal() instead of index
 		while(true) {
-		Integer index = 0;
-		this.print("Actions avaible: " ); //0 to insert, 1 to pop etc
-		for ( ActionType i: referee.getAllowedActions()) {
-			this.print(index.toString()+ "to " + referee.getAllowedActions().toString()+ "\n");
-			index++;
-		}
-		try {
-			int  x = doInput(("Choose the action: "), this::isExistingAction, Integer::parseUnsignedInt);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return referee.getAllowedActions()[index];
+			Integer index = 0;
+			this.print("Actions avaible: " ); //0 to insert, 1 to pop etc
+			for ( ActionType i: field1.getReferee().getAllowedActions()) {
+				this.print(index.toString()+ "to " + referee.getAllowedActions().toString()+ "\n");
+				index++;
+			}
+			try {
+				int x = doInput(("Choose the action: "), this::isExistingAction, Integer::parseUnsignedInt);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return referee.getAllowedActions()[index];
 		}
 	}
 
@@ -94,14 +98,23 @@ public class InteractivePlayer implements Player {
 			return false;
 		}
 	}
-
+	
+	private boolean isInBound(String txt) {
+		try {
+			int v = Integer.parseUnsignedInt(txt);
+			return(referee.isInBound(v));
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.Player#getColumn()
 	 */
 	@Override
 	public int getColumn() {
 		//FIXME getColumns()
-		int column = doInput(String.format("Choose a column from 0 to %d", field.getColumns()));
+		int column = doInput(String.format("Choose a column from 0 to %d", field1.getColumns()), this::isInBound , Integer::parseUnsignedInt);
 		return column;
 	}
 
