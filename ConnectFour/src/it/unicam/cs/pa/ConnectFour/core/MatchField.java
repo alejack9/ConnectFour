@@ -28,7 +28,7 @@ public class MatchField {
 	private int pieces;
 
 	/**
-	 * @param size the filed size
+	 * @param size the field size
 	 */
 	public MatchField (String size) {
 		/**
@@ -44,7 +44,7 @@ public class MatchField {
 	}
 	
 	/**
-	 * Inserts a piece in the filed
+	 * Inserts a piece in the field
 	 * @return true if all's OK, false otherwise
 	 */
 	public boolean insert ( PieceLocation location , Piece piece ) {
