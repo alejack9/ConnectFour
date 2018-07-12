@@ -1,2 +1,4 @@
-Match must be singleton
-RuleSet must be singleton
+Checkup responsabilities in
+	Match -> Player -> MatchField -> Referee (I vote for this)
+	or
+	Match -> Player -> Referee -> MatchField
