@@ -36,7 +36,7 @@ public class MatchField {
 	 */
 	public MatchField (String size , String ruleset) throws IllegalArgumentException {
 		/**
-		 * better get and set than LinkedList, worst add but we don't care
+		 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we don't care
 		 */
 		this.field = new ArrayList<>();
 		this.size = Utils.sizeParse(size);
@@ -65,9 +65,9 @@ public class MatchField {
 	/**
 	 * @return The viewer BiFunction
 	 */
-	public BiFunction<Integer, Integer, CellStatus> getView(RuleSet referee) {
+	public BiFunction<Integer, Integer, CellStatus> getView() {
 		return ( row , column ) -> {
-			if ( !referee.isInBound( column ) ) {
+			if ( !this.referee.isInBound( column ) ) {
 				return null;
 			}
 			return getStatus( row , column );
@@ -104,11 +104,18 @@ public class MatchField {
 	}
 
 	public int getRows() {
-		return size[0];
+		return this.size[0];
 	}
 
 	public int getColumns() {
-		return size[1];
+		return this.size[1];
+	}
+
+	/**
+	 * @return
+	 */
+	public RuleSet getReferee() {
+		return this.referee;
 	}
 
 	/**
@@ -122,12 +129,6 @@ public class MatchField {
 			}
 			field.add(toInsert);
 		}
-	}
-	/**
-	 * @return
-	 */
-	public RuleSet getReferee() {
-		return this.referee;
 	}
 	
 }
