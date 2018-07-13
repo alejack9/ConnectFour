@@ -7,7 +7,6 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.Match;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
-import it.unicam.cs.pa.ConnectFour.player.PlayerType;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
@@ -22,22 +21,6 @@ public class PieceFactory implements AbstractFactory {
 		this.id = 0;
 	}
 	
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPlayer(java.lang.String, java.io.InputStream, java.io.PrintStream)
-	 */
-	@Override
-	public Player getPlayer(PlayerType type , String name, InputStream in, PrintStream out) {
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPlayer(java.lang.String)
-	 */
-	@Override
-	public Player getPlayer(PlayerType type , String name) {
-		return getPlayer(type , name, null,null);
-	}
-
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPiece(it.unicam.cs.pa.ConnectFour.CellStatus)
 	 */

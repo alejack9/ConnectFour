@@ -1,6 +1,10 @@
 package it.unicam.cs.pa.ConnectFour.player;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
@@ -11,48 +15,65 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
  * @author giacchè
  *
  */
-public interface Player {
+public abstract class Player {
 
+	// REPORT sicche` referee e` statico, e` uguale per tutte le sottoclassi, percio` 2 giocati avranno lo stesso referee
+	protected static RuleSet referee;
+	protected MatchField field;
+	
+	protected String name;
+	protected int ID;
+	
+	protected BufferedReader in;
+	protected PrintStream out;
+	
+	protected Player( String name , RuleSet ruleset , InputStream in , PrintStream out ) {
+		this.name = name;
+		this.in = new BufferedReader(new InputStreamReader(in));
+		this.out = out;
+		referee = ruleset;
+	}
+	
 	/**
 	 * @return The column prompted by the player
 	 */
-	int getColumn();
+	public abstract int getColumn();
 	
 	/**
 	 * @param e The error that make player win
 	 */
-	void winForError(Throwable e);
+	public abstract void winForError(Throwable e);
 
 	/**
 	 * @param e The error that make player lose
 	 */
-	void loseForError(Throwable e);
+	public abstract void loseForError(Throwable e);
 
 	/**
 	 * Initialize match's parameters
 	 */
-	void startMatch();
+	public abstract void startMatch();
 
 	/**
 	 * Notify the player that he's won
 	 */
-	void youWin();
+	public abstract void youWin();
 
 	/**
 	 * Notify the player that he's lost
 	 */
-	void youLose();
-
-	/**
-	 * @return The action prompted by the player
-	 * @throws IOException 
-	 */
-	ActionType chooseAction();
+	public abstract void youLose();
 
 	/**
 	 * @param pid The player' id
 	 * @param referee The referee
 	 */
-	void init(int pid , MatchField field ) throws IllegalIdValue;
+	public abstract void init(int pid , MatchField field ) throws IllegalIdValue;
+
+	/**
+	 * @return The action prompted by the player
+	 * @throws IOException 
+	 */
+	public abstract ActionType chooseAction();
 	
 }

@@ -1,43 +1,35 @@
 package it.unicam.cs.pa.ConnectFour.player;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
-import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
+import it.unicam.cs.pa.ConnectFour.factory.Factories;
+import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author Alessandra Boccuto
  *
  */
-public class InteractivePlayer implements Player {
-	
-	private String name;
-	private int ID;
-	/**
-	 * must be the same for both players
-	 */
-	private List<List<Cell>> field;
-	private BufferedReader in;
-	private PrintStream out;
-	private MatchField field1;
-	private RuleSet referee;
-	
-	public InteractivePlayer( String name , InputStream in , PrintStream out ) {
-		this.name = name;
-		this.in = new BufferedReader(new InputStreamReader(in));
-		this.out = out;
+public class InteractivePlayer extends Player {
+
+	public InteractivePlayer( String name , RuleSet referee , InputStream in , PrintStream out ) {
+		super( name , referee , in , out );
 	}
+	public InteractivePlayer( String name , RuleSet referee ) {
+		this( name , referee , System.in , System.out );
+	}
+	public InteractivePlayer( String name ) {
+		this( name , FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT) );
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int)
@@ -45,8 +37,8 @@ public class InteractivePlayer implements Player {
 	@Override
 	public void init(int pid , MatchField field ) throws IllegalIdValue {
 		this.setID(pid);
-		this.field1 = field;
-		this.referee = field.getReferee();
+		this.field = field;
+		//this.referee = field.getReferee();
 	}
 
 	/**
@@ -72,21 +64,20 @@ public class InteractivePlayer implements Player {
 	 * @see it.unicam.cs.pa.ConnectFour.Player#chooseAction()
 	 */
 	@Override
-	public ActionType chooseAction() {
+	public ActionType chooseAction( ) {
 		// TODO use i.orinal() instead of index
 		while(true) {
-			Integer index = 0;
 			this.print("Actions avaible: " ); //0 to insert, 1 to pop etc
-			for ( ActionType i: field1.getReferee().getAllowedActions()) {
-				this.print(index.toString()+ "to " + referee.getAllowedActions().toString()+ "\n");
-				index++;
+			for ( ActionType i: referee.getAllowedActions()) {
+				this.print(i.ordinal() + "to " + i.toString()+ "\n");
 			}
+			int x = -1;
 			try {
-				int x = doInput(("Choose the action: "), this::isExistingAction, Integer::parseUnsignedInt);
+				x = doInput(("Choose the action: "), this::isExistingAction, Integer::parseUnsignedInt);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return referee.getAllowedActions()[index];
+			return referee.getAllowedActions()[x];
 		}
 	}
 
@@ -114,7 +105,7 @@ public class InteractivePlayer implements Player {
 	@Override
 	public int getColumn() {
 		//FIXME getColumns()
-		int column = doInput(String.format("Choose a column from 0 to %d", field1.getColumns()), this::isInBound , Integer::parseUnsignedInt);
+		int column = doInput(String.format("Choose a column from 0 to %d", field.getColumns()), this::isInBound , Integer::parseUnsignedInt);
 		return column;
 	}
 
@@ -157,10 +148,9 @@ public class InteractivePlayer implements Player {
 	 * @return the inserted value
 	 * @throws IOException
 	 */
-	private <T> T doInput(String string, Predicate<String> condition, Function<String, T> readFun) throws IOException {
-		// TODO to finish
+	private <T> T doInput(String request, Predicate<String> condition, Function<String, T> readFun) throws IOException {
 		while (true) {
-			this.out.println(string);
+			this.out.println(request);
 			String line;
 			try {
 				line = this.in.readLine();

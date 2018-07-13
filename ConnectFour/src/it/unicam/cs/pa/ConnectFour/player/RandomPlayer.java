@@ -15,7 +15,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
  * @author giacchè
  *
  */
-public class RandomPlayer implements Player {
+public class RandomPlayer extends Player {
 
 	/**
 	 * @param name

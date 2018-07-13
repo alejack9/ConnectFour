@@ -5,8 +5,8 @@ import java.util.Properties;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
 import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.player.InteractivePlayer;
 import it.unicam.cs.pa.ConnectFour.player.Player;
-import it.unicam.cs.pa.ConnectFour.player.PlayerType;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
@@ -16,9 +16,8 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 public class RandomMatch {
 
 	public static void main(String[] args) {
-		AbstractFactory playerFactory = FactoriesProducer.getFactory(Factories.PLAYERS);
-		Player p1 = playerFactory.getPlayer(PlayerType.RANDOM , "Pippo");
-		Player p2 = playerFactory.getPlayer(PlayerType.RANDOM , "Pluto");
+		Player p1 = new InteractivePlayer("Pippo");
+		Player p2 = new InteractivePlayer("Pluto");
 		
 		Properties prop = new Properties();
 		prop.setProperty("size", RuleSetType.DEFAULT.defaultSize());

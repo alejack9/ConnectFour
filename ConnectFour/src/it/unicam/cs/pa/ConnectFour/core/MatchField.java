@@ -4,24 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import it.unicam.cs.pa.ConnectFour.factory.Factories;
-import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacchè
  *
  */
 
-public class MatchField {
-
+public final class MatchField {
+	//REPORT singleton
+	public static final MatchField INSTANCE = new MatchField();
+	private boolean initialized;
 	/**
 	 * first List: columns list<br />
 	 * second List: rows list
 	 */
-	// TODO should be 'final' removed?
 	private final List<List<Cell>> field;
 	/**
 	 * [0] = rows<br />
@@ -29,30 +28,50 @@ public class MatchField {
 	 */
 	private int[] size;
 	private int pieces;
-	private RuleSet referee;
 
+	public static MatchField getInstance() {
+		return INSTANCE;
+	}
+	
 	/**
 	 * @param size the field size
+	 * @throws IllegalArgumentException 'size' is not valid
 	 */
-	public MatchField (String size , String ruleset) throws IllegalArgumentException {
-		/**
-		 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we don't care
-		 */
+	public boolean initMatch(String size /*, String ruleset*/) throws IllegalArgumentException {
+		if(!initialized) {
+			/**
+			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we don't care
+			 */
+			this.size = Utils.sizeParse(size);
+			fill();
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 */
+	private MatchField() {
 		this.field = new ArrayList<>();
-		this.size = Utils.sizeParse(size);
-		this.referee = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.parse(ruleset));
-		fill();
+		this.initialized = false;
 	}
 
-	public CellStatus getStatus ( int row , int column ) {
+	/**
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
+	public CellStatus getCellStatus ( int row , int column ) {
+		if(!initialized) throw new UnitializedSingleton("MatchField");
 		return this.field.get(column).get(row).getStatus();
 	}
 	
 	/**
 	 * Inserts a piece in the field
 	 * @return true if all's OK, false otherwise
+	 * @throws UnitializedSingleton Match is not initialized
 	 */
 	public boolean insert ( PieceLocation location , Piece piece ) {
+		if(!initialized) throw new UnitializedSingleton("MatchField");
 		if(pieces < getColumns() * getRows()) {
 			if(this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece)) {
 				pieces++;
@@ -64,27 +83,33 @@ public class MatchField {
 	
 	/**
 	 * @return The viewer BiFunction
+	 * @throws UnitializedSingleton Match is not initialized
 	 */
-	public BiFunction<Integer, Integer, CellStatus> getView() {
+	public BiFunction<Integer, Integer, CellStatus> getView( RuleSet referee ) {
+		if(!initialized) throw new UnitializedSingleton("MatchField");
 		return ( row , column ) -> {
-			if ( !this.referee.isInBound( column ) ) {
+			if ( !referee.isInBound( column ) ) {
 				return null;
 			}
-			return getStatus( row , column );
+			return getCellStatus( row , column );
 		};
 	}
 
 	/**
 	 * @return The column as Cell list
+	 * @throws UnitializedSingleton Match is not initialized
 	 */
 	public List<Cell> getColumn(int column) {
+		if(!initialized) throw new UnitializedSingleton("MatchField");
 		return field.get(column);
 	}
 
 	/**
 	 * Replace a column with another column
+	 * @throws UnitializedSingleton Match is not initialized
 	 */
 	public void setColumn(List<Cell> newColumn, int column) {
+		if(!initialized) throw new UnitializedSingleton("MatchField");
 		for(int i = 0 ; i < newColumn.size() ; i++) {
 			field.get(column).set(i, newColumn.get(i));
 		}
@@ -92,8 +117,10 @@ public class MatchField {
 
 	/**
 	 * @return The field as Cells matrix
+	 * @throws UnitializedSingleton Match is not initialized
 	 */
 	public Cell[][] getCells() {
+		if(!initialized) throw new UnitializedSingleton("MatchField");
 		Cell[][] toReturn = new Cell[getRows()][getColumns()];
 		for(int j = 0 ; j < getColumns() ; j++) {
 			for(int i = 0 ; i < getRows() ; i++) {
@@ -103,19 +130,20 @@ public class MatchField {
 		return toReturn;
 	}
 
+	/**
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
 	public int getRows() {
+		if(!initialized) throw new UnitializedSingleton("MatchField");
 		return this.size[0];
 	}
 
-	public int getColumns() {
-		return this.size[1];
-	}
-
 	/**
-	 * @return
+	 * @throws UnitializedSingleton Match is not initialized
 	 */
-	public RuleSet getReferee() {
-		return this.referee;
+	public int getColumns() {
+		if(!initialized) throw new UnitializedSingleton("MatchField");
+		return this.size[1];
 	}
 
 	/**

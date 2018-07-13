@@ -17,7 +17,6 @@ public enum Factories {
 //		String minName = super.name().toLowerCase();
 //		return minName.replaceFirst(minName.charAt(0) + "", super.name().charAt(0) + "");
 		switch(this) {
-			case PLAYERS: return "Players";
 			case PIECES: return "Pieces";
 			case REFEREE: return "Referee";
 		}

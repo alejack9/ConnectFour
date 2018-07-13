@@ -2,6 +2,7 @@ package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.Properties;
 
+import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
 import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
@@ -15,20 +16,23 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  *
  */
 // REPORT si sarebbe potuto mettere match observable e player observer per caricare init del player al cambiamento di stato di match. Tuttavia e` svantaggioso perche` dovrei passare a player il proprio id e il referee e dovrei creare un nuovo oggetto per inserire questi due parametri, in piu` id e` diverso per uno e per l'altro mentre la notifica viene inviata ad entrambi
-public class Match {
+public final class Match {
 
+	// REPORT is singleton
 	private static final Match INSTANCE = new Match();
+	private boolean initialized;
 	
 	private static final int PLAYER1 = 0;
 	private static final int PLAYER2 = 1;
-
+	private int currentPlayer;
+	
 	private Player[] players;
 	private MatchField field;
-	private MatchStatus status = MatchStatus.INIT;
-	private int currentPlayer;
-	private AbstractFactory piecesFactory;
 	private RuleSet referee;
-	private boolean initialized;
+	
+	private MatchStatus status = MatchStatus.INIT;
+	
+	private AbstractFactory piecesFactory;
 	
 	private Match () {
 		this.initialized = false;
@@ -48,26 +52,31 @@ public class Match {
 	public boolean initMatch(Player p1 , Player p2 , Properties prop) throws NumberFormatException , IllegalArgumentException {
 		if(!initialized) {
 			this.players = new Player[] { p1, p2 };
-			this.field = new MatchField(prop.getProperty("size",RuleSetType.DEFAULT.defaultSize()) , prop.getProperty("ruleset","default"));
+			this.field = MatchField.getInstance();
+			this.field.initMatch(prop.getProperty("size",RuleSetType.DEFAULT.defaultSize()));
 			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer","0"));
 			if(currentPlayer < 0 || currentPlayer > 1) throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
 			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
-			this.referee = this.field.getReferee();
+			this.referee = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.parse(prop.getProperty("ruleset",RuleSetType.DEFAULT.name())));
+			return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
 	public MatchStatus getStatus() {
-		if(!initialized) return null;
+		if(!initialized) throw new UnitializedSingleton("Match");
 		return this.status;
 	}
 
 	/**
 	 * Initializes the players and starts the game
-	 * @throws IllegalStateException Match is not initialized
+	 * @throws UnitializedSingleton Match is not initialized
 	 */
 	public void play() throws IllegalStateException {
-		if(!initialized) throw new IllegalStateException("Match must be initialized");
+		if(!initialized) throw new UnitializedSingleton("Match");
 		if (!init(PLAYER1)) {
 			return;
 		}
@@ -110,7 +119,7 @@ public class Match {
 	 */
 	private boolean init(int player) {
 		try {
-			this.players[player].init(player, field );
+			this.players[player].init( player, field );
 			return true;
 		} catch (Throwable e) {
 			this.winForError(otherPlayer(player), e);

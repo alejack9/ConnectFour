@@ -7,7 +7,6 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.Match;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
-import it.unicam.cs.pa.ConnectFour.player.PlayerType;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
@@ -17,14 +16,6 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  */
 public interface AbstractFactory {
 
-	/**
-	 * @param name Player' name
-	 */
-	public Player getPlayer(PlayerType type , String name , InputStream in , PrintStream out);
-	/**
-	 * @param name Player' name
-	 */
-	public Player getPlayer(PlayerType type , String name );
 	/**
 	 * @param color Piece color
 	 */
