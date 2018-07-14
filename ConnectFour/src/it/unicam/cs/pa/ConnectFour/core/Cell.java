@@ -11,8 +11,8 @@ import it.unicam.cs.pa.ConnectFour.piece.Piece;
 public class Cell {
 	
 	private AbstractPiece piece;
-	int row;
-	int column;
+	private int row;
+	private int column;
 
 	public Cell( int row , int column ) {
 		this.row = row;

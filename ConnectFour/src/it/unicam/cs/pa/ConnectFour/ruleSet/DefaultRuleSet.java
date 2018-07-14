@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.PieceLocation;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 /**
@@ -21,7 +22,7 @@ public class DefaultRuleSet implements RuleSet {
 
 	private static final ActionType[] allowedActions = { ActionType.INSERT };
 
-	private final BiFunction<Integer, List<List<Cell>>, Optional<Cell>> involvedCell = ( column , field ) -> field.get(column).stream().filter(Cell::isEmpty).reduce((prev, last) -> last);
+	private final BiFunction<Integer, List<List<Cell>>, Optional<Cell>> destinationCell = ( column , field ) -> field.get(column).stream().filter(Cell::isEmpty).reduce((prev, last) -> last);
 	
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#actionsNumber()
@@ -39,10 +40,10 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#insert(int, it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public PieceLocation insert(int column, List<List<Cell>> field) throws IllegalPieceLocation {
+	public PieceLocation insert(int column, MatchField field) throws IllegalPieceLocation {
 		// FIXME TO TEST
-		if(isInBound(column,field.size())) {
-			Cell cell = involvedCell.apply(column, field).orElseThrow(() -> new IllegalPieceLocation(column,field));
+		if(isInBound(column,field.getColumns())) {
+			Cell cell = destinationCell.apply(column, field.getField()).orElseThrow(() -> new IllegalPieceLocation(column,field));
 			return new PieceLocation(cell.getRow(), cell.getColumn());
 
 			
@@ -76,8 +77,8 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int)
 	 */
 	@Override
-	public boolean isValidInsert(int column , List<List<Cell>> field) {
-		return involvedCell.apply(column, field).isPresent();
+	public boolean isValidInsert(int column , MatchField field) {
+		return destinationCell.apply(column, field.getField()).isPresent();
 	}
 
 	/* (non-Javadoc)
@@ -92,19 +93,80 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public CellStatus winner(List<List<Cell>> field) {
+	public CellStatus winner(MatchField field) {
+		// TODO TO FINISH
+		if(field.getPieces() < 8) return CellStatus.EMPTY;
+		
+		field.get
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		Function<List<List<Cell>>,Stream<List<Cell>>> buildN = (f) -> {
 			return f.stream();
 		};
+//		Function<List<List<Cell>>,Stream<List<Cell>>> buildNW = (f) -> {
+//			
+//            i = posizione[0] - 1;
+//            int k = posizione[1] - 1;
+//
+//            while (darifare && i >= 0 && k >= 0)
+//            {
+//                switch (griglia[i, k])
+//                {
+//                    case 0:
+//                        darifare = false;
+//                        dacambiare = false;
+//                        break;
+//                    case 1:
+//                        darifare = false;
+//                        dacambiare = true;
+//                        break;
+//                    case 2:
+//                        darifare = true;
+//                        dacambiare = false;
+//                        break;
+//                }
+//                i--;
+//                k--;
+//            }
+//			List<List<Cell>> toStream = new LinkedList<>();
+//			
+//			for( int i = 0 ; i < field.size() ; i++ ) {
+//				toStream.add(List.of(f.get(i).get(i)));
+//			}
+//			
+//			
+//			return f.stream();
+//		};
+		
 		Function<List<List<Cell>>,Stream<List<Cell>>> buildNW = (f) -> {
 			List<List<Cell>> toStream = new LinkedList<>();
-			
-			
-			return f.stream();
+			for (int i = 0; i < field.size(); i++) {
+				LinkedList<Cell> newDiagonal = new LinkedList<>();
+				for (int j = 0; j < field.get(0).size(); j++) {
+					newDiagonal.add(f.get(i).get(j));
+				}
+				toStream.add(newDiagonal);
+			}
+			return toStream.stream();
 		};
 
 		
-		Stream<List<Cell>> s = Stream.iterate(field., arg1)
+		Stream<List<Cell>> s = Stream.iterate(field., arg1);
 		
 				
 				

@@ -134,7 +134,7 @@ public final class Match {
 	 */
 	private void insertAction( int column ) throws IllegalPieceLocation{
 		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-		PieceLocation location = referee.insert(column, field.getField());
+		PieceLocation location = referee.insert(column, field);
 		field.insert(location, piece);
 	}
 
@@ -142,7 +142,7 @@ public final class Match {
 	 * @return true if the game ended, false otherwise
 	 */
 	private boolean isEnd() {
-		CellStatus winner = referee.winner(field.getField()); 
+		CellStatus winner = referee.winner(field); 
 		if(winner != CellStatus.EMPTY) {
 			win(winner.ordinal());
 			return true;

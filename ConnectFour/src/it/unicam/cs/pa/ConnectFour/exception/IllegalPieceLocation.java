@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import it.unicam.cs.pa.ConnectFour.core.Cell;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
 
 /**
  * @author giacchè
@@ -15,13 +16,13 @@ import it.unicam.cs.pa.ConnectFour.core.Cell;
 public class IllegalPieceLocation extends RuntimeException {
 
 	private int column;
-	private List<List<Cell>> field;
+	private MatchField field;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public IllegalPieceLocation ( int column , List<List<Cell>> field ) {
+	public IllegalPieceLocation ( int column , MatchField field ) {
 		super("Column '" + column + "' in selected field is not valid.");
 		this.column = column;
 		this.field = field;
@@ -37,7 +38,7 @@ public class IllegalPieceLocation extends RuntimeException {
 	/**
 	 * @return the field
 	 */
-	public List<List<Cell>> getField() {
+	public MatchField getField() {
 		return field;
 	}
 
