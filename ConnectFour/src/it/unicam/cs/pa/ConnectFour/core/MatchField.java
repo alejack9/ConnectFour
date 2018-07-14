@@ -118,6 +118,8 @@ public final class MatchField {
 		return toReturn;	
 	}
 
+	// TODO COLLAPSE DIAGONALS (MOST OF ALL THE CELL COLORS
+	
 	public List<Cell> getNWDiagonal ( int row , int column ) {
 		Cell redCell = findRedCell(row,column);
 		Cell blueCell = findBlueCell(row,column);
@@ -151,14 +153,38 @@ public final class MatchField {
 	}
 
 
-	public List<Cell> getLowerDiagonal ( int row , int column ) {
-
+	public List<Cell> getNEDiagonal ( int row , int column ) {
+		Cell purpleCell = findPurpleCell(row,column);
+		Cell greenCell = findGreenCell(row,column);
 		
-		return null;
+		List<Cell> toReturn = new ArrayList<>();
+		while(purpleCell.getColumn() <= greenCell.getColumn() && purpleCell.getRow() >= greenCell.getRow()) {
+			toReturn.add(purpleCell);
+			purpleCell = field.get(purpleCell.getColumn() + 1).get(purpleCell.getRow() - 1);
+		}
+		return toReturn;
+	}
+
+	/**
+	 * @param row
+	 * @param column
+	 * @return
+	 */
+	private Cell findPurpleCell(int row, int col) {
+		while(row < getRows() - 1 && col > 0) { row++ ; col--; };
+		return field.get(col).get(row);
 	}
 	
-	
-	
+	/**
+	 * @param row
+	 * @param column
+	 * @return
+	 */
+	private Cell findGreenCell(int row, int col) {
+		while(row > 0 && col < getColumns()) { row++ ; col--; };
+		return field.get(col).get(row);
+	}
+
 	/**
 	 * Replace a column with another column
 	 * @throws UnitializedSingleton Match is not initialized
