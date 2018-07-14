@@ -11,9 +11,13 @@ import it.unicam.cs.pa.ConnectFour.piece.Piece;
 public class Cell {
 	
 	private AbstractPiece piece;
+	int row;
+	int column;
 
-	public Cell() {
-		piece = new NullPiece();
+	public Cell( int row , int column ) {
+		this.row = row;
+		this.column = column;
+		this.piece = new NullPiece();
 	}
 	
 	public CellStatus getStatus() {
@@ -48,5 +52,20 @@ public class Cell {
 	public boolean isEmpty() {
 		return this.piece.isNull();
 	}
+
+	/**
+	 * @return the row
+	 */
+	public int getRow() {
+		return this.row;
+	}
+
+	/**
+	 * @return the column
+	 */
+	public int getColumn() {
+		return this.column;
+	}
+	
 	
 }

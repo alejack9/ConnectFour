@@ -37,7 +37,7 @@ public final class MatchField {
 	 * @param size the field size
 	 * @throws IllegalArgumentException 'size' is not valid
 	 */
-	public boolean initMatch(String size /*, String ruleset*/) throws IllegalArgumentException {
+	public boolean initMatchField(String size /*, String ruleset*/) throws IllegalArgumentException {
 		if(!initialized) {
 			/**
 			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we don't care
@@ -119,15 +119,9 @@ public final class MatchField {
 	 * @return The field as Cells matrix
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
-	public Cell[][] getCells() {
+	public List<List<Cell>> getField() {
 		if(!initialized) throw new UnitializedSingleton("MatchField");
-		Cell[][] toReturn = new Cell[getRows()][getColumns()];
-		for(int j = 0 ; j < getColumns() ; j++) {
-			for(int i = 0 ; i < getRows() ; i++) {
-				toReturn[i][j] = field.get(j).get(i);
-			}
-		}
-		return toReturn;
+		return this.field;
 	}
 
 	/**
@@ -153,10 +147,9 @@ public final class MatchField {
 		for(int i = 0; i < getColumns() ; i++) {
 			List<Cell> toInsert = new ArrayList<>();
 			for(int j = 0 ; j < getRows(); j++) {
-				toInsert.add(new Cell());
+				toInsert.add(new Cell( j , i ));
 			}
 			field.add(toInsert);
 		}
 	}
-	
 }

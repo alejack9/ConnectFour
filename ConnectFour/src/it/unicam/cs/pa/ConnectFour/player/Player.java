@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
+import it.unicam.cs.pa.ConnectFour.exception.InternalException;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
@@ -37,7 +38,7 @@ public abstract class Player {
 	/**
 	 * @return The column prompted by the player
 	 */
-	public abstract int getColumn();
+	public abstract int getColumn() throws InternalException;
 	
 	/**
 	 * @param e The error that make player win
@@ -74,6 +75,6 @@ public abstract class Player {
 	 * @return The action prompted by the player
 	 * @throws IOException 
 	 */
-	public abstract ActionType chooseAction();
+	public abstract ActionType chooseAction() throws InternalException;
 	
 }

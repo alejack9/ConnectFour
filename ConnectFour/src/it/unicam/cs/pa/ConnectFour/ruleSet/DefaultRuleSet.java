@@ -1,11 +1,18 @@
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.PieceLocation;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 /**
  * @author giacchè
  *
@@ -14,6 +21,8 @@ public class DefaultRuleSet implements RuleSet {
 
 	private static final ActionType[] allowedActions = { ActionType.INSERT };
 
+	private final BiFunction<Integer, List<List<Cell>>, Optional<Cell>> involvedCell = ( column , field ) -> field.get(column).stream().filter(Cell::isEmpty).reduce((prev, last) -> last);
+	
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#actionsNumber()
 	 */
@@ -30,8 +39,22 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#insert(int, it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public PieceLocation insert(int column, Cell[][] field) {
-		// TODO Auto-generated method stub
+	public PieceLocation insert(int column, List<List<Cell>> field) throws IllegalPieceLocation {
+		// FIXME TO TEST
+		if(isInBound(column,field.size())) {
+			Cell cell = involvedCell.apply(column, field).orElseThrow(() -> new IllegalPieceLocation(column,field));
+			return new PieceLocation(cell.getRow(), cell.getColumn());
+
+			
+//			int row = 0;
+//			while(field[row++][column].isEmpty());
+//			return new PieceLocation(row - 1, column);
+//			int x = 0;
+//			for(Cell c : field[column] ) {
+//				if(c.isEmpty()) x++;
+//			}
+//			return new PieceLocation(x - 1, column);
+		}
 		return null;
 	}
 
@@ -43,14 +66,18 @@ public class DefaultRuleSet implements RuleSet {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	private boolean isInBound(int column, int custumSize) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int)
 	 */
 	@Override
-	public boolean isValidInsert(int column) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isValidInsert(int column , List<List<Cell>> field) {
+		return involvedCell.apply(column, field).isPresent();
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +92,44 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public CellStatus winner(Cell[][] field) {
+	public CellStatus winner(List<List<Cell>> field) {
+		Function<List<List<Cell>>,Stream<List<Cell>>> buildN = (f) -> {
+			return f.stream();
+		};
+		Function<List<List<Cell>>,Stream<List<Cell>>> buildNW = (f) -> {
+			List<List<Cell>> toStream = new LinkedList<>();
+			
+			
+			return f.stream();
+		};
+
+		
+		Stream<List<Cell>> s = Stream.iterate(field., arg1)
+		
+				
+				
+				
+				
+				
+				
+				
+//		for(List<Cell> column : field) {
+//
+//			for(Cell cell : column)
+//			
+//			winN(cell,field);
+//			winE(cell,field);
+//			winNE(cell,field);
+//			winNW(cell,field);
+//			
+//			
+//		}
+		
+		
+		
+		
+		
+		
 		// TODO Auto-generated method stub
 		return null;
 	}

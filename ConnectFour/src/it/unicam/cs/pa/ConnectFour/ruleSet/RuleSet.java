@@ -10,6 +10,7 @@ import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.PieceLocation;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 
 /**
  * @author giacchè
@@ -18,9 +19,10 @@ import it.unicam.cs.pa.ConnectFour.core.PieceLocation;
 public interface RuleSet {
 	
 	/**
+	 * @param field 
 	 * @return true if the insert is valid, false otherwise 
 	 */
-	public boolean isValidInsert ( int column );
+	public boolean isValidInsert ( int column, List<List<Cell>> field );
 	/**
 	 * @return true if the column is in bound, false otherwise
 	 */
@@ -29,7 +31,7 @@ public interface RuleSet {
 	/**
 	 * @return Final piece location inserted in the column
 	 */
-	public PieceLocation insert(int column , Cell[][] field);
+	public PieceLocation insert(int column , List<List<Cell>> field) throws IllegalPieceLocation;
 	
 	/**
 	 * @return The column' cells popped (without the last Piece)
@@ -40,7 +42,7 @@ public interface RuleSet {
 	 * @param field The match field
 	 * @return P1, P2 or EMPTY if there aren't winners
 	 */
-	public CellStatus winner (Cell[][] field);
+	public CellStatus winner (List<List<Cell>> field);
 	
 	/**
 	 * @return The number of allowed actions

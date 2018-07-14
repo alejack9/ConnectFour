@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
+import it.unicam.cs.pa.ConnectFour.exception.InternalException;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
 import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
@@ -56,7 +57,7 @@ public class InteractivePlayer extends Player {
 	 */
 	@Override
 	public void startMatch() {
-		this.print(this.name + "has ID " + this.ID);
+		this.print("My ID is " + this.ID);
 		
 	}
 
@@ -64,21 +65,13 @@ public class InteractivePlayer extends Player {
 	 * @see it.unicam.cs.pa.ConnectFour.Player#chooseAction()
 	 */
 	@Override
-	public ActionType chooseAction( ) {
-		// TODO use i.orinal() instead of index
-		while(true) {
-			this.print("Actions avaible: " ); //0 to insert, 1 to pop etc
-			for ( ActionType i: referee.getAllowedActions()) {
-				this.print(i.ordinal() + "to " + i.toString()+ "\n");
-			}
-			int x = -1;
-			try {
-				x = doInput(("Choose the action: "), this::isExistingAction, Integer::parseUnsignedInt);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return referee.getAllowedActions()[x];
+	public ActionType chooseAction( ) throws InternalException {
+		this.print("Available Actions: " ); //0 to insert, 1 to pop etc
+		for ( ActionType i : referee.getAllowedActions() ) {
+			out.println( i.ordinal() + " - " + i.toString() );
 		}
+		int x = doInput("Choose the action: ", this::isExistingAction, Integer::parseUnsignedInt);
+		return referee.getAllowedActions()[x];
 	}
 
 	private boolean isExistingAction(String txt) {
@@ -90,10 +83,10 @@ public class InteractivePlayer extends Player {
 		}
 	}
 	
-	private boolean isInBound(String txt) {
+	private boolean isValidInsert(String txt) {
 		try {
 			int v = Integer.parseUnsignedInt(txt);
-			return(referee.isInBound(v));
+			return(referee.isInBound(v) && referee.isValidInsert(v,field.getField()));
 		} catch (NumberFormatException e) {
 			return false;
 		}
@@ -103,9 +96,8 @@ public class InteractivePlayer extends Player {
 	 * @see it.unicam.cs.pa.ConnectFour.Player#getColumn()
 	 */
 	@Override
-	public int getColumn() {
-		//FIXME getColumns()
-		int column = doInput(String.format("Choose a column from 0 to %d", field.getColumns()), this::isInBound , Integer::parseUnsignedInt);
+	public int getColumn() throws InternalException {
+		int column = doInput(String.format("Choose a column from 0 to %d", field.getColumns()), this::isValidInsert , Integer::parseUnsignedInt);
 		return column;
 	}
 
@@ -148,14 +140,14 @@ public class InteractivePlayer extends Player {
 	 * @return the inserted value
 	 * @throws IOException
 	 */
-	private <T> T doInput(String request, Predicate<String> condition, Function<String, T> readFun) throws IOException {
+	private <T> T doInput(String request, Predicate<String> condition, Function<String, T> readFun) throws InternalException {
 		while (true) {
 			this.out.println(request);
 			String line;
 			try {
 				line = this.in.readLine();
 			} catch (IOException e) {
-				throw new IOException(e);
+				throw new InternalException(e);
 			}
 			if (!condition.test(line)) {
 				System.out.println("Input Error!");

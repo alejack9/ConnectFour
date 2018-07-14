@@ -2,6 +2,7 @@ package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.Properties;
 
+import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
@@ -53,7 +54,7 @@ public final class Match {
 		if(!initialized) {
 			this.players = new Player[] { p1, p2 };
 			this.field = MatchField.getInstance();
-			this.field.initMatch(prop.getProperty("size",RuleSetType.DEFAULT.defaultSize()));
+			this.field.initMatchField(prop.getProperty("size",RuleSetType.DEFAULT.defaultSize()));
 			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer","0"));
 			if(currentPlayer < 0 || currentPlayer > 1) throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
 			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
@@ -131,17 +132,17 @@ public final class Match {
 	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
 	 * @param column The gotten column
 	 */
-	private void insertAction( int column ) {
+	private void insertAction( int column ) throws IllegalPieceLocation{
 		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-		PieceLocation loc = referee.insert(column, field.getCells());
-		field.insert(loc, piece);
+		PieceLocation location = referee.insert(column, field.getField());
+		field.insert(location, piece);
 	}
 
 	/**
 	 * @return true if the game ended, false otherwise
 	 */
 	private boolean isEnd() {
-		CellStatus winner = referee.winner(field.getCells()); 
+		CellStatus winner = referee.winner(field.getField()); 
 		if(winner != CellStatus.EMPTY) {
 			win(winner.ordinal());
 			return true;
