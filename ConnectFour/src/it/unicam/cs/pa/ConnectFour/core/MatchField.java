@@ -121,8 +121,7 @@ public final class MatchField {
 		return toReturn;	
 	}
 
-	// TODO COLLAPSE DIAGONALS (MOST OF ALL THE CELL COLORS)
-	
+	// TODO TEST THIS
 	public List<Cell> getNWDiagonal ( int row , int col ) {
 		return getDiagonal(row, col, Direction.NW);
 //		Cell redCell = findRedCell(row,column);
@@ -135,6 +134,21 @@ public final class MatchField {
 //		}
 //		return toReturn;
 	}
+
+	// TODO TEST THIS
+	public List<Cell> getNEDiagonal ( int row , int col ) {
+		return getDiagonal(row, col, Direction.NE);
+//		Cell purpleCell = findPurpleCell(row,column);
+//		Cell greenCell = findGreenCell(row,column);
+//		
+//		List<Cell> toReturn = new ArrayList<>();
+//		while(purpleCell.getColumn() <= greenCell.getColumn() && purpleCell.getRow() >= greenCell.getRow()) {
+//			toReturn.add(purpleCell);
+//			purpleCell = field.get(purpleCell.getColumn() + 1).get(purpleCell.getRow() - 1);
+//		}
+//		return toReturn;
+	}
+
 	
 	private List<Cell> getDiagonal( int row , int col , Direction dir ) {
 
@@ -150,8 +164,9 @@ public final class MatchField {
 		toReturn.add(lastCell);
 		
 		return toReturn;
-
 	}
+
+	
 	
 	private Cell findLastCell ( int row, int col, Direction dir) throws UnknownEnumValue {
 		while(dir.limit(this).test(row,col)) { row = dir.rowStep(row) ; col = dir.colStep(col); }		
@@ -178,38 +193,25 @@ public final class MatchField {
 //		return field.get(col).get(row);
 //	}
 
-
-	public List<Cell> getNEDiagonal ( int row , int column ) {
-		Cell purpleCell = findPurpleCell(row,column);
-		Cell greenCell = findGreenCell(row,column);
-		
-		List<Cell> toReturn = new ArrayList<>();
-		while(purpleCell.getColumn() <= greenCell.getColumn() && purpleCell.getRow() >= greenCell.getRow()) {
-			toReturn.add(purpleCell);
-			purpleCell = field.get(purpleCell.getColumn() + 1).get(purpleCell.getRow() - 1);
-		}
-		return toReturn;
-	}
-
-	/**
-	 * @param row
-	 * @param column
-	 * @return
-	 */
-	private Cell findPurpleCell(int row, int col) {
-		while(row < getRows() - 1 && col > 0) { row++ ; col--; };
-		return field.get(col).get(row);
-	}
-	
-	/**
-	 * @param row
-	 * @param column
-	 * @return
-	 */
-	private Cell findGreenCell(int row, int col) {
-		while(row > 0 && col < getColumns()) { row++ ; col--; };
-		return field.get(col).get(row);
-	}
+//	/**
+//	 * @param row
+//	 * @param column
+//	 * @return
+//	 */
+//	private Cell findPurpleCell(int row, int col) {
+//		while(row < getRows() - 1 && col > 0) { row++ ; col--; };
+//		return field.get(col).get(row);
+//	}
+//	
+//	/**
+//	 * @param row
+//	 * @param column
+//	 * @return
+//	 */
+//	private Cell findGreenCell(int row, int col) {
+//		while(row > 0 && col < getColumns()) { row++ ; col--; };
+//		return field.get(col).get(row);
+//	}
 
 	/**
 	 * Replace a column with another column
