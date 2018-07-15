@@ -1,5 +1,7 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
+import java.util.Objects;
+
 import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
 import it.unicam.cs.pa.ConnectFour.piece.NullPiece;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
@@ -65,6 +67,22 @@ public class Cell {
 	 */
 	public int getColumn() {
 		return this.column;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		if(this == obj) return true;
+		if(getClass() != obj.getClass()) return false;
+		Cell otherCell = (Cell)obj;
+		if(	otherCell.getColumn() == this.getColumn() &&
+			otherCell.getRow() == this.getRow() &&
+			this.getPiece().equals(otherCell.getPiece())) return true;
+		
+		return false;
 	}
 	
 	

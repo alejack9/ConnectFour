@@ -3,6 +3,9 @@ package it.unicam.cs.pa.ConnectFour.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
@@ -118,18 +121,26 @@ public final class MatchField {
 		return toReturn;	
 	}
 
-	// TODO COLLAPSE DIAGONALS (MOST OF ALL THE CELL COLORS
+	// TODO COLLAPSE DIAGONALS (MOST OF ALL THE CELL COLORS)
 	
 	public List<Cell> getNWDiagonal ( int row , int column ) {
 		Cell redCell = findRedCell(row,column);
 		Cell blueCell = findBlueCell(row,column);
 		
-		List<Cell> toReturn = new ArrayList<>();
-		while(redCell.getColumn() <= blueCell.getColumn() && redCell.getRow() <= blueCell.getRow()) {
-			toReturn.add(redCell);
-			redCell = field.get(redCell.getColumn() + 1).get(redCell.getRow() + 1);
-		}
+		List<Cell> toReturn = Stream
+				.iterate(redCell 
+						, (x) -> !x.equals(blueCell) 
+						, (x) -> field.get(x.getColumn() + 1).get(x.getRow() + 1))
+				.collect(Collectors.toCollection(ArrayList<Cell>::new));
+		toReturn.add(blueCell);
+		
 		return toReturn;
+//		List<Cell> toReturn = new ArrayList<>();
+//		while(redCell.getColumn() <= blueCell.getColumn() && redCell.getRow() <= blueCell.getRow()) {
+//			toReturn.add(redCell);
+//			redCell = field.get(redCell.getColumn() + 1).get(redCell.getRow() + 1);
+//		}
+//		return toReturn;
 	}
 	
 	/**

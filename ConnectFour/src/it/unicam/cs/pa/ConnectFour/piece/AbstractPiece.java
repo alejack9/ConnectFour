@@ -22,6 +22,22 @@ public abstract class AbstractPiece {
 	public abstract Optional<Integer> getId();
 
 	public abstract boolean isNull();
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		if(this == obj) return true;
+		if(this.getClass() != obj.getClass()) return false;
+		AbstractPiece otherPiece = (AbstractPiece) obj;
+		if( otherPiece.getColor() == this.getColor() &&
+			otherPiece.getId().equals(this.getId()) )
+				return true;
+		
+		return false;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
