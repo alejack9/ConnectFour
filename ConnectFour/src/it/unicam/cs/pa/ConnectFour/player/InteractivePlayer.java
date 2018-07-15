@@ -86,7 +86,7 @@ public class InteractivePlayer extends Player {
 	private boolean isValidInsert(String txt) {
 		try {
 			int v = Integer.parseUnsignedInt(txt);
-			return(referee.isInBound(v) && referee.isValidInsert(v,field.getField()));
+			return(referee.isInBound(v) && referee.isValidInsert(v,field));
 		} catch (NumberFormatException e) {
 			return false;
 		}

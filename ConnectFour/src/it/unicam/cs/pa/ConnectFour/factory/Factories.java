@@ -19,7 +19,7 @@ public enum Factories {
 		switch(this) {
 			case PIECES: return "Pieces";
 			case REFEREE: return "Referee";
+			default: return super.name();
 		}
-		return super.name();
 	}
 }

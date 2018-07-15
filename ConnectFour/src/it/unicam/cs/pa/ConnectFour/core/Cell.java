@@ -1,7 +1,5 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
-import java.util.Objects;
-
 import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
 import it.unicam.cs.pa.ConnectFour.piece.NullPiece;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;

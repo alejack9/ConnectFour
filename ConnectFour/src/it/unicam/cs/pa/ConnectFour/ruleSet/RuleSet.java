@@ -4,7 +4,6 @@
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;

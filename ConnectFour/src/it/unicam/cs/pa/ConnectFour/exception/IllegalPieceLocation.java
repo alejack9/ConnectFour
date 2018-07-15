@@ -3,10 +3,6 @@
  */
 package it.unicam.cs.pa.ConnectFour.exception;
 
-import java.util.List;
-import java.util.function.Supplier;
-
-import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 
 /**
