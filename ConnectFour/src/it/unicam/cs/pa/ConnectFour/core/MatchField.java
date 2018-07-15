@@ -1,5 +1,6 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -167,14 +168,19 @@ public final class MatchField {
 	public List<Cell> getNEDiagonal ( int row , int column ) {
 		Cell purpleCell = findPurpleCell(row,column);
 		Cell greenCell = findGreenCell(row,column);
+	
+		List<Cell> toReturn = Stream
+				.iterate(purpleCell 
+						, (x) -> !x.equals(greenCell) 
+						, (x) -> field.get(x.getColumn() + 1).get(x.getRow() - 1))
+				.collect(Collectors.toCollection(ArrayList<Cell>::new));
+		toReturn.add(greenCell);
 		
-		List<Cell> toReturn = new ArrayList<>();
-		while(purpleCell.getColumn() <= greenCell.getColumn() && purpleCell.getRow() >= greenCell.getRow()) {
-			toReturn.add(purpleCell);
-			purpleCell = field.get(purpleCell.getColumn() + 1).get(purpleCell.getRow() - 1);
-		}
 		return toReturn;
-	}
+		/* while(purpleCell.getColumn() <= greenCell.getColumn() && purpleCell.getRow() >= greenCell.getRow()) {
+			toReturn.add(purpleCell);
+			purpleCell = field.get(purpleCell.getColumn() + 1).get(purpleCell.getRow() - 1); */
+		}
 
 	/**
 	 * @param row
