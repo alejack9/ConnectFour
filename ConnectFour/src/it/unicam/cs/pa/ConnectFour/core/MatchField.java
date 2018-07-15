@@ -1,14 +1,15 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
+import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
@@ -124,18 +125,11 @@ public final class MatchField {
 
 	// TODO COLLAPSE DIAGONALS (MOST OF ALL THE CELL COLORS)
 	
-	public List<Cell> getNWDiagonal ( int row , int column ) {
-		Cell redCell = findRedCell(row,column);
-		Cell blueCell = findBlueCell(row,column);
-		
-		List<Cell> toReturn = Stream
-				.iterate(redCell 
-						, (x) -> !x.equals(blueCell) 
-						, (x) -> field.get(x.getColumn() + 1).get(x.getRow() + 1))
-				.collect(Collectors.toCollection(ArrayList<Cell>::new));
-		toReturn.add(blueCell);
-		
-		return toReturn;
+	public List<Cell> getNWDiagonal ( int row , int col ) {
+		return getDiagonal(row, col, Direction.NW);
+//		Cell redCell = findRedCell(row,column);
+//		Cell blueCell = findBlueCell(row,column);
+
 //		List<Cell> toReturn = new ArrayList<>();
 //		while(redCell.getColumn() <= blueCell.getColumn() && redCell.getRow() <= blueCell.getRow()) {
 //			toReturn.add(redCell);
@@ -144,43 +138,60 @@ public final class MatchField {
 //		return toReturn;
 	}
 	
-	/**
-	 * @param row
-	 * @param column
-	 * @return
-	 */
-	private Cell findRedCell(int row, int col) {
-		while(row > 0 && col > 0) { row-- ; col--; };
-		return field.get(col).get(row);
+	private List<Cell> getDiagonal( int row , int col , Direction dir ) {
+
+		Cell firstCell = findLastCell(row, col, dir);
+		Cell lastCell = findLastCell(row, col, dir.opposite());
+		
+		List<Cell> toReturn = Stream
+				.iterate(firstCell 
+						, (x) -> !x.equals(lastCell) 
+//						, (x) -> field.get(x.getColumn() + 1).get(x.getRow() + 1))
+						, (x) -> field.get(dir.opposite().colStep(col)).get(dir.opposite().rowStep(row)))
+				.collect(Collectors.toCollection(ArrayList<Cell>::new));
+		toReturn.add(lastCell);
+		
+		return toReturn;
+
 	}
 	
-	/**
-	 * @param row
-	 * @param column
-	 * @return
-	 */
-	private Cell findBlueCell(int row, int col) {
-		while(row < getRows() - 1 && col < getColumns() - 1) { row++ ; col++; };
-		return field.get(col).get(row);
+	private Cell findLastCell ( int row, int col, Direction dir) throws UnknownEnumValue {
+		while(dir.limit(this).test(row,col)) { row = dir.rowStep(row) ; col = dir.colStep(col); }		
+		return this.field.get(col).get(row);
 	}
+	
+//	/**
+//	 * @param row
+//	 * @param column
+//	 * @return
+//	 */
+//	private Cell findRedCell(int row, int col) {
+//		while(row > 0 && col > 0) { row-- ; col--; };
+//		return field.get(col).get(row);
+//	}
+//	
+//	/**
+//	 * @param row
+//	 * @param column
+//	 * @return
+//	 */
+//	private Cell findBlueCell(int row, int col) {
+//		while(row < getRows() - 1 && col < getColumns() - 1) { row++ ; col++; };
+//		return field.get(col).get(row);
+//	}
 
 
 	public List<Cell> getNEDiagonal ( int row , int column ) {
 		Cell purpleCell = findPurpleCell(row,column);
 		Cell greenCell = findGreenCell(row,column);
-	
-		List<Cell> toReturn = Stream
-				.iterate(purpleCell 
-						, (x) -> !x.equals(greenCell) 
-						, (x) -> field.get(x.getColumn() + 1).get(x.getRow() - 1))
-				.collect(Collectors.toCollection(ArrayList<Cell>::new));
-		toReturn.add(greenCell);
 		
-		return toReturn;
-		/* while(purpleCell.getColumn() <= greenCell.getColumn() && purpleCell.getRow() >= greenCell.getRow()) {
+		List<Cell> toReturn = new ArrayList<>();
+		while(purpleCell.getColumn() <= greenCell.getColumn() && purpleCell.getRow() >= greenCell.getRow()) {
 			toReturn.add(purpleCell);
-			purpleCell = field.get(purpleCell.getColumn() + 1).get(purpleCell.getRow() - 1); */
+			purpleCell = field.get(purpleCell.getColumn() + 1).get(purpleCell.getRow() - 1);
 		}
+		return toReturn;
+	}
 
 	/**
 	 * @param row
