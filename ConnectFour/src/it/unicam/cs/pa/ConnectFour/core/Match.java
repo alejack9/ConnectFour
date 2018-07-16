@@ -1,8 +1,10 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.function.Consumer;
 
-import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
@@ -35,7 +37,18 @@ public final class Match {
 	
 	private AbstractFactory piecesFactory;
 	
+	private static Map<ActionType, Consumer<Integer>> actions;
+	
+	// FIXME PASS PIECELOCATION TO RULESET!
 	private Match () {
+		actions = new HashMap<>();
+		actions.put(ActionType.INSERT, column -> {
+				Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
+				PieceLocation location = referee.insert(column, field);
+				field.insert(location, piece);
+			});
+		actions.put(ActionType.POP, column -> field.setColumn(referee.pop(field.getColumn(column)),column));
+		
 		this.initialized = false;
 	}
 	
@@ -101,8 +114,12 @@ public final class Match {
 		try {
 			if (this.referee.isValidAction(action)) {
 				int column = players[this.currentPlayer].getColumn();
-				if (action == ActionType.INSERT) insertAction(column);
-				if (action == ActionType.POP) popAction(column);
+				/**
+				 * asserting that insert and pop action are static
+				 */
+				actions.get(action).accept(column);
+//				if (action == ActionType.INSERT) insertAction(column);
+//				if (action == ActionType.POP) popAction(column);
 				if(isEnd()) return false;
 			}
 			else return true;
@@ -128,15 +145,15 @@ public final class Match {
 		}
 	}
 
-	/**
-	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
-	 * @param column The gotten column
-	 */
-	private void insertAction( int column ) throws IllegalPieceLocation{
-		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-		PieceLocation location = referee.insert(column, field);
-		field.insert(location, piece);
-	}
+//	/**
+//	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
+//	 * @param column The gotten column
+//	 */
+//	private void insertAction( int column ) throws IllegalPieceLocation{
+//		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
+//		PieceLocation location = referee.insert(column, field);
+//		field.insert(location, piece);
+//	}
 
 	/**
 	 * @return true if the game ended, false otherwise
@@ -158,19 +175,19 @@ public final class Match {
 		return (player + 1) % 2;
 	}
 
-	/**
-	 * Gets the column from field, pops the column according to referee's rules and sets the returned column in the field
-	 * @param column The gotten column
-	 */
-	private void popAction( int column ) {
-		field.setColumn(referee.pop(field.getColumn(column)),column);
-	}
+//	/**
+//	 * Gets the column from field, pops the column according to referee's rules and sets the returned column in the field
+//	 * @param column The gotten column
+//	 */
+//	private void popAction( int column ) {
+//		field.setColumn(referee.pop(field.getColumn(column)),column);
+//	}
 
 	/**
 	 * @return the player's choice (if the allowed action are more than one) or the only choice
 	 */
 	private ActionType selectAction() {
-		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction() : referee.getAllowedActions()[0];
+		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction() : referee.getAllowedActions().values().iterator().next();
 	}
 
 	private void setStatus(MatchStatus status) {

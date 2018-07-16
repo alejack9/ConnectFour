@@ -1,8 +1,10 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,6 +34,15 @@ public final class MatchField {
 	 */
 	private int[] size;
 	private int pieces;
+
+	private List<Function<Cell,List<Cell>>> listsGetters = new ArrayList<>();
+	
+	/**
+	 * @return the listsGetters
+	 */
+	public List<Function<Cell, List<Cell>>> getListsGetters() {
+		return Collections.unmodifiableList(listsGetters);
+	}
 
 	public int getPieces() {
 		return this.pieces;
@@ -63,6 +74,11 @@ public final class MatchField {
 	private MatchField() {
 		this.field = new ArrayList<>();
 		this.initialized = false;
+		
+		listsGetters.add((c) -> this.getRow(c));
+		listsGetters.add((c) -> this.getColumn(c));
+		listsGetters.add((c) -> this.getNEDiagonal(c));
+		listsGetters.add((c) -> this.getNWDiagonal(c));
 	}
 
 	/**
@@ -107,23 +123,31 @@ public final class MatchField {
 	 * @return The column as Cell list
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
-	public List<Cell> getColumn(int column) throws UnitializedSingleton {
+	public List<Cell> getColumn(Cell cell) throws UnitializedSingleton {
+		return getColumn(cell.getColumn());
+	}
+
+	/**
+	 * @param column
+	 * @return
+	 */
+	public List<Cell> getColumn(int column) throws UnitializedSingleton  {
 		checkInit();
 		return field.get(column);
 	}
 	
-	public List<Cell> getRow(int row) throws UnitializedSingleton {
+	public List<Cell> getRow(Cell cell) throws UnitializedSingleton {
 		checkInit();
 		List<Cell> toReturn = new ArrayList<>();
 		for (List<Cell> column : this.field) {
-			toReturn.add(column.get(row));
+			toReturn.add(column.get(cell.getRow()));
 		}
 		return toReturn;	
 	}
 
 	// TODO TEST THIS
-	public List<Cell> getNWDiagonal ( int row , int col ) {
-		return getDiagonal(row, col, Direction.NW);
+	public List<Cell> getNWDiagonal ( Cell cell ) {
+		return getDiagonal(cell.getRow(), cell.getColumn(), Direction.NW);
 //		Cell redCell = findRedCell(row,column);
 //		Cell blueCell = findBlueCell(row,column);
 
@@ -136,8 +160,8 @@ public final class MatchField {
 	}
 
 	// TODO TEST THIS
-	public List<Cell> getNEDiagonal ( int row , int col ) {
-		return getDiagonal(row, col, Direction.NE);
+	public List<Cell> getNEDiagonal ( Cell cell ) {
+		return getDiagonal(cell.getRow(), cell.getColumn(), Direction.NE);
 //		Cell purpleCell = findPurpleCell(row,column);
 //		Cell greenCell = findGreenCell(row,column);
 //		

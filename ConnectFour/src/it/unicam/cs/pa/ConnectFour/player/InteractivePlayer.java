@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.exception.InternalException;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
@@ -21,8 +22,11 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  */
 public class InteractivePlayer extends Player {
 
+	private boolean printed;
+	
 	public InteractivePlayer( String name , RuleSet referee , InputStream in , PrintStream out ) {
 		super( name , referee , in , out );
+		printed = false;
 	}
 	public InteractivePlayer( String name , RuleSet referee ) {
 		this( name , referee , System.in , System.out );
@@ -39,7 +43,6 @@ public class InteractivePlayer extends Player {
 	public void init(int pid , MatchField field ) throws IllegalIdValue {
 		this.setID(pid);
 		this.field = field;
-		//this.referee = field.getReferee();
 	}
 
 	/**
@@ -66,18 +69,20 @@ public class InteractivePlayer extends Player {
 	 */
 	@Override
 	public ActionType chooseAction( ) throws InternalException {
-		this.print("Available Actions: " ); //0 to insert, 1 to pop etc
-		for ( ActionType i : referee.getAllowedActions() ) {
-			out.println( i.ordinal() + " - " + i.toString() );
-		}
+		Utils.printField(field, super.getReferee());
+		printed = true;
+		this.print("Available Actions: "); //0 to insert, 1 to pop etc
+		
+		super.getReferee().getAllowedActions().entrySet().forEach(i -> System.out.println(i.getKey() + " - " + i.getValue()));
+		
 		int x = doInput("Choose the action: ", this::isExistingAction, Integer::parseUnsignedInt);
-		return referee.getAllowedActions()[x];
+		return super.getReferee().getAllowedActions().get(x);
 	}
 
 	private boolean isExistingAction(String txt) {
 		try {
 			int v = Integer.parseUnsignedInt(txt);
-			return(v < referee.getAllowedActions().length);
+			return(super.getReferee().getAllowedActions().get(v) == null ? false : true);
 		} catch (NumberFormatException e) {
 			return false;
 		}
@@ -86,7 +91,7 @@ public class InteractivePlayer extends Player {
 	private boolean isValidInsert(String txt) {
 		try {
 			int v = Integer.parseUnsignedInt(txt);
-			return(referee.isInBound(v) && referee.isValidInsert(v,field));
+			return(super.getReferee().isInBound(v) && super.getReferee().isValidInsert(v,field));
 		} catch (NumberFormatException e) {
 			return false;
 		}
@@ -97,6 +102,7 @@ public class InteractivePlayer extends Player {
 	 */
 	@Override
 	public int getColumn() throws InternalException {
+		if(!printed) Utils.printField(field, super.getReferee());
 		int column = doInput(String.format("Choose a column from 0 to %d", field.getColumns()), this::isValidInsert , Integer::parseUnsignedInt);
 		return column;
 	}

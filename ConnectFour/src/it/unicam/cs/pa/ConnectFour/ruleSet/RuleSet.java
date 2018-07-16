@@ -3,8 +3,8 @@
  */
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
@@ -38,13 +38,7 @@ public interface RuleSet {
 	 * @return The column' cells popped (without the last Piece)
 	 */
 	public List<Cell> pop (List<Cell> column);
-	
-	/**
-	 * @param field The match field
-	 * @return P1, P2 or EMPTY if there aren't winners
-	 */
-	public CellStatus winner (MatchField field);
-	
+		
 	/**
 	 * @return The number of allowed actions
 	 */
@@ -53,7 +47,7 @@ public interface RuleSet {
 	/**
 	 * @return Allowed actions
 	 */
-	public ActionType[] getAllowedActions();
+	public HashMap<Integer,ActionType> getAllowedActions();
 	
 	public abstract int[] getDefaultSize();
 	
@@ -61,6 +55,14 @@ public interface RuleSet {
 	 * @return true if the action is allowed, false otherwise
 	 */
 	public default boolean isValidAction(ActionType action) {
-		return Stream.of(getAllowedActions()).anyMatch(c -> c.equals(action));
+		return getAllowedActions().containsValue(action);
+		
+//		return Stream.of(getAllowedActions()).anyMatch(c -> c.equals(action));
 	}
+	/**
+	 * @param field
+	 * @param cell
+	 * @return P1, P2 or EMPTY if there aren't winners
+	 */
+	CellStatus winner(MatchField field, Cell cell);
 }

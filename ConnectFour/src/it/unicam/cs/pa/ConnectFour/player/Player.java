@@ -18,8 +18,8 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
  */
 public abstract class Player {
 
-	// REPORT sicche` referee e` statico, e` uguale per tutte le sottoclassi, percio` 2 giocati avranno lo stesso referee
-	protected static RuleSet referee;
+	// REPORT sicche` referee e` statico, e` uguale per tutte le sottoclassi, percio` 2 giocatori avranno lo stesso referee
+	private static RuleSet referee;
 	protected MatchField field;
 	
 	protected String name;
@@ -76,5 +76,7 @@ public abstract class Player {
 	 * @throws IOException 
 	 */
 	public abstract ActionType chooseAction() throws InternalException;
+	
+	protected RuleSet getReferee() { return referee; }
 	
 }

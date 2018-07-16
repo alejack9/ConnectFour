@@ -4,7 +4,7 @@ package it.unicam.cs.pa.ConnectFour.core;
  * @author giacchè
  *
  */
-public enum ActionType {// TODO TRANSFORM IN HASHMAP
+public enum ActionType {
 	INSERT,
 	POP;
 

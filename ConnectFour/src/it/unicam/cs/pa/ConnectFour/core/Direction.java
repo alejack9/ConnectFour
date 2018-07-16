@@ -13,8 +13,7 @@ import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
  *
  */
 public enum Direction {
-	NORTH, SOUTH, EAST, WEST,
-	NW, NE, SW, SE;
+	NORTH, EAST, NW, NE, SW, SE, WEST, SOUTH;
 	
 	/**
 	 * @return [ ROW , COLUMN ]
@@ -37,17 +36,20 @@ public enum Direction {
 	 * @return
 	 */
 	public Direction opposite() {
-		switch(this) {
-			case NORTH:	return SOUTH;
-			case SOUTH:	return NORTH;
-			case NE:	return SW;
-			case SW:	return NE;
-			case EAST:	return WEST;
-			case WEST:	return EAST;
-			case NW:	return SE;
-			case SE:	return NW;
-			default:	return null;
-		}
+		// TODO TO TEST
+		return Direction.values()[Direction.values().length - 1 - this.ordinal()];
+		
+//		switch(this) {
+//			case NORTH:	return SOUTH;
+//			case SOUTH:	return NORTH;
+//			case NE:	return SW;
+//			case SW:	return NE;
+//			case EAST:	return WEST;
+//			case WEST:	return EAST;
+//			case NW:	return SE;
+//			case SE:	return NW;
+//			default:	return null;
+//		}
 	}
 
 	/**
@@ -63,7 +65,6 @@ public enum Direction {
 	 * @return
 	 */
 	public int rowStep(int row) {
-		// TODO Auto-generated method stub
 		return row + getStep()[0];
 	}
 

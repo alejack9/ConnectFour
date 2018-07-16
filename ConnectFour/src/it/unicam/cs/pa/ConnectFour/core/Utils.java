@@ -15,12 +15,12 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
  */
 public class Utils {
 
-	public static void printField ( MatchField field ) {
-		printField( System.out , field.getView() , field.getRows() , field.getColumns() );
+	public static void printField ( MatchField field, RuleSet referee ) {
+		printField( System.out , field.getView(referee) , field.getRows() , field.getColumns() );
 	}
 	
-	public static void printField ( PrintStream writer ,  MatchField field ) {
-		printField( writer , field.getView() , field.getRows() , field.getColumns() );
+	public static void printField ( PrintStream writer ,  MatchField field, RuleSet referee ) {
+		printField( writer , field.getView(referee) , field.getRows() , field.getColumns() );
 	}
 
 	public static void printField ( BiFunction<Integer, Integer, CellStatus> view, int rows , int columns ) {
