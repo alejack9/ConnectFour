@@ -35,12 +35,12 @@ public final class MatchField {
 	private int[] size;
 	private int pieces;
 
-	private List<Function<Cell,List<Cell>>> listsGetters = new ArrayList<>();
+	private List<Function<CellLocation,List<Cell>>> listsGetters = new ArrayList<>();
 	
 	/**
 	 * @return the listsGetters
 	 */
-	public List<Function<Cell, List<Cell>>> getListsGetters() {
+	public List<Function<CellLocation, List<Cell>>> getListsGetters() {
 		return Collections.unmodifiableList(listsGetters);
 	}
 
@@ -94,7 +94,7 @@ public final class MatchField {
 	 * @return true if all's OK, false otherwise
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
-	public boolean insert ( PieceLocation location , Piece piece ) throws UnitializedSingleton {
+	public boolean insert ( CellLocation location , Piece piece ) throws UnitializedSingleton {
 		checkInit();
 		if(pieces < getColumns() * getRows()) {
 			if(this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece)) {
@@ -112,7 +112,7 @@ public final class MatchField {
 	public BiFunction<Integer, Integer, CellStatus> getView( RuleSet referee ) throws UnitializedSingleton {
 		checkInit();
 		return ( row , column ) -> {
-			if ( !referee.isInBound( column ) ) {
+			if ( !referee.isInBound( new CellLocation(row, column) ) ) {
 				return null;
 			}
 			return getCellStatus( row , column );
@@ -123,7 +123,7 @@ public final class MatchField {
 	 * @return The column as Cell list
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
-	public List<Cell> getColumn(Cell cell) throws UnitializedSingleton {
+	public List<Cell> getColumn(CellLocation cell) throws UnitializedSingleton {
 		return getColumn(cell.getColumn());
 	}
 
@@ -136,7 +136,7 @@ public final class MatchField {
 		return field.get(column);
 	}
 	
-	public List<Cell> getRow(Cell cell) throws UnitializedSingleton {
+	public List<Cell> getRow(CellLocation cell) throws UnitializedSingleton {
 		checkInit();
 		List<Cell> toReturn = new ArrayList<>();
 		for (List<Cell> column : this.field) {
@@ -146,7 +146,7 @@ public final class MatchField {
 	}
 
 	// TODO TEST THIS
-	public List<Cell> getNWDiagonal ( Cell cell ) {
+	public List<Cell> getNWDiagonal ( CellLocation cell ) {
 		return getDiagonal(cell.getRow(), cell.getColumn(), Direction.NW);
 //		Cell redCell = findRedCell(row,column);
 //		Cell blueCell = findBlueCell(row,column);
@@ -160,7 +160,7 @@ public final class MatchField {
 	}
 
 	// TODO TEST THIS
-	public List<Cell> getNEDiagonal ( Cell cell ) {
+	public List<Cell> getNEDiagonal ( CellLocation cell ) {
 		return getDiagonal(cell.getRow(), cell.getColumn(), Direction.NE);
 //		Cell purpleCell = findPurpleCell(row,column);
 //		Cell greenCell = findGreenCell(row,column);
@@ -288,5 +288,13 @@ public final class MatchField {
 	
 	private void checkInit() throws UnitializedSingleton {
 		if(!initialized) throw e;
+	}
+
+	/**
+	 * @param cell
+	 * @return
+	 */
+	public CellStatus getCellStatus(CellLocation cell) {
+		return getCellStatus(cell.getRow(),cell.getColumn());
 	}
 }

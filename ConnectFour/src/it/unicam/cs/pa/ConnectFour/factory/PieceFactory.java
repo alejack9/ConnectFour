@@ -20,7 +20,7 @@ public class PieceFactory implements AbstractFactory {
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPiece(it.unicam.cs.pa.ConnectFour.CellStatus)
 	 */
 	@Override
-	public Piece getPiece(CellStatus color) {
+	public Piece getPiece(CellStatus color) throws IllegalArgumentException {
 		return new Piece(this.id++, color);
 	}
 

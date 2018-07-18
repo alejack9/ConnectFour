@@ -14,7 +14,7 @@ public interface AbstractFactory {
 	/**
 	 * @param color Piece color
 	 */
-	public Piece getPiece(CellStatus color);
+	public Piece getPiece(CellStatus color) throws IllegalArgumentException;
 
 	public RuleSet getReferee(RuleSetType ruleset);
 	

@@ -91,7 +91,7 @@ public class InteractivePlayer extends Player {
 	private boolean isValidInsert(String txt) {
 		try {
 			int v = Integer.parseUnsignedInt(txt);
-			return(super.getReferee().isInBound(v) && super.getReferee().isValidInsert(v,field));
+			return(super.getReferee().isInBound(v,field.getColumns()) && super.getReferee().isValidInsert(v,field));
 		} catch (NumberFormatException e) {
 			return false;
 		}

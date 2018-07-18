@@ -3,7 +3,7 @@ package it.unicam.cs.pa.ConnectFour.core;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
@@ -37,17 +37,21 @@ public final class Match {
 	
 	private AbstractFactory piecesFactory;
 	
-	private static Map<ActionType, Consumer<Integer>> actions;
+	private static Map<ActionType, Function<Integer,CellLocation>> actions;
 	
 	// FIXME PASS PIECELOCATION TO RULESET!
 	private Match () {
 		actions = new HashMap<>();
 		actions.put(ActionType.INSERT, column -> {
 				Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-				PieceLocation location = referee.insert(column, field);
-				field.insert(location, piece);
+				CellLocation location = referee.getPieceLocation(column, field);
+				return field.insert(location, piece) ? location : null;
 			});
-		actions.put(ActionType.POP, column -> field.setColumn(referee.pop(field.getColumn(column)),column));
+		actions.put(ActionType.POP, column -> {
+			field.setColumn(referee.pop(field.getColumn(column)),column);
+			// TODO RETURN LAST CELL IN COLUMN
+			return null;
+		});
 		
 		this.initialized = false;
 	}
@@ -114,13 +118,10 @@ public final class Match {
 		try {
 			if (this.referee.isValidAction(action)) {
 				int column = players[this.currentPlayer].getColumn();
-				/**
-				 * asserting that insert and pop action are static
-				 */
-				actions.get(action).accept(column);
-//				if (action == ActionType.INSERT) insertAction(column);
-//				if (action == ActionType.POP) popAction(column);
-				if(isEnd()) return false;
+				CellLocation loc = actions.get(action).apply(column);
+// REPORT removed if (action == ActionType.INSERT) insertAction(column);
+// REPORT removed if (action == ActionType.POP) popAction(column);
+				if(isEnd(loc)) return false;
 			}
 			else return true;
 		} catch (Throwable e) {
@@ -158,8 +159,8 @@ public final class Match {
 	/**
 	 * @return true if the game ended, false otherwise
 	 */
-	private boolean isEnd() {
-		CellStatus winner = referee.winner(field); 
+	private boolean isEnd(CellLocation lastCell) {
+		CellStatus winner = referee.winner(field,lastCell); 
 		if(winner != CellStatus.EMPTY) {
 			win(winner.ordinal());
 			return true;

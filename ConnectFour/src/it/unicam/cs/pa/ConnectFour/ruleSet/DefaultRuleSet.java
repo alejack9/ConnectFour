@@ -10,7 +10,7 @@ import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
-import it.unicam.cs.pa.ConnectFour.core.PieceLocation;
+import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 /**
  * @author giacchè
@@ -47,11 +47,11 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#insert(int, it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public PieceLocation insert(int column, MatchField field) throws IllegalPieceLocation {
+	public CellLocation getPieceLocation (int column, MatchField field) throws IllegalPieceLocation {
 		// FIXME TO TEST
 		if(isInBound(column,field.getColumns())) {
 			Cell cell = destinationCell.apply(column, field.getField()).orElseThrow(() -> new IllegalPieceLocation(column,field));
-			return new PieceLocation(cell.getRow(), cell.getColumn());
+			return new CellLocation(cell.getRow(), cell.getColumn());
 
 			
 //			int row = 0;
@@ -67,24 +67,34 @@ public class DefaultRuleSet implements RuleSet {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(int)
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(int,int)
 	 */
 	@Override
-	public boolean isInBound(int column) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	private boolean isInBound(int column, int custumSize) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isInBound(int column , int customSize) {
+		return column < customSize;
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int)
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(PieceLocation)
 	 */
 	@Override
-	public boolean isValidInsert(int column , MatchField field) {
+	public boolean isInBound(CellLocation loc) {
+		return isInBound(loc,getDefaultSize()[1]);
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(PieceLocation,int)
+	 */
+	@Override
+	public boolean isInBound(CellLocation loc, int customSize) {
+		return isInBound(loc.getColumn(), customSize);
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int, MatchField)
+	 */
+	@Override
+	public boolean isValidInsert(int column, MatchField field) {
 		return destinationCell.apply(column, field.getField()).isPresent();
 	}
 
@@ -100,13 +110,13 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public CellStatus winner(MatchField field, Cell cell) {
+	public CellStatus winner(MatchField field, CellLocation cell) {
 		// TODO TO TEST
 		if(field.getPieces() < 8) return CellStatus.EMPTY;
 
-		for (Function<Cell,List<Cell>> function : field.getListsGetters()) {
-			long con = function.apply(cell).stream().takeWhile(x -> x.getPiece().getColor() == cell.getPiece().getColor()).count();
-			if(con >= 4) return cell.getPiece().getColor();
+		for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
+			long con = function.apply(cell).stream().takeWhile(x -> x.getPiece().getColor() == field.getCellStatus(cell)).count();
+			if(con >= 4) return field.getCellStatus(cell);
 		}
 
 		return CellStatus.EMPTY;

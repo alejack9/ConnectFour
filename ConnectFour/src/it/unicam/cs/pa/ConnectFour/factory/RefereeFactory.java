@@ -20,7 +20,7 @@ public class RefereeFactory implements AbstractFactory {
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPiece(it.unicam.cs.pa.ConnectFour.CellStatus)
 	 */
 	@Override
-	public Piece getPiece(CellStatus color) {
+	public Piece getPiece(CellStatus color) throws IllegalArgumentException {
 		return null;
 	}
 
@@ -33,7 +33,9 @@ public class RefereeFactory implements AbstractFactory {
 		switch(ruleset) {
 		case DEFAULT:	return new DefaultRuleSet();
 	//	case POP:	return new PopRuleSet();
-	//	case FIVEINROW:	return new FiveInRowRuleSet();
+		//	case FIVEINROW:	return new FiveInRowRuleSet();
+		case POP:	return null;
+		case FIVEINROW:	return null;
 		default:	throw new UnknownEnumValue(ruleset);
 			
 		}

@@ -11,13 +11,15 @@ import it.unicam.cs.pa.ConnectFour.piece.Piece;
 public class Cell {
 	
 	private AbstractPiece piece;
-	private int row;
-	private int column;
+	private CellLocation location;
 
-	public Cell( int row , int column ) {
-		this.row = row;
-		this.column = column;
+	public Cell( CellLocation location) {
+		this.location = location;
 		this.piece = new NullPiece();
+	}
+	
+	public Cell( int row , int column ) {
+		this(new CellLocation(row,column));
 	}
 	
 	public CellStatus getStatus() {
@@ -57,14 +59,14 @@ public class Cell {
 	 * @return the row
 	 */
 	public int getRow() {
-		return this.row;
+		return this.location.getRow();
 	}
 
 	/**
 	 * @return the column
 	 */
 	public int getColumn() {
-		return this.column;
+		return this.location.getColumn();
 	}
 
 	/* (non-Javadoc)

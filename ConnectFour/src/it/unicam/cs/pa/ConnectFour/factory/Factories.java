@@ -5,7 +5,6 @@ package it.unicam.cs.pa.ConnectFour.factory;
  *
  */
 public enum Factories {
-	PLAYERS,
 	PIECES,
 	REFEREE;
 
