@@ -68,46 +68,6 @@ public final class MatchField {
 		return false;
 	}
 
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findRedCell(int row, int col) {
-	// while(row > 0 && col > 0) { row-- ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findBlueCell(int row, int col) {
-	// while(row < getRows() - 1 && col < getColumns() - 1) { row++ ; col++; };
-	// return field.get(col).get(row);
-	// }
-
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findPurpleCell(int row, int col) {
-	// while(row < getRows() - 1 && col > 0) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findGreenCell(int row, int col) {
-	// while(row > 0 && col < getColumns()) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
-
 	public static MatchField getInstance() {
 		return INSTANCE;
 	}
@@ -119,46 +79,6 @@ public final class MatchField {
 		checkInit();
 		return this.field.get(column).get(row).getStatus();
 	}
-
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findRedCell(int row, int col) {
-	// while(row > 0 && col > 0) { row-- ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findBlueCell(int row, int col) {
-	// while(row < getRows() - 1 && col < getColumns() - 1) { row++ ; col++; };
-	// return field.get(col).get(row);
-	// }
-
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findPurpleCell(int row, int col) {
-	// while(row < getRows() - 1 && col > 0) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findGreenCell(int row, int col) {
-	// while(row > 0 && col < getColumns()) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
 
 	/**
 	 * @param cell
@@ -177,46 +97,6 @@ public final class MatchField {
 		return this.field;
 	}
 
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findRedCell(int row, int col) {
-	// while(row > 0 && col > 0) { row-- ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findBlueCell(int row, int col) {
-	// while(row < getRows() - 1 && col < getColumns() - 1) { row++ ; col++; };
-	// return field.get(col).get(row);
-	// }
-
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findPurpleCell(int row, int col) {
-	// while(row < getRows() - 1 && col > 0) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findGreenCell(int row, int col) {
-	// while(row > 0 && col < getColumns()) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
-
 	/**
 	 * @return the listsGetters
 	 */
@@ -227,46 +107,6 @@ public final class MatchField {
 	public int getPieces() {
 		return this.pieces;
 	}
-
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findRedCell(int row, int col) {
-	// while(row > 0 && col > 0) { row-- ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findBlueCell(int row, int col) {
-	// while(row < getRows() - 1 && col < getColumns() - 1) { row++ ; col++; };
-	// return field.get(col).get(row);
-	// }
-
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findPurpleCell(int row, int col) {
-	// while(row < getRows() - 1 && col > 0) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findGreenCell(int row, int col) {
-	// while(row > 0 && col < getColumns()) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
 
 	/**
 	 * Replace a column with another column
@@ -308,31 +148,10 @@ public final class MatchField {
 
 	public List<Cell> getNWDiagonal(CellLocation cell) {
 		return getDiagonal(cell.getRow(), cell.getColumn(), Direction.NW);
-		// Cell redCell = findRedCell(row,column);
-		// Cell blueCell = findBlueCell(row,column);
-
-		// List<Cell> toReturn = new ArrayList<>();
-		// while(redCell.getColumn() <= blueCell.getColumn() && redCell.getRow() <=
-		// blueCell.getRow()) {
-		// toReturn.add(redCell);
-		// redCell = field.get(redCell.getColumn() + 1).get(redCell.getRow() + 1);
-		// }
-		// return toReturn;
 	}
 
 	public List<Cell> getNEDiagonal(CellLocation cell) {
 		return getDiagonal(cell.getRow(), cell.getColumn(), Direction.NE);
-		// Cell purpleCell = findPurpleCell(row,column);
-		// Cell greenCell = findGreenCell(row,column);
-		//
-		// List<Cell> toReturn = new ArrayList<>();
-		// while(purpleCell.getColumn() <= greenCell.getColumn() && purpleCell.getRow()
-		// >= greenCell.getRow()) {
-		// toReturn.add(purpleCell);
-		// purpleCell = field.get(purpleCell.getColumn() + 1).get(purpleCell.getRow() -
-		// 1);
-		// }
-		// return toReturn;
 	}
 
 	/**
@@ -350,46 +169,6 @@ public final class MatchField {
 		checkInit();
 		return this.size[1];
 	}
-
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findRedCell(int row, int col) {
-	// while(row > 0 && col > 0) { row-- ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findBlueCell(int row, int col) {
-	// while(row < getRows() - 1 && col < getColumns() - 1) { row++ ; col++; };
-	// return field.get(col).get(row);
-	// }
-
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findPurpleCell(int row, int col) {
-	// while(row < getRows() - 1 && col > 0) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
-	//
-	// /**
-	// * @param row
-	// * @param column
-	// * @return
-	// */
-	// private Cell findGreenCell(int row, int col) {
-	// while(row > 0 && col < getColumns()) { row++ ; col--; };
-	// return field.get(col).get(row);
-	// }
 
 	/**
 	 * @return The viewer BiFunction
@@ -421,46 +200,6 @@ public final class MatchField {
 		}
 		return false;
 	}
-
-//	/**
-//	 * @param row
-//	 * @param column
-//	 * @return
-//	 */
-//	private Cell findRedCell(int row, int col) {
-//		while(row > 0 && col > 0) { row-- ; col--; };
-//		return field.get(col).get(row);
-//	}
-//	
-//	/**
-//	 * @param row
-//	 * @param column
-//	 * @return
-//	 */
-//	private Cell findBlueCell(int row, int col) {
-//		while(row < getRows() - 1 && col < getColumns() - 1) { row++ ; col++; };
-//		return field.get(col).get(row);
-//	}
-
-//	/**
-//	 * @param row
-//	 * @param column
-//	 * @return
-//	 */
-//	private Cell findPurpleCell(int row, int col) {
-//		while(row < getRows() - 1 && col > 0) { row++ ; col--; };
-//		return field.get(col).get(row);
-//	}
-//	
-//	/**
-//	 * @param row
-//	 * @param column
-//	 * @return
-//	 */
-//	private Cell findGreenCell(int row, int col) {
-//		while(row > 0 && col < getColumns()) { row++ ; col--; };
-//		return field.get(col).get(row);
-//	}
 
 	private void checkInit() throws UnitializedSingleton {
 		if (!initialized)
