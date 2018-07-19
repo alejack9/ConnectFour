@@ -23,7 +23,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 public class InteractivePlayer extends Player {
 
 	private boolean printed;
-	
+	 
 	public InteractivePlayer( String name , RuleSet referee , InputStream in , PrintStream out ) {
 		super( name , referee , in , out );
 		printed = false;
@@ -120,7 +120,7 @@ public class InteractivePlayer extends Player {
 	 */
 	private <T> T doInput(String request, Predicate<String> condition, Function<String, T> readFun) throws InternalException {
 		while (true) {
-			this.out.println(request);
+			this.print(request);
 			String line;
 			try {
 				line = this.in.readLine();

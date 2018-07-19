@@ -1,6 +1,7 @@
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -124,16 +125,24 @@ public class DefaultRuleSet implements RuleSet {
 		if(field.getPieces() >= 7) {
 			for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
 				List<Cell> list = function.apply(cell);
-//				Stream<Integer> s = Stream.iterate(0, i -> i < list.size() , i -> i+1);
-//				long con = s.filter(i -> i == 0 || (list.get(i - 1).getStatus() == list.get(i).getStatus() && list.get(i).getStatus() != CellStatus.EMPTY))
-//				.count();
-//				int con = 0;
-				long con = Stream.iterate(0, i -> i < list.size() , i -> i + 1)
-					.filter(i -> i == 0 || (list.get(i - 1).getStatus() == list.get(i).getStatus() && list.get(i).getStatus() != CellStatus.EMPTY))
-					.count();
+				
+				int maxConsecutive = 1;
+				int celleConsecutive = 1;
+				for(int i = 0; i < list.size() - 1; i++) {
+					if(list.get(i).getStatus() == list.get(i+1).getStatus() && !list.get(i).isEmpty()) celleConsecutive++;
+					else if(celleConsecutive > maxConsecutive) { maxConsecutive = celleConsecutive; celleConsecutive = 1; }
+				}
+				if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
+				 
+//				long con = Stream.iterate(1, i -> i < list.size(), i -> i + 1)
+////					.filter(i -> (i == 0 || list.get(i - 1).getStatus() == list.get(i).getStatus()) && list.get(i).getStatus() != CellStatus.EMPTY)
+//					.filter(i -> (list.get(i-1).getStatus() == list.get(i).getStatus()) && !list.get(i).isEmpty())
+//					.peek(i -> System.out.print( i + " "))
+//					.count();
 //				Stream.iterate(0, i -> i < list.size() , (i) -> i + 1).map(i -> list.get(i)).;
 //				long con = function.apply(cell).stream().takeWhile(x -> x.getPiece().getColor() == field.getCellStatus(cell)).count();
-				if(con >= 4) return field.getCellStatus(cell);
+//				if(con >= 3) return field.getCellStatus(cell);
+				if(maxConsecutive >= 4) return field.getCellStatus(cell);
 			}
 		}
 		return CellStatus.EMPTY;

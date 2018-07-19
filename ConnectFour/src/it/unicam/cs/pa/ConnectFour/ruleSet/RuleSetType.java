@@ -17,7 +17,7 @@ public enum RuleSetType {
 	 * Default rule set but five in row to win
 	 */
 	FIVEINROW;
-	
+	 
 	public String defaultSize() {
 		switch(this) {
 			case DEFAULT: return "6x7";
@@ -34,7 +34,7 @@ public enum RuleSetType {
 	 */
 	public static RuleSetType parse (String rulesetName) throws IllegalArgumentException {
 		for (RuleSetType rs : RuleSetType.values()) {
-			if(rs.toString().equals(rulesetName)) {
+			if(rs.name().equals(rulesetName)) {
 				return rs;
 			}
 		}

@@ -34,7 +34,7 @@ class RuleSetTest {
 	void testActionsNumber() {
 		assertTrue(rs.actionsNumber() == 1);
 	}
-
+ 
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getAllowedActions()}.
 	 */
@@ -46,7 +46,7 @@ class RuleSetTest {
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getPieceLocation(int, it.unicam.cs.pa.ConnectFour.core.MatchField)}.
 	 */
-	@Test
+//	@Test
 	void testGetPieceLocation() {
 		MatchField f = MatchField.getInstance();
 		f.initMatchField("6x7");
@@ -130,7 +130,7 @@ class RuleSetTest {
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
 	 */
 //	@Test
-	void testNWZeroWinner() {
+	void testZeroNWWinner() {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField("6x7");
 		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
@@ -155,8 +155,8 @@ class RuleSetTest {
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
 	 */
-	@Test
-	void testNWWinner() {
+//	@Test
+	void testTraslatedNWWinner() {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField("6x7");
 		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
@@ -177,5 +177,138 @@ class RuleSetTest {
 		System.out.println(rs.winner(x, lastloc).name().toString());
 		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
 	}
+
+	/**
+	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
+	 */
+//	@Test
+	void testMiddleNWWinner() {
+		MatchField x = MatchField.getInstance();
+		x.initMatchField("6x7");
+		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P1));
+		
+		
+		CellLocation lastloc = rs.getPieceLocation(4, x);
+		x.insert(lastloc, pf.getPiece(CellStatus.P1));
+		Utils.printField(x, rs);
+		
+		System.out.println(rs.winner(x, lastloc).name().toString());
+		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+	}
+	/**
+	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
+	 */
+//	@Test
+	void testFinishNWWinner() {
+		MatchField x = MatchField.getInstance();
+		x.initMatchField("6x7");
+		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(6, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(6, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(6, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P1));
+		
+		CellLocation lastloc = rs.getPieceLocation(6, x);
+		x.insert(lastloc, pf.getPiece(CellStatus.P1));
+		Utils.printField(x, rs);
+		
+		System.out.println(rs.winner(x, lastloc).name().toString());
+		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+	}
+	/**
+	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
+	 */
+//	@Test
+	void testZeroNEWinner() {
+		MatchField x = MatchField.getInstance();
+		x.initMatchField("6x7");
+		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P1));
+		
+		CellLocation lastloc = rs.getPieceLocation(3, x);
+		x.insert(lastloc, pf.getPiece(CellStatus.P1));
+		Utils.printField(x, rs);
+		
+		System.out.println(rs.winner(x, lastloc).name().toString());
+		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+	}
+
+	/**
+	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
+	 */
+//	@Test
+	void testTraslatedNEWinner() {
+		MatchField x = MatchField.getInstance();
+		x.initMatchField("6x7");
+		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(1+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(1+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(2+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(1+1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(2+1, x), pf.getPiece(CellStatus.P1));
+		
+		CellLocation lastloc = rs.getPieceLocation(3+1, x);
+		x.insert(lastloc, pf.getPiece(CellStatus.P1));
+		Utils.printField(x, rs);
+		
+		System.out.println(rs.winner(x, lastloc).name().toString());
+		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+	}
+	/**
+	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
+	 */
+	@Test
+	void testFinishNEWinner() {
+		MatchField x = MatchField.getInstance();
+		x.initMatchField("6x7");
+		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.getPieceLocation(6, x), pf.getPiece(CellStatus.P1));
+		
+		CellLocation lastloc = rs.getPieceLocation(5, x);
+		x.insert(lastloc, pf.getPiece(CellStatus.P1));
+		Utils.printField(x, rs);
+		
+		System.out.println(rs.winner(x, lastloc).name().toString());
+		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+	}	
 
 }

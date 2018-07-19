@@ -70,6 +70,7 @@ public final class Match {
 			if(currentPlayer < 0 || currentPlayer > 1) throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
 			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
 			this.referee = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.parse(prop.getProperty("ruleset",RuleSetType.DEFAULT.name())));
+			this.initialized = true;
 			return true;
 		}
 		return false;
@@ -160,6 +161,7 @@ public final class Match {
 		private boolean isEnd(CellLocation lastCell) {
 			CellStatus winner = referee.winner(field,lastCell); 
 			if(winner != CellStatus.EMPTY) {
+ 				Utils.printField(field, referee);
 				win(winner.ordinal());
 				return true;
 			}
