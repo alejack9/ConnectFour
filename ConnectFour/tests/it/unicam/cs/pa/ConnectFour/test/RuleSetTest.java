@@ -3,15 +3,12 @@
  */
 package it.unicam.cs.pa.ConnectFour.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
-import java.util.function.Function;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
-import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
