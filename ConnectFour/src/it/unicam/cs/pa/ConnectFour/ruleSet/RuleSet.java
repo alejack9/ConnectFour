@@ -3,13 +3,15 @@
  */
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
-import it.unicam.cs.pa.ConnectFour.core.PieceLocation;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.core.CellLocation;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 
 /**
  * @author giacchè
@@ -18,46 +20,59 @@ import it.unicam.cs.pa.ConnectFour.core.PieceLocation;
 public interface RuleSet {
 	
 	/**
-	 * @return true if the insert is valid, false otherwise 
+	 * @return The number of allowed actions
 	 */
-	public boolean isValidInsert ( int column );
+	public int actionsNumber();
 	/**
-	 * @return true if the column is in bound, false otherwise
+	 * @return Allowed actions
 	 */
-	public boolean isInBound ( int column );
+	public HashMap<Integer,ActionType> getAllowedActions();
 	
 	/**
 	 * @return Final piece location inserted in the column
 	 */
-	public PieceLocation insert(int column , Cell[][] field);
-	
+	public CellLocation getPieceLocation(int column , MatchField field) throws IllegalPieceLocation;
 	/**
-	 * @return The column' cells popped (without the last Piece)
+	 * @return true if the column is in bound, false otherwise
 	 */
-	public List<Cell> pop (List<Cell> column);
-	
+	public boolean isInBound ( CellLocation loc );
 	/**
-	 * @param field The match field
-	 * @return P1, P2 or EMPTY if there aren't winners
+	 * @param column
+	 * @param customSize
+	 * @return
 	 */
-	public CellStatus winner (Cell[][] field);
+	boolean isInBound(int column, int customSize);
 	
+	boolean isInBound(int column);
 	/**
-	 * @return The number of allowed actions
+	 * @param loc
+	 * @param custumSize
+	 * @return
 	 */
-	public int actionsNumber();
-	
-	/**
-	 * @return Allowed actions
-	 */
-	public ActionType[] getAllowedActions();
-	
-	public abstract int[] getDefaultSize();
-	
+	public boolean isInBound(CellLocation loc, int[] custumSize);
 	/**
 	 * @return true if the action is allowed, false otherwise
 	 */
 	public default boolean isValidAction(ActionType action) {
-		return Stream.of(getAllowedActions()).anyMatch(c -> c.equals(action));
+		return getAllowedActions().containsValue(action);
+			
+	//		return Stream.of(getAllowedActions()).anyMatch(c -> c.equals(action));
 	}
+	
+	/**
+	 * @param field 
+	 * @return true if the insert is valid, false otherwise 
+	 */
+	public boolean isValidInsert ( int loc, MatchField field );
+	/**
+	 * @return The column' cells popped (without the last Piece)
+	 */
+	public List<Cell> pop (List<Cell> column);
+		
+	/**
+	 * @param field
+	 * @param cell (in pop case, send the most bottom cell)
+	 * @return P1, P2 or EMPTY if there aren't winners
+	 */
+	CellStatus winner(MatchField field, CellLocation cell);
 }

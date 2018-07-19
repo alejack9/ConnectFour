@@ -1,27 +1,32 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import it.unicam.cs.pa.ConnectFour.factory.Factories;
-import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
+import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacchè
  *
  */
 
-public class MatchField {
-
+public final class MatchField {
+	// REPORT singleton
+	private static final MatchField INSTANCE = new MatchField();
+	private boolean initialized;
+	private static final UnitializedSingleton e = new UnitializedSingleton("MatchField");
 	/**
 	 * first List: columns list<br />
 	 * second List: rows list
 	 */
-	// TODO should be 'final' removed?
 	private final List<List<Cell>> field;
 	/**
 	 * [0] = rows<br />
@@ -29,106 +34,213 @@ public class MatchField {
 	 */
 	private int[] size;
 	private int pieces;
-	private RuleSet referee;
+
+	private List<Function<CellLocation, List<Cell>>> listsGetters = new ArrayList<>();
+
+	/**
+	 * 
+	 */
+	private MatchField() {
+		this.field = new ArrayList<>();
+		this.initialized = false;
+
+		listsGetters.add((c) -> this.getRow(c));
+		listsGetters.add((c) -> this.getColumn(c));
+		listsGetters.add((c) -> this.getNEDiagonal(c));
+		listsGetters.add((c) -> this.getNWDiagonal(c));
+	}
 
 	/**
 	 * @param size the field size
+	 * @throws IllegalArgumentException 'size' is not valid
 	 */
-	public MatchField (String size , String ruleset) throws IllegalArgumentException {
-		/**
-		 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we don't care
-		 */
-		this.field = new ArrayList<>();
-		this.size = Utils.sizeParse(size);
-		this.referee = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.parse(ruleset));
-		fill();
+	public boolean initMatchField(String size) throws IllegalArgumentException {
+		if (!initialized) {
+			/**
+			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we
+			 * don't care
+			 */
+			this.size = Utils.sizeParse(size);
+			this.initialized = true;
+			fill();
+			return true;
+		}
+		return false;
 	}
 
-	public CellStatus getStatus ( int row , int column ) {
+	public static MatchField getInstance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
+	public CellStatus getCellStatus(int row, int column) throws UnitializedSingleton {
+		checkInit();
 		return this.field.get(column).get(row).getStatus();
 	}
-	
+
+	/**
+	 * @param cell
+	 * @return
+	 */
+	public CellStatus getCellStatus(CellLocation cell) {
+		return getCellStatus(cell.getRow(), cell.getColumn());
+	}
+
+	/**
+	 * @return The field as Cells matrix
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
+	public List<List<Cell>> getField() throws UnitializedSingleton {
+		checkInit();
+		return this.field;
+	}
+
+	/**
+	 * @return the listsGetters
+	 */
+	public List<Function<CellLocation, List<Cell>>> getListsGetters() {
+		return Collections.unmodifiableList(listsGetters);
+	}
+
+	public int getPieces() {
+		return this.pieces;
+	}
+
+	/**
+	 * Replace a column with another column
+	 * 
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
+	public void setColumn(List<Cell> newColumn, int column) throws UnitializedSingleton {
+		checkInit();
+		for (int i = 0; i < newColumn.size(); i++) {
+			field.get(column).set(i, newColumn.get(i));
+		}
+	}
+
+	/**
+	 * @param column
+	 * @return
+	 */
+	public List<Cell> getColumn(int column) throws UnitializedSingleton {
+		checkInit();
+		return field.get(column);
+	}
+
+	/**
+	 * @return The column as Cell list
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
+	public List<Cell> getColumn(CellLocation cell) throws UnitializedSingleton {
+		return getColumn(cell.getColumn());
+	}
+
+	public List<Cell> getRow(CellLocation cell) throws UnitializedSingleton {
+		checkInit();
+		List<Cell> toReturn = new ArrayList<>();
+		for (List<Cell> column : this.field) {
+			toReturn.add(column.get(cell.getRow()));
+		}
+		return toReturn;
+	}
+
+	public List<Cell> getNWDiagonal(CellLocation cell) {
+		return getDiagonal(cell.getRow(), cell.getColumn(), Direction.NW);
+	}
+
+	public List<Cell> getNEDiagonal(CellLocation cell) {
+		return getDiagonal(cell.getRow(), cell.getColumn(), Direction.NE);
+	}
+
+	/**
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
+	public int getRows() throws UnitializedSingleton {
+		checkInit();
+		return this.size[0];
+	}
+
+	/**
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
+	public int getColumns() throws UnitializedSingleton {
+		checkInit();
+		return this.size[1];
+	}
+
+	/**
+	 * @return The viewer BiFunction
+	 * @throws UnitializedSingleton Match is not initialized
+	 */
+	public BiFunction<Integer, Integer, CellStatus> getView(RuleSet referee) throws UnitializedSingleton {
+		checkInit();
+		return (row, column) -> {
+			if (!referee.isInBound(new CellLocation(row, column))) {
+				return null;
+			}
+			return getCellStatus(row, column);
+		};
+	}
+
 	/**
 	 * Inserts a piece in the field
+	 * 
 	 * @return true if all's OK, false otherwise
+	 * @throws UnitializedSingleton Match is not initialized
 	 */
-	public boolean insert ( PieceLocation location , Piece piece ) {
-		if(pieces < getColumns() * getRows()) {
-			if(this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece)) {
+	public boolean insert(CellLocation location, Piece piece) throws UnitializedSingleton {
+		checkInit();
+		if (pieces < getColumns() * getRows()) {
+			if (this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece)) {
 				pieces++;
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	/**
-	 * @return The viewer BiFunction
-	 */
-	public BiFunction<Integer, Integer, CellStatus> getView() {
-		return ( row , column ) -> {
-			if ( !this.referee.isInBound( column ) ) {
-				return null;
-			}
-			return getStatus( row , column );
-		};
-	}
 
-	/**
-	 * @return The column as Cell list
-	 */
-	public List<Cell> getColumn(int column) {
-		return field.get(column);
-	}
-
-	/**
-	 * Replace a column with another column
-	 */
-	public void setColumn(List<Cell> newColumn, int column) {
-		for(int i = 0 ; i < newColumn.size() ; i++) {
-			field.get(column).set(i, newColumn.get(i));
-		}
-	}
-
-	/**
-	 * @return The field as Cells matrix
-	 */
-	public Cell[][] getCells() {
-		Cell[][] toReturn = new Cell[getRows()][getColumns()];
-		for(int j = 0 ; j < getColumns() ; j++) {
-			for(int i = 0 ; i < getRows() ; i++) {
-				toReturn[i][j] = field.get(j).get(i);
-			}
-		}
-		return toReturn;
-	}
-
-	public int getRows() {
-		return this.size[0];
-	}
-
-	public int getColumns() {
-		return this.size[1];
-	}
-
-	/**
-	 * @return
-	 */
-	public RuleSet getReferee() {
-		return this.referee;
+	private void checkInit() throws UnitializedSingleton {
+		if (!initialized)
+			throw e;
 	}
 
 	/**
 	 * Makes rows * columns Cells in the field
 	 */
 	private void fill() {
-		for(int i = 0; i < getColumns() ; i++) {
+		for (int i = 0; i < getColumns(); i++) {
 			List<Cell> toInsert = new ArrayList<>();
-			for(int j = 0 ; j < getRows(); j++) {
-				toInsert.add(new Cell());
+			for (int j = 0; j < getRows(); j++) {
+				toInsert.add(new Cell(j, i));
 			}
 			field.add(toInsert);
 		}
 	}
-	
+
+	private Cell findLastCell(int row, int col, Direction dir) throws UnknownEnumValue {
+		while (dir.limit(this).test(row, col)) {
+			row = dir.rowStep(row);
+			col = dir.colStep(col);
+		}
+		return this.field.get(col).get(row);
+	}
+
+	private List<Cell> getDiagonal(int row, int col, Direction dir) {
+
+		Cell firstCell = findLastCell(row, col, dir);
+		Cell lastCell = findLastCell(row, col, dir.opposite());
+
+		// , (x) -> field.get(x.getColumn() + 1).get(x.getRow() + 1))
+		
+		List<Cell> toReturn = Stream
+				.iterate(firstCell
+				, (x) -> !x.equals(lastCell)
+				, (x) -> field.get(dir.opposite().colStep(x.getLocation().getColumn())).get(dir.opposite().rowStep(x.getLocation().getRow())))
+				.collect(Collectors.toCollection(ArrayList<Cell>::new));
+		toReturn.add(lastCell);
+
+		return toReturn;
+	}
 }

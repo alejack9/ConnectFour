@@ -5,7 +5,6 @@ package it.unicam.cs.pa.ConnectFour.factory;
  *
  */
 public enum Factories {
-	PLAYERS,
 	PIECES,
 	REFEREE;
 
@@ -17,10 +16,9 @@ public enum Factories {
 //		String minName = super.name().toLowerCase();
 //		return minName.replaceFirst(minName.charAt(0) + "", super.name().charAt(0) + "");
 		switch(this) {
-			case PLAYERS: return "Players";
 			case PIECES: return "Pieces";
 			case REFEREE: return "Referee";
+			default: return super.name();
 		}
-		return super.name();
 	}
 }
