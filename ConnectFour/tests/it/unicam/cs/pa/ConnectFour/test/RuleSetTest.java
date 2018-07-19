@@ -129,7 +129,7 @@ class RuleSetTest {
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
 	 */
-	@Test
+//	@Test
 	void testNWZeroWinner() {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField("6x7");
@@ -167,10 +167,10 @@ class RuleSetTest {
 		x.insert(rs.getPieceLocation(2+2, x), pf.getPiece(CellStatus.P1));
 		x.insert(rs.getPieceLocation(3+2, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(2+2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(5+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(3+2, x), pf.getPiece(CellStatus.P1));
 		x.insert(rs.getPieceLocation(3+2, x), pf.getPiece(CellStatus.P2));
-		CellLocation lastloc = rs.getPieceLocation(3, x);
+		CellLocation lastloc = rs.getPieceLocation(3+2, x);
 		x.insert(lastloc, pf.getPiece(CellStatus.P1));
 		Utils.printField(x, rs);
 		
