@@ -15,6 +15,15 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
  */
 public class Utils {
 
+	public static void clearScreen() {
+		clearScreen(System.out);
+	}
+
+	public static void clearScreen( PrintStream writer ) {
+		for(int i = 0 ; i < 100 ; i++)
+			writer.println(); 
+	}
+
 	public static void printField ( MatchField field, RuleSet referee ) {
 		printField( System.out , field.getView(referee) , field.getRows() , field.getColumns() );
 	}
@@ -35,14 +44,19 @@ public class Utils {
 		}
 	}
 
-	public static void clearScreen() {
-		clearScreen(System.out);
-    }
-	public static void clearScreen( PrintStream writer ) {
-		for(int i = 0 ; i < 100 ; i++)
-			writer.println(); 
-    }
+	public static int[] sizeParse (String size) throws IllegalArgumentException {
+		try {
+			int[] toReturn = Stream.of(size.split("x")).mapToInt(Integer::parseInt).takeWhile(c -> c > 1).toArray();
 	
+			if(toReturn.length == 2)
+				return toReturn;
+			throw new IllegalArgumentException();
+		}
+		catch (NumberFormatException e) {
+			throw new IllegalArgumentException(e.toString());
+		}
+	}
+
 	private static void printColumnIndexes( PrintStream writer , int columns) {
 		writer.print("    ");
 		for (int i = 0 ; i < columns ; i++) {
@@ -66,18 +80,5 @@ public class Utils {
 			writer.print("| " + view.apply( row , column ) + " ");
 		}
 		writer.println("|");
-	}
-	
-	public static int[] sizeParse (String size) throws IllegalArgumentException {
-		try {
-			int[] toReturn = Stream.of(size.split("x")).mapToInt(Integer::parseInt).takeWhile(c -> c > 1).toArray();
-
-			if(toReturn.length == 2)
-				return toReturn;
-			throw new IllegalArgumentException();
-		}
-		catch (NumberFormatException e) {
-			throw new IllegalArgumentException(e.toString());
-		}
 	}
 }

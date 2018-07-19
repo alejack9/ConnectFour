@@ -16,41 +16,42 @@ public enum Direction {
 	NORTH, EAST, NW, NE, SW, SE, WEST, SOUTH;
 	
 	/**
-	 * @return [ ROW , COLUMN ]
+	 * @param matchField
+	 * @return [ ROW , COLUMN ] BiPredicate: row,column -> is in limit
 	 */
-	private int[] getStep() {
+	public BiPredicate<Integer,Integer> limit(MatchField mf) throws UnknownEnumValue {
 		switch(this) {
-			case NORTH:	return new int[] {	-1	,	0	};
-			case NE:	return new int[] {	-1	,	+1	};
-			case EAST:	return new int[] {	0	,	+1	};
-			case SE:	return new int[] {	+1	,	+1	};
-			case SOUTH:	return new int[] {	+1	,	0	};
-			case SW:	return new int[] {	+1	,	-1	};
-			case WEST:	return new int[] {	0	,	-1	};
-			case NW:	return new int[] {	-1	,	-1	};
-			default:	return new int[] {	0	,	0	};
+			case NE:
+				case NORTH:		return (x,y) -> NORTH.getPredicate(mf).test(x) && EAST.getPredicate(mf).test(y);
+			case SE:
+				case EAST:
+					case SOUTH:	return (x,y) -> SOUTH.getPredicate(mf).test(x) && EAST.getPredicate(mf).test(y);
+			case SW:
+				case WEST:		return (x,y) -> SOUTH.getPredicate(mf).test(x) && WEST.getPredicate(mf).test(y);
+				
+			case NW:			return (x,y) -> NORTH.getPredicate(mf).test(x) && WEST.getPredicate(mf).test(y);
+			default:	throw new UnknownEnumValue(this);
 		}
 	}
 
 	/**
-	 * @return
-	 */
-	public Direction opposite() {
-		// TODO TO TEST
-		return Direction.values()[Direction.values().length - 1 - this.ordinal()];
-		
-//		switch(this) {
-//			case NORTH:	return SOUTH;
-//			case SOUTH:	return NORTH;
-//			case NE:	return SW;
-//			case SW:	return NE;
-//			case EAST:	return WEST;
-//			case WEST:	return EAST;
-//			case NW:	return SE;
-//			case SE:	return NW;
-//			default:	return null;
-//		}
-	}
+		 * @return
+		 */
+		public Direction opposite() {
+			return Direction.values()[Direction.values().length - 1 - this.ordinal()];
+			
+	//		switch(this) {
+	//			case NORTH:	return SOUTH;
+	//			case SOUTH:	return NORTH;
+	//			case NE:	return SW;
+	//			case SW:	return NE;
+	//			case EAST:	return WEST;
+	//			case WEST:	return EAST;
+	//			case NW:	return SE;
+	//			case SE:	return NW;
+	//			default:	return null;
+	//		}
+		}
 
 	/**
 	 * @param col
@@ -68,31 +69,29 @@ public enum Direction {
 		return row + getStep()[0];
 	}
 
-	/**
-	 * @param matchField
-	 * @return [ ROW , COLUMN ] BiPredicate: row,column -> is in limit
-	 */
-	public BiPredicate<Integer,Integer> limit(MatchField mf) throws UnknownEnumValue {
-		switch(this) {
-			case NE:
-				case NORTH:		return (x,y) -> NORTH.getPredicate(mf).test(x) && EAST.getPredicate(mf).test(y);
-			case SE:
-				case EAST:
-					case SOUTH:	return (x,y) -> SOUTH.getPredicate(mf).test(x) && EAST.getPredicate(mf).test(x);
-			case SW:
-				case WEST:		return (x,y) -> SOUTH.getPredicate(mf).test(x) && WEST.getPredicate(mf).test(x);
-				
-			case NW:			return (x,y) -> NORTH.getPredicate(mf).test(x) && WEST.getPredicate(mf).test(x);
-			default:	throw new UnknownEnumValue(this);
-		}
-	}
-	
 	private Predicate<Integer> getPredicate(MatchField mf) {
 		switch(this) {
 			case NORTH: case WEST: return (x) -> x > 0;
-			case SOUTH: return (x) -> x < mf.getRows();
-			case EAST:	return (x) -> x < mf.getColumns();
+			case SOUTH: return (x) -> x < mf.getRows() - 1;
+			case EAST:	return (x) -> x < mf.getColumns() - 1;
 			default: 	return null;
+		}
+	}
+
+	/**
+	 * @return [ ROW , COLUMN ]
+	 */
+	private int[] getStep() {
+		switch(this) {
+			case NORTH:	return new int[] {	-1	,	0	};
+			case NE:	return new int[] {	-1	,	+1	};
+			case EAST:	return new int[] {	0	,	+1	};
+			case SE:	return new int[] {	+1	,	+1	};
+			case SOUTH:	return new int[] {	+1	,	0	};
+			case SW:	return new int[] {	+1	,	-1	};
+			case WEST:	return new int[] {	0	,	-1	};
+			case NW:	return new int[] {	-1	,	-1	};
+			default:	return new int[] {	0	,	0	};
 		}
 	}
 }

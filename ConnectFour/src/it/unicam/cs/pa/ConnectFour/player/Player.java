@@ -36,14 +36,23 @@ public abstract class Player {
 	}
 	
 	/**
+	 * @return The action prompted by the player
+	 * @throws IOException 
+	 */
+	public abstract ActionType chooseAction() throws InternalException;
+
+	/**
 	 * @return The column prompted by the player
 	 */
 	public abstract int getColumn() throws InternalException;
 	
+	protected RuleSet getReferee() { return referee; }
+
 	/**
-	 * @param e The error that make player win
+	 * @param pid The player' id
+	 * @param referee The referee
 	 */
-	public abstract void winForError(Throwable e);
+	public abstract void init(int pid , MatchField field ) throws IllegalIdValue;
 
 	/**
 	 * @param e The error that make player lose
@@ -56,9 +65,9 @@ public abstract class Player {
 	public abstract void startMatch();
 
 	/**
-	 * Notify the player that he's won
+	 * @param e The error that make player win
 	 */
-	public abstract void youWin();
+	public abstract void winForError(Throwable e);
 
 	/**
 	 * Notify the player that he's lost
@@ -66,17 +75,15 @@ public abstract class Player {
 	public abstract void youLose();
 
 	/**
-	 * @param pid The player' id
-	 * @param referee The referee
+	 * Notify the player that he's won
 	 */
-	public abstract void init(int pid , MatchField field ) throws IllegalIdValue;
+	public abstract void youWin();
 
 	/**
-	 * @return The action prompted by the player
-	 * @throws IOException 
+	 * @return
 	 */
-	public abstract ActionType chooseAction() throws InternalException;
-	
-	protected RuleSet getReferee() { return referee; }
+	public int getId() {
+		return this.ID;
+	}
 	
 }

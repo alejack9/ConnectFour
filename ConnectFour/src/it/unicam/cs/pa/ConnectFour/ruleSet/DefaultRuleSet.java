@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
@@ -18,14 +19,18 @@ import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
  */
 public class DefaultRuleSet implements RuleSet {
 
-	// FIXME REPLACE CELL WITH PIECELOCATION!
-	
 	private static final HashMap<Integer, ActionType> allowedActions = new HashMap<>();
+	
+	public static final int[] DEFAULT_SIZE = { 6 , 7 };
 	
 //	private static final ActionType[] allowedActions = { ActionType.INSERT };
 
 	private final BiFunction<Integer, List<List<Cell>>, Optional<Cell>> destinationCell = ( column , field ) -> field.get(column).stream().filter(Cell::isEmpty).reduce((prev, last) -> last);
 	
+	public DefaultRuleSet () {
+		allowedActions.put(ActionType.INSERT.ordinal(), ActionType.INSERT);
+	}
+
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#actionsNumber()
 	 */
@@ -34,10 +39,6 @@ public class DefaultRuleSet implements RuleSet {
 		return allowedActions.size();
 	}
 
-	public DefaultRuleSet () {
-		allowedActions.put(ActionType.INSERT.ordinal(), ActionType.INSERT);
-	}
-	
 	public HashMap<Integer , ActionType> getAllowedActions() {
 		return allowedActions;
 //		return allowedActions;
@@ -48,10 +49,9 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public CellLocation getPieceLocation (int column, MatchField field) throws IllegalPieceLocation {
-		// FIXME TO TEST
 		if(isInBound(column,field.getColumns())) {
 			Cell cell = destinationCell.apply(column, field.getField()).orElseThrow(() -> new IllegalPieceLocation(column,field));
-			return new CellLocation(cell.getRow(), cell.getColumn());
+			return cell.getLocation();
 
 			
 //			int row = 0;
@@ -67,28 +67,38 @@ public class DefaultRuleSet implements RuleSet {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(int,int)
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(PieceLocation,int)
 	 */
 	@Override
-	public boolean isInBound(int column , int customSize) {
-		return column < customSize;
+	public boolean isInBound(CellLocation loc, int[] customSize) {
+		return loc.getRow() >= 0 && loc.getRow() < customSize[0] && loc.getColumn() >= 0 && loc.getColumn() < customSize[1];
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(PieceLocation)
 	 */
 	@Override
 	public boolean isInBound(CellLocation loc) {
-		return isInBound(loc,getDefaultSize()[1]);
+		return isInBound(loc, DEFAULT_SIZE);
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(PieceLocation,int)
+	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(int,int)
 	 */
 	@Override
-	public boolean isInBound(CellLocation loc, int customSize) {
-		return isInBound(loc.getColumn(), customSize);
+	public boolean isInBound(int column , int customColumnSize) {
+		return isInBound(new CellLocation(0, column) , new int[] { 1 , customColumnSize });
 	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isInBound(int)
+	 */
+	@Override
+	public boolean isInBound(int column) {
+		return isInBound( column , DEFAULT_SIZE[1] );
+	}
+
+
 
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int, MatchField)
@@ -111,23 +121,21 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public CellStatus winner(MatchField field, CellLocation cell) {
-		// TODO TO TEST
-		if(field.getPieces() < 8) return CellStatus.EMPTY;
-
-		for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
-			long con = function.apply(cell).stream().takeWhile(x -> x.getPiece().getColor() == field.getCellStatus(cell)).count();
-			if(con >= 4) return field.getCellStatus(cell);
+		if(field.getPieces() >= 7) {
+			for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
+				List<Cell> list = function.apply(cell);
+//				Stream<Integer> s = Stream.iterate(0, i -> i < list.size() , i -> i+1);
+//				long con = s.filter(i -> i == 0 || (list.get(i - 1).getStatus() == list.get(i).getStatus() && list.get(i).getStatus() != CellStatus.EMPTY))
+//				.count();
+//				int con = 0;
+				long con = Stream.iterate(0, i -> i < list.size() , i -> i + 1)
+					.filter(i -> i == 0 || (list.get(i - 1).getStatus() == list.get(i).getStatus() && list.get(i).getStatus() != CellStatus.EMPTY))
+					.count();
+//				Stream.iterate(0, i -> i < list.size() , (i) -> i + 1).map(i -> list.get(i)).;
+//				long con = function.apply(cell).stream().takeWhile(x -> x.getPiece().getColor() == field.getCellStatus(cell)).count();
+				if(con >= 4) return field.getCellStatus(cell);
+			}
 		}
-
 		return CellStatus.EMPTY;
 	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getDefaultSize()
-	 */
-	@Override
-	public int[] getDefaultSize() {
-		return new int[] { 6 , 7 };
-	}
-
 }

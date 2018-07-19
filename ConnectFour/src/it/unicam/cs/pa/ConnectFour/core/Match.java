@@ -39,7 +39,6 @@ public final class Match {
 	
 	private static Map<ActionType, Function<Integer,CellLocation>> actions;
 	
-	// FIXME PASS PIECELOCATION TO RULESET!
 	private Match () {
 		actions = new HashMap<>();
 		actions.put(ActionType.INSERT, column -> {
@@ -49,15 +48,10 @@ public final class Match {
 			});
 		actions.put(ActionType.POP, column -> {
 			field.setColumn(referee.pop(field.getColumn(column)),column);
-			// TODO RETURN LAST CELL IN COLUMN
-			return null;
+			return field.getColumn(column).iterator().next().getLocation();
 		});
 		
 		this.initialized = false;
-	}
-	
-	public static Match getInstance() {
-		return INSTANCE;
 	}
 	
 	/**
@@ -79,6 +73,10 @@ public final class Match {
 			return true;
 		}
 		return false;
+	}
+
+	public static Match getInstance() {
+		return INSTANCE;
 	}
 	
 	/**
@@ -112,25 +110,25 @@ public final class Match {
 	}
 
 	/**
-	 * @return false if the game ended
-	 */
-	private boolean doAction(ActionType action) {
-		try {
-			if (this.referee.isValidAction(action)) {
-				int column = players[this.currentPlayer].getColumn();
-				CellLocation loc = actions.get(action).apply(column);
-// REPORT removed if (action == ActionType.INSERT) insertAction(column);
-// REPORT removed if (action == ActionType.POP) popAction(column);
-				if(isEnd(loc)) return false;
+		 * @return false if the game ended
+		 */
+		private boolean doAction(ActionType action) {
+			try {
+				if (this.referee.isValidAction(action)) {
+					int column = players[this.currentPlayer].getColumn();
+					CellLocation loc = actions.get(action).apply(column);
+	// REPORT removed if (action == ActionType.INSERT) insertAction(column);
+	// REPORT removed if (action == ActionType.POP) popAction(column);
+					if(isEnd(loc)) return false;
+				}
+				else return true;
+			} catch (Throwable e) {
+				winForError(otherPlayer(this.currentPlayer), e);
+				return false;
 			}
-			else return true;
-		} catch (Throwable e) {
-			winForError(otherPlayer(this.currentPlayer), e);
-			return false;
+			this.currentPlayer = otherPlayer(this.currentPlayer);
+			return true;
 		}
-		this.currentPlayer = otherPlayer(this.currentPlayer);
-		return true;
-	}
 
 	/**
 	 * @param player Player' id
@@ -146,6 +144,32 @@ public final class Match {
 		}
 	}
 
+	//	/**
+	//	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
+	//	 * @param column The gotten column
+	//	 */
+	//	private void insertAction( int column ) throws IllegalPieceLocation{
+	//		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
+	//		PieceLocation location = referee.insert(column, field);
+	//		field.insert(location, piece);
+	//	}
+	
+		/**
+		 * @return true if the game ended, false otherwise
+		 */
+		private boolean isEnd(CellLocation lastCell) {
+			CellStatus winner = referee.winner(field,lastCell); 
+			if(winner != CellStatus.EMPTY) {
+				win(winner.ordinal());
+				return true;
+			}
+			return false;
+		}
+
+	
+
+	
+
 //	/**
 //	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
 //	 * @param column The gotten column
@@ -155,18 +179,6 @@ public final class Match {
 //		PieceLocation location = referee.insert(column, field);
 //		field.insert(location, piece);
 //	}
-
-	/**
-	 * @return true if the game ended, false otherwise
-	 */
-	private boolean isEnd(CellLocation lastCell) {
-		CellStatus winner = referee.winner(field,lastCell); 
-		if(winner != CellStatus.EMPTY) {
-			win(winner.ordinal());
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * @param player player' id

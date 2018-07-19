@@ -18,6 +18,15 @@ public enum RuleSetType {
 	 */
 	FIVEINROW;
 	
+	public String defaultSize() {
+		switch(this) {
+			case DEFAULT: return "6x7";
+			case POP: return "6x7";
+			case FIVEINROW: return "8x8";
+		}
+		return "0x0";
+	}
+
 	/**
 	 * @param ruleset ruleSet name
 	 * @return The corresponding ruleSetType
@@ -38,15 +47,6 @@ public enum RuleSetType {
 //		}
 	}
 	
-	public String defaultSize() {
-		switch(this) {
-			case DEFAULT: return "6x7";
-			case POP: return "6x7";
-			case FIVEINROW: return "8x8";
-		}
-		return "0x0";
-	}
-
 	/* (non-Javadoc)
 	 * @see java.lang.Enum#toString()
 	 */

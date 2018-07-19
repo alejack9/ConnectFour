@@ -31,6 +31,14 @@ public class Piece extends AbstractPiece {
 	}
 
 	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#isNull()
+	 */
+	@Override
+	public boolean isNull() {
+		return false;
+	}
+
+	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#getColor()
 	 */
 	@Override
@@ -43,13 +51,5 @@ public class Piece extends AbstractPiece {
 	 */
 	public Optional<Integer> getId() {
 		return Optional.of(this.id);
-	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#isNull()
-	 */
-	@Override
-	public boolean isNull() {
-		return false;
 	}
 }

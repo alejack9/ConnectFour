@@ -37,34 +37,6 @@ public class InteractivePlayer extends Player {
 	
 	
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int)
-	 */
-	@Override
-	public void init(int pid , MatchField field ) throws IllegalIdValue {
-		this.setID(pid);
-		this.field = field;
-	}
-
-	/**
-	 * @param pid
-	 */
-	private void setID(int pid) throws IllegalIdValue {
-		if(pid >= 0) {
-			this.ID = pid;
-		}
-		else throw new IllegalIdValue(pid);
-	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.Player#startMatch()
-	 */
-	@Override
-	public void startMatch() {
-		this.print("My ID is " + this.ID);
-		
-	}
-
-	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.Player#chooseAction()
 	 */
 	@Override
@@ -78,57 +50,28 @@ public class InteractivePlayer extends Player {
 		int x = doInput("Choose the action: ", this::isExistingAction, Integer::parseUnsignedInt);
 		return super.getReferee().getAllowedActions().get(x);
 	}
-
-	private boolean isExistingAction(String txt) {
-		try {
-			int v = Integer.parseUnsignedInt(txt);
-			return(super.getReferee().getAllowedActions().get(v) == null ? false : true);
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
-	private boolean isValidInsert(String txt) {
-		try {
-			int v = Integer.parseUnsignedInt(txt);
-			return(super.getReferee().isInBound(v,field.getColumns()) && super.getReferee().isValidInsert(v,field));
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.Player#getColumn()
 	 */
 	@Override
 	public int getColumn() throws InternalException {
 		if(!printed) Utils.printField(field, super.getReferee());
-		int column = doInput(String.format("Choose a column from 0 to %d", field.getColumns()), this::isValidInsert , Integer::parseUnsignedInt);
+		int column = doInput(String.format("Choose a column from 1 to %d", field.getColumns()), this::isValidInsert , (x) -> (Integer.parseUnsignedInt(x) - 1));
 		return column;
 	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.Player#youWin()
+	/**
+	 * @return the iD
 	 */
-	@Override
-	public void youWin() {
-		this.print("You win!");
+	public int getID() {
+		return ID;
 	}
-
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.Player#winForError(java.lang.Throwable)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int)
 	 */
 	@Override
-	public void winForError(Throwable e) {
-		print("The other player has made an error! You have won!");
-	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.Player#youLose()
-	 */
-	@Override
-	public void youLose() {
-		this.print("You have lost!");		
+	public void init(int pid , MatchField field ) throws IllegalIdValue {
+		this.setID(pid);
+		this.field = field;
 	}
 
 	/* (non-Javadoc)
@@ -138,7 +81,36 @@ public class InteractivePlayer extends Player {
 	public void loseForError(Throwable e) {
 		print("Oh no you have made a mistake ... You have lost! "+e.getMessage());		
 	}
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#startMatch()
+	 */
+	@Override
+	public void startMatch() {
+		this.print("My ID is " + this.ID);
+		
+	}
 
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#winForError(java.lang.Throwable)
+	 */
+	@Override
+	public void winForError(Throwable e) {
+		print("The other player has made an error! You have won!");
+	}
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#youLose()
+	 */
+	@Override
+	public void youLose() {
+		this.print("You have lost!");		
+	}
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.Player#youWin()
+	 */
+	@Override
+	public void youWin() {
+		this.print("You win!");
+	}
 	/**
 	 * @param string What to ask
 	 * @param condition Input condition/s
@@ -162,18 +134,35 @@ public class InteractivePlayer extends Player {
 			}
 		}
 	}
-
+	private boolean isExistingAction(String txt) {
+		try {
+			int v = Integer.parseUnsignedInt(txt);
+			return(super.getReferee().getAllowedActions().get(v) == null ? false : true);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	private boolean isValidInsert(String txt) {
+		try {
+			int v = Integer.parseUnsignedInt(txt) - 1;
+			return(super.getReferee().isInBound(v,field.getColumns()) && super.getReferee().isValidInsert(v,field));
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
 	/**
 	 * @param string What to write
 	 */
 	private void print(String string) {
 		this.out.println(this.name+ "> " + string);
 	}
-
 	/**
-	 * @return the iD
+	 * @param pid
 	 */
-	public int getID() {
-		return ID;
+	private void setID(int pid) throws IllegalIdValue {
+		if(pid >= 0) {
+			this.ID = pid;
+		}
+		else throw new IllegalIdValue(pid);
 	}
 }

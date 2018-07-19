@@ -26,6 +26,30 @@ public class Cell {
 		return piece.getColor();
 	}
 
+	public boolean isEmpty() {
+		return this.piece.isNull();
+	}
+
+	/**
+	 * @return the {@link Piece}, removing it
+	 */
+	public AbstractPiece pop () {
+		AbstractPiece toReturn = getPiece();
+		this.piece = null;
+		return toReturn;
+	}
+
+	/**
+	 * @return
+	 */
+	public CellLocation getLocation() {
+		return this.location;
+	}
+
+	public AbstractPiece getPiece() {
+		return this.piece;
+	}
+
 	/**
 	 * @return true if the set is possible, false otherwise
 	 */
@@ -38,37 +62,6 @@ public class Cell {
 		}
 	}
 	
-	/**
-	 * @return the {@link Piece}, removing it
-	 */
-	public AbstractPiece pop () {
-		AbstractPiece toReturn = getPiece();
-		this.piece = null;
-		return toReturn;
-	}
-	
-	public AbstractPiece getPiece() {
-		return this.piece;
-	}
-	
-	public boolean isEmpty() {
-		return this.piece.isNull();
-	}
-
-	/**
-	 * @return the row
-	 */
-	public int getRow() {
-		return this.location.getRow();
-	}
-
-	/**
-	 * @return the column
-	 */
-	public int getColumn() {
-		return this.location.getColumn();
-	}
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -78,12 +71,11 @@ public class Cell {
 		if(this == obj) return true;
 		if(getClass() != obj.getClass()) return false;
 		Cell otherCell = (Cell)obj;
-		if(	otherCell.getColumn() == this.getColumn() &&
-			otherCell.getRow() == this.getRow() &&
+		if(	otherCell.getLocation().getColumn() == this.getLocation().getColumn() &&
+			otherCell.getLocation().getRow() == this.getLocation().getRow() &&
 			this.getPiece().equals(otherCell.getPiece())) return true;
 		
 		return false;
-	}
-	
+	}	
 	
 }

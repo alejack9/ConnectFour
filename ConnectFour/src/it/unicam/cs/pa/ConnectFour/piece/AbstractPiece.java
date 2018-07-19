@@ -14,6 +14,8 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 // REPORT Null Object pattern to Pieces
 public abstract class AbstractPiece {
 
+	public abstract boolean isNull();
+
 	public abstract CellStatus getColor();
 
 	/**
@@ -21,8 +23,6 @@ public abstract class AbstractPiece {
 	 */
 	public abstract Optional<Integer> getId();
 
-	public abstract boolean isNull();
-	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
