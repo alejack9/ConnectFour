@@ -34,7 +34,7 @@ public enum RuleSetType {
 	 */
 	public static RuleSetType parse (String rulesetName) throws IllegalArgumentException {
 		for (RuleSetType rs : RuleSetType.values()) {
-			if(rs.toString().equals(rulesetName)) {
+			if(rs.name().equals(rulesetName)) {
 				return rs;
 			}
 		}

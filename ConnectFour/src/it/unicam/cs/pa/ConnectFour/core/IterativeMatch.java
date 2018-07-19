@@ -10,7 +10,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  * @author giacchè
  *
  */
-public class RandomMatch {
+public class IterativeMatch {
 
 	public static void main(String[] args) {
 		Player p1 = new InteractivePlayer("Pippo");

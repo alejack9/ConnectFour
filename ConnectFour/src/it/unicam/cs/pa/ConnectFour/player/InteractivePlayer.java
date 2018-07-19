@@ -120,7 +120,7 @@ public class InteractivePlayer extends Player {
 	 */
 	private <T> T doInput(String request, Predicate<String> condition, Function<String, T> readFun) throws InternalException {
 		while (true) {
-			this.out.println(request);
+			this.print(request);
 			String line;
 			try {
 				line = this.in.readLine();
