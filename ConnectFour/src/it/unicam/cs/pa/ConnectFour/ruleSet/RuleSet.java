@@ -18,7 +18,7 @@ import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
  *
  */
 public interface RuleSet {
-	
+	 
 	/**
 	 * @return The number of allowed actions
 	 */

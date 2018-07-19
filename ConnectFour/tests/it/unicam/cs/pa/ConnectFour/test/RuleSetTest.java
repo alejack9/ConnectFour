@@ -34,7 +34,7 @@ class RuleSetTest {
 	void testActionsNumber() {
 		assertTrue(rs.actionsNumber() == 1);
 	}
-
+ 
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getAllowedActions()}.
 	 */

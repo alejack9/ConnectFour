@@ -161,7 +161,7 @@ public final class Match {
 		private boolean isEnd(CellLocation lastCell) {
 			CellStatus winner = referee.winner(field,lastCell); 
 			if(winner != CellStatus.EMPTY) {
-				Utils.printField(field, referee);
+ 				Utils.printField(field, referee);
 				win(winner.ordinal());
 				return true;
 			}

@@ -17,7 +17,7 @@ public enum RuleSetType {
 	 * Default rule set but five in row to win
 	 */
 	FIVEINROW;
-	
+	 
 	public String defaultSize() {
 		switch(this) {
 			case DEFAULT: return "6x7";

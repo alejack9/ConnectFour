@@ -24,7 +24,7 @@ public class RandomPlayer extends Player {
 
 	private Random random;
 	private boolean echo;
-	
+	 
 	public RandomPlayer(String name) {
 		this(name, FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT), true);
 	}

@@ -133,7 +133,7 @@ public class DefaultRuleSet implements RuleSet {
 					else if(celleConsecutive > maxConsecutive) { maxConsecutive = celleConsecutive; celleConsecutive = 1; }
 				}
 				if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
-				
+				 
 //				long con = Stream.iterate(1, i -> i < list.size(), i -> i + 1)
 ////					.filter(i -> (i == 0 || list.get(i - 1).getStatus() == list.get(i).getStatus()) && list.get(i).getStatus() != CellStatus.EMPTY)
 //					.filter(i -> (list.get(i-1).getStatus() == list.get(i).getStatus()) && !list.get(i).isEmpty())
