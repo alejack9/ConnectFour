@@ -3,7 +3,9 @@ package it.unicam.cs.pa.ConnectFour.core;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
@@ -24,52 +26,62 @@ public final class Match {
 	// REPORT is singleton
 	private static final Match INSTANCE = new Match();
 	private boolean initialized;
-	
+
 	private static final int PLAYER1 = 0;
 	private static final int PLAYER2 = 1;
 	private int currentPlayer;
-	
+
 	private Player[] players;
 	private MatchField field;
 	private RuleSet referee;
-	
+
 	private MatchStatus status = MatchStatus.INIT;
-	
+
 	private AbstractFactory piecesFactory;
-	
-	private static Map<ActionType, Function<Integer,CellLocation>> actions;
-	
-	private Match () {
+
+	private static Map<ActionType, Function<Integer, CellLocation>> actions;
+
+	private Match() {
 		actions = new HashMap<>();
 		actions.put(ActionType.INSERT, column -> {
-				Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-				CellLocation location = referee.getPieceLocation(column, field);
-				return field.insert(location, piece) ? location : null;
-			});
+			Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
+			CellLocation location = referee.getPieceLocation(column, field);
+			return field.insert(location, piece) ? location : null;
+		});
 		actions.put(ActionType.POP, column -> {
-			field.setColumn(referee.pop(field.getColumn(column)),column);
+			field.setColumn(referee.pop(field.getColumn(column)), column);
 			return field.getColumn(column).iterator().next().getLocation();
 		});
-		
+
 		this.initialized = false;
 	}
-	
+
 	/**
-	 * @param p1 player 1
-	 * @param p2 player 2
-	 * @param prop Properties field: must contains<ul><li>'size' (the match field size)</li><li>'firstPlayer' (the player who starts the match)</li><li>'ruleset' (the referee)</li>
-	 * @throws NumberFormatException Unable to covert 'size' or 'firstPlayer' into Integer
-	 * @throws IllegalArgumentException Some 'prop' value/s has/have not allowed values
+	 * @param p1   player 1
+	 * @param p2   player 2
+	 * @param prop Properties field: must contains
+	 *             <ul>
+	 *             <li>'size' (the match field size)</li>
+	 *             <li>'firstPlayer' (the player who starts the match)</li>
+	 *             <li>'ruleset' (the referee)</li>
+	 * @throws NumberFormatException    Unable to covert 'size' or 'firstPlayer'
+	 *                                  into Integer
+	 * @throws IllegalArgumentException Some 'prop' value/s has/have not allowed
+	 *                                  values
 	 */
-	public boolean initMatch(Player p1 , Player p2 , Properties prop) throws NumberFormatException , IllegalArgumentException {
-		if(!initialized) {
+	public boolean initMatch(Player p1, Player p2, Properties prop)
+			throws NumberFormatException, IllegalArgumentException {
+		if (!initialized) {
 			this.players = new Player[] { p1, p2 };
 			this.field = MatchField.getInstance();
-			this.field.initMatchField(prop.getProperty("size",RuleSetType.DEFAULT.defaultSize()));
-			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer","0"));
-			if(currentPlayer < 0 || currentPlayer > 1) throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
+			this.field.initMatchField(prop.getProperty("size", RuleSetType.DEFAULT.defaultSize()));
+			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer", "0"));
+			if (currentPlayer < 0 || currentPlayer > 1)
+				throw new IllegalArgumentException(
+						"firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
 			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
-			this.referee = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.parse(prop.getProperty("ruleset",RuleSetType.DEFAULT.name())));
+			this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
+					.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
 			this.initialized = true;
 			return true;
 		}
@@ -79,21 +91,24 @@ public final class Match {
 	public static Match getInstance() {
 		return INSTANCE;
 	}
-	
+
 	/**
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
 	public MatchStatus getStatus() {
-		if(!initialized) throw new UnitializedSingleton("Match");
+		if (!initialized)
+			throw new UnitializedSingleton("Match");
 		return this.status;
 	}
 
 	/**
 	 * Initializes the players and starts the game
+	 * 
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
 	public void play() throws IllegalStateException {
-		if(!initialized) throw new UnitializedSingleton("Match");
+		if (!initialized)
+			throw new UnitializedSingleton("Match");
 		if (!init(PLAYER1)) {
 			return;
 		}
@@ -107,29 +122,31 @@ public final class Match {
 	private void _play() {
 		this.players[PLAYER1].startMatch();
 		this.players[PLAYER2].startMatch();
-		while (doAction(selectAction()));
+		while (doAction(selectAction()))
+			;
 	}
 
 	/**
-		 * @return false if the game ended
-		 */
-		private boolean doAction(ActionType action) {
-			try {
-				if (this.referee.isValidAction(action)) {
-					int column = players[this.currentPlayer].getColumn();
-					CellLocation loc = actions.get(action).apply(column);
-	// REPORT removed if (action == ActionType.INSERT) insertAction(column);
-	// REPORT removed if (action == ActionType.POP) popAction(column);
-					if(isEnd(loc)) return false;
-				}
-				else return true;
-			} catch (Throwable e) {
-				winForError(otherPlayer(this.currentPlayer), e);
-				return false;
-			}
-			this.currentPlayer = otherPlayer(this.currentPlayer);
-			return true;
+	 * @return false if the game ended
+	 */
+	private boolean doAction(ActionType action) {
+		try {
+			if (this.referee.isValidAction(action)) {
+				int column = players[this.currentPlayer].getColumn();
+				CellLocation loc = actions.get(action).apply(column);
+				// REPORT removed if (action == ActionType.INSERT) insertAction(column);
+				// REPORT removed if (action == ActionType.POP) popAction(column);
+				if (isEnd(loc))
+					return false;
+			} else
+				return true;
+		} catch (Throwable e) {
+			winForError(otherPlayer(this.currentPlayer), e);
+			return false;
 		}
+		this.currentPlayer = otherPlayer(this.currentPlayer);
+		return true;
+	}
 
 	/**
 	 * @param player Player' id
@@ -137,7 +154,7 @@ public final class Match {
 	 */
 	private boolean init(int player) {
 		try {
-			this.players[player].init( player, field );
+			this.players[player].init(player, field);
 			return true;
 		} catch (Throwable e) {
 			this.winForError(otherPlayer(player), e);
@@ -145,32 +162,41 @@ public final class Match {
 		}
 	}
 
-	//	/**
-	//	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
-	//	 * @param column The gotten column
-	//	 */
-	//	private void insertAction( int column ) throws IllegalPieceLocation{
-	//		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-	//		PieceLocation location = referee.insert(column, field);
-	//		field.insert(location, piece);
-	//	}
-	
-		/**
-		 * @return true if the game ended, false otherwise
-		 */
-		private boolean isEnd(CellLocation lastCell) {
-			CellStatus winner = referee.winner(field,lastCell); 
-			if(winner != CellStatus.EMPTY) {
- 				Utils.printField(field, referee);
-				win(winner.ordinal());
-				return true;
-			}
-			return false;
+	// /**
+	// * Makes a piece, gets the PieceLocation from referee and requires to field to
+	// insert the piece
+	// * @param column The gotten column
+	// */
+	// private void insertAction( int column ) throws IllegalPieceLocation{
+	// Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
+	// PieceLocation location = referee.insert(column, field);
+	// field.insert(location, piece);
+	// }
+
+	/**
+	 * @return true if the game ended, false otherwise
+	 */
+	private boolean isEnd(CellLocation lastCell) {
+		CellStatus winner = referee.winner(field, lastCell);
+		if(field.getPieces() != field.getColumns()*field.getRows() || winner == CellStatus.EMPTY) return false;
+
+		Utils.printField(field, referee);
+		if(field.getPieces() == field.getColumns() * field.getRows()) {
+			tie();
 		}
+		else if(winner != CellStatus.EMPTY) {
+			win(winner.ordinal());
+		}
+		return true;
+	}
 
-	
-
-	
+	/**
+		 * 
+		 */
+	private void tie() {
+		players[currentPlayer].youLose();
+		players[otherPlayer(currentPlayer)].youLose();
+	}
 
 //	/**
 //	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
@@ -199,10 +225,12 @@ public final class Match {
 //	}
 
 	/**
-	 * @return the player's choice (if the allowed action are more than one) or the only choice
+	 * @return the player's choice (if the allowed action are more than one) or the
+	 *         only choice
 	 */
 	private ActionType selectAction() {
-		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction() : referee.getAllowedActions().values().iterator().next();
+		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction()
+				: referee.getAllowedActions().values().iterator().next();
 	}
 
 	private void setStatus(MatchStatus status) {
@@ -219,7 +247,7 @@ public final class Match {
 
 	/**
 	 * @param player Winner player' id
-	 * @param e The error
+	 * @param e      The error
 	 */
 	private void winForError(int player, Throwable e) {
 		this.players[player].winForError(e);

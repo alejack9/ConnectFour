@@ -130,7 +130,12 @@ public class DefaultRuleSet implements RuleSet {
 				int celleConsecutive = 1;
 				for(int i = 0; i < list.size() - 1; i++) {
 					if(list.get(i).getStatus() == list.get(i+1).getStatus() && !list.get(i).isEmpty()) celleConsecutive++;
-					else if(celleConsecutive > maxConsecutive) { maxConsecutive = celleConsecutive; celleConsecutive = 1; }
+					else {
+						if(celleConsecutive > maxConsecutive) { 
+							maxConsecutive = celleConsecutive;
+						}
+						celleConsecutive = 1;
+					}
 				}
 				if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
 				 
