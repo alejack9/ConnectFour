@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.function.Function;
 
+import org.junit.Rule;
+
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
@@ -59,7 +61,9 @@ public final class Match {
 	 * @param p2   player 2
 	 * @param prop Properties field: must contains
 	 *             <ul>
-	 *             <li>'size' (the match field size, use {@link it.unicam.cs.pa.ConnectFour.core.Utils#sizeToString(int[]) Utils.sizeToString(int[])} to convert the size in string)</li>
+	 *             <li>'size' (the match field size, use
+	 *             {@link it.unicam.cs.pa.ConnectFour.core.Utils#sizeToString(int[])
+	 *             Utils.sizeToString(int[])} to convert the size in string)</li>
 	 *             <li>'firstPlayer' (the player who starts the match)</li>
 	 *             <li>'ruleset' (the referee)</li>
 	 * @throws NumberFormatException    Unable to covert 'size' or 'firstPlayer'
@@ -67,26 +71,26 @@ public final class Match {
 	 * @throws IllegalArgumentException Some 'prop' value/s has/have not allowed
 	 *                                  values
 	 */
-	public boolean initMatch(Player p1, Player p2, Properties prop)
-			throws NumberFormatException, IllegalArgumentException {
-		if (!initialized) {
-			this.players = new Player[] { p1, p2 };
-			this.field = MatchField.getInstance();
-			this.field.initMatchField(prop.getProperty("size", DefaultRuleSet.DEFAULT_SIZE.toString()));
-			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer", "0"));
-			if (currentPlayer < 0 || currentPlayer > 1)
-				throw new IllegalArgumentException(
-						"firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
-			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
-			this.referee = Utils.getReferee(prop.getProperty("ruleset", DefaultRuleSet.NAME));
-			this.referee = new DefaultRuleSet();
-//			this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
-//					.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
-			this.initialized = true;
-			return true;
-		}
-		return false;
-	}
+//	public boolean initMatch(Player p1, Player p2, Properties prop)
+//			throws NumberFormatException, IllegalArgumentException {
+//		if (!initialized) {
+//			this.players = new Player[] { p1, p2 };
+//			this.field = MatchField.getInstance();
+//			this.field.initMatchField(prop.getProperty("size", DefaultRuleSet.DEFAULT_SIZE.toString()));
+//			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer", "0"));
+//			if (currentPlayer < 0 || currentPlayer > 1)
+//				throw new IllegalArgumentException(
+//						"firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
+//			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
+//			this.referee = Utils.getReferee(prop.getProperty("ruleset", DefaultRuleSet.NAME));
+//			this.referee = new DefaultRuleSet();
+////			this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
+////					.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
+//			this.initialized = true;
+//			return true;
+//		}
+//		return false;
+//	}
 
 	public static Match getInstance() {
 		return INSTANCE;
@@ -122,8 +126,8 @@ public final class Match {
 	private void _play() {
 		this.players[PLAYER1].startMatch();
 		this.players[PLAYER2].startMatch();
-		while (doAction(selectAction()))
-			;
+		while (doAction(selectAction()));
+		this.initialized = false;
 	}
 
 	/**
@@ -136,8 +140,7 @@ public final class Match {
 				CellLocation loc = actions.get(action).apply(column);
 				// REPORT removed if (action == ActionType.INSERT) insertAction(column);
 				// REPORT removed if (action == ActionType.POP) popAction(column);
-				if (isEnd(loc))
-					return false;
+				if (isEnd(loc)) return false;
 			} else
 				return true;
 		} catch (Throwable e) {
@@ -178,13 +181,13 @@ public final class Match {
 	 */
 	private boolean isEnd(CellLocation lastCell) {
 		CellStatus winner = referee.winner(field, lastCell);
-		if(field.getPieces() != field.getColumns()*field.getRows() && winner == CellStatus.EMPTY) return false;
+		if (field.getPieces() != field.getColumns() * field.getRows() && winner == CellStatus.EMPTY)
+			return false;
 
 		Utils.printField(field, referee);
-		if(field.getPieces() == field.getColumns() * field.getRows()) {
+		if (field.getPieces() == field.getColumns() * field.getRows()) {
 			tie();
-		}
-		else if(winner != CellStatus.EMPTY) {
+		} else if (winner != CellStatus.EMPTY) {
 			win(winner.ordinal());
 		}
 		return true;
@@ -253,4 +256,43 @@ public final class Match {
 		this.players[player].winForError(e);
 		this.players[otherPlayer(player)].loseForError(e);
 	}
+
+	/**
+	 * @param p1
+	 * @param p2
+	 * @param proop
+	 */
+	public boolean initMatch(Player p1, Player p2, HashMap<String, Object> prop) throws NumberFormatException, IllegalArgumentException {
+		if (!initialized) {
+			this.players = new Player[] { p1, p2 };
+			this.field = MatchField.getInstance();
+			this.field.initMatchField(getObject(prop.getOrDefault("size", DefaultRuleSet.DEFAULT_SIZE), Size.class));
+			
+			this.currentPlayer = getObject(prop.getOrDefault("firstPlayer", 0), Integer.class);
+			if (currentPlayer < 0 || currentPlayer > 1)
+				throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
+			
+			System.out.println(prop.getOrDefault("ruleset", DefaultRuleSet.class).getClass());
+			Object toConvert = prop.getOrDefault("ruleset", new DefaultRuleSet()).getClass();
+//			if(RuleSet.class.isAssignableFrom(toConvert.getClass())) toConvert = toConvert.getClass().cast(toConvert);
+			this.referee = referee.getClass().cast(toConvert);
+//			this.referee = getObject(prop.getOrDefault("ruleset", DefaultRuleSet.class),RuleSet.class);
+//		this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
+//				.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
+			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
+			this.initialized = true;
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param toPass
+	 * @param class1
+	 */
+	private <T> T getObject(Object toPass, Class<T> class1) {
+		if(!class1.equals(toPass.getClass())) throw new IllegalArgumentException("HasMap must contain a " + class1.getName() + " class, not a " + toPass.getClass() + " class");
+		return class1.cast(toPass);
+	}
+
 }

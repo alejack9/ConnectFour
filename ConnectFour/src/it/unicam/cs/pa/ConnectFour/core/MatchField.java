@@ -32,7 +32,7 @@ public final class MatchField {
 	 * [0] = rows<br />
 	 * [1] = columns
 	 */
-	private int[] size;
+	private Size size;
 	private int pieces;
 
 	private List<Function<CellLocation, List<Cell>>> listsGetters = new ArrayList<>();
@@ -54,13 +54,13 @@ public final class MatchField {
 	 * @param size the field size
 	 * @throws IllegalArgumentException 'size' is not valid
 	 */
-	public boolean initMatchField(String size) throws IllegalArgumentException {
+	public boolean initMatchField(Size size) throws IllegalArgumentException {
 		if (!initialized) {
 			/**
 			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we
 			 * don't care
 			 */
-			this.size = Utils.stringToSize(size);
+			this.size = size;
 			this.initialized = true;
 			fill();
 			return true;
@@ -159,7 +159,7 @@ public final class MatchField {
 	 */
 	public int getRows() throws UnitializedSingleton {
 		checkInit();
-		return this.size[0];
+		return this.size.getRows();
 	}
 
 	/**
@@ -167,7 +167,7 @@ public final class MatchField {
 	 */
 	public int getColumns() throws UnitializedSingleton {
 		checkInit();
-		return this.size[1];
+		return this.size.getColumns();
 	}
 
 	/**
