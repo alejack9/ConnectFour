@@ -6,9 +6,10 @@ import java.util.Properties;
 import java.util.function.Function;
 
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
-import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
-import it.unicam.cs.pa.ConnectFour.factory.Factories;
-import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+//import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
+//import it.unicam.cs.pa.ConnectFour.factory.Factories;
+//import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.factory.PieceFactory;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
@@ -35,7 +36,7 @@ public final class Match {
 
 	private MatchStatus status = MatchStatus.INIT;
 
-	private AbstractFactory piecesFactory;
+	private PieceFactory piecesFactory;
 
 	private static Map<ActionType, Function<Integer, CellLocation>> actions;
 
@@ -77,7 +78,7 @@ public final class Match {
 			if (currentPlayer < 0 || currentPlayer > 1)
 				throw new IllegalArgumentException(
 						"firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
-			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
+			this.piecesFactory = PieceFactory.getIstance();
 			this.referee = Utils.getReferee(prop.getProperty("ruleset", DefaultRuleSet.NAME));
 			this.referee = new DefaultRuleSet();
 //			this.referee = FactoriesProducer.getFactory(Factories.REFEREE)

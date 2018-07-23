@@ -13,14 +13,14 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  * @author giacche`
  *
  */
-public class IterativeMatch {
+public class InteractiveMatch {
  
 	public static void main(String[] args) {
 		Player p1 = new InteractivePlayer("X");
 		Player p2 = new InteractivePlayer("O");
 		
 		HashMap<String, Object> proop = new HashMap<>();
-		proop.put("size", );
+		// proop.put("size", );
 		
 		Properties prop = new Properties();
 		

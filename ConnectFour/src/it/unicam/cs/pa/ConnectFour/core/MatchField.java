@@ -32,7 +32,7 @@ public final class MatchField {
 	 * [0] = rows<br />
 	 * [1] = columns
 	 */
-	private int[] size;
+	private Size size;
 	private int pieces;
 
 	private List<Function<CellLocation, List<Cell>>> listsGetters = new ArrayList<>();
@@ -60,7 +60,7 @@ public final class MatchField {
 			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we
 			 * don't care
 			 */
-			this.size = Utils.stringToSize(size);
+			this.size = new Size(Utils.stringToSize(size));
 			this.initialized = true;
 			fill();
 			return true;
@@ -159,7 +159,7 @@ public final class MatchField {
 	 */
 	public int getRows() throws UnitializedSingleton {
 		checkInit();
-		return this.size[0];
+		return this.size.getRows();
 	}
 
 	/**
@@ -167,7 +167,7 @@ public final class MatchField {
 	 */
 	public int getColumns() throws UnitializedSingleton {
 		checkInit();
-		return this.size[1];
+		return this.size.getColumns();
 	}
 
 	/**

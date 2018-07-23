@@ -30,7 +30,7 @@ public class Utils {
 	 * @param property
 	 * @return
 	 */
-	public static RuleSet getReferee(String rulesetName) {
+	public static RuleSetType getReferee(String rulesetName) {
 		return Enum.valueOf(RuleSetType.class, rulesetName);
 	}
 
@@ -54,10 +54,10 @@ public class Utils {
 		}
 	}
 
-	public static int[] stringToSize (String size) throws IllegalArgumentException {
+	public static Integer[] stringToSize (String size) throws IllegalArgumentException {
 		try {
 			List.of(size.split(",")).forEach(Integer::parseInt);
-			int[] toReturn = new int[] { Integer.parseInt(size.split(",")[0]) , Integer.parseInt(size.split(",")[1]) };
+			Integer[] toReturn = new Integer[] { Integer.parseInt(size.split(",")[0]) , Integer.parseInt(size.split(",")[1]) };
 			// REPORT stream is not useful in this case: there're only 2 elements
 //			int[] toReturn = Stream.of(size.split(",")).mapToInt(Integer::parseInt).takeWhile(c -> c > 1).toArray();
 	
