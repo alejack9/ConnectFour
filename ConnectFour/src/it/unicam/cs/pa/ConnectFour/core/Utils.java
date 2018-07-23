@@ -30,7 +30,7 @@ public class Utils {
 	 * @param property
 	 * @return
 	 */
-	public static RuleSetType getReferee(String rulesetName) {
+	public static RuleSet getReferee(String rulesetName) {
 		return Enum.valueOf(RuleSetType.class, rulesetName);
 	}
 

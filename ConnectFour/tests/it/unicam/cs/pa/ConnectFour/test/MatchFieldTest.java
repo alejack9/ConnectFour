@@ -29,7 +29,7 @@ class MatchFieldTest {
 	 */
 	@Test
 	void testInitMatchField() {
-		mf.initMatchField(DefaultRuleSet.DEFAULT_SIZE[0] + "x" + DefaultRuleSet.DEFAULT_SIZE[1]);
+		mf.initMatchField(DefaultRuleSet.DEFAULT_SIZE.toString());
 	}
 
 	/**

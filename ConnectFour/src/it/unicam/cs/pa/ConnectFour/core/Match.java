@@ -80,6 +80,7 @@ public final class Match {
 						"firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
 			this.piecesFactory = PieceFactory.getIstance();
 			this.referee = Utils.getReferee(prop.getProperty("ruleset", DefaultRuleSet.NAME));
+			//this.referee = Utils.getReferee(prop.getProperty("ruleset"));
 			this.referee = new DefaultRuleSet();
 //			this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
 //					.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
