@@ -1,7 +1,7 @@
 package it.unicam.cs.pa.ConnectFour.factory;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public enum Factories {

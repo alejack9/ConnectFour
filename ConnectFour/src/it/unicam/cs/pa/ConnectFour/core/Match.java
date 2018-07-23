@@ -3,9 +3,7 @@ package it.unicam.cs.pa.ConnectFour.core;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
@@ -13,11 +11,12 @@ import it.unicam.cs.pa.ConnectFour.factory.Factories;
 import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 // REPORT si sarebbe potuto mettere match observable e player observer per caricare init del player al cambiamento di stato di match. Tuttavia e` svantaggioso perche` dovrei passare a player il proprio id e il referee e dovrei creare un nuovo oggetto per inserire questi due parametri, in piu` id e` diverso per uno e per l'altro mentre la notifica viene inviata ad entrambi
@@ -61,7 +60,7 @@ public final class Match {
 	 * @param p2   player 2
 	 * @param prop Properties field: must contains
 	 *             <ul>
-	 *             <li>'size' (the match field size)</li>
+	 *             <li>'size' (the match field size, use {@link it.unicam.cs.pa.ConnectFour.core.Utils#sizeToString(int[]) Utils.sizeToString(int[])} to convert the size in string)</li>
 	 *             <li>'firstPlayer' (the player who starts the match)</li>
 	 *             <li>'ruleset' (the referee)</li>
 	 * @throws NumberFormatException    Unable to covert 'size' or 'firstPlayer'
@@ -74,14 +73,16 @@ public final class Match {
 		if (!initialized) {
 			this.players = new Player[] { p1, p2 };
 			this.field = MatchField.getInstance();
-			this.field.initMatchField(prop.getProperty("size", RuleSetType.DEFAULT.defaultSize()));
+			this.field.initMatchField(prop.getProperty("size", RuleSetType.DEFAULT.defaultSize().toString()));
 			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer", "0"));
 			if (currentPlayer < 0 || currentPlayer > 1)
 				throw new IllegalArgumentException(
 						"firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
 			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
-			this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
-					.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
+			this.referee = Utils.getReferee(prop.getProperty("ruleset", DefaultRuleSet.NAME));
+			this.referee = new DefaultRuleSet();
+//			this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
+//					.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
 			this.initialized = true;
 			return true;
 		}
@@ -178,7 +179,7 @@ public final class Match {
 	 */
 	private boolean isEnd(CellLocation lastCell) {
 		CellStatus winner = referee.winner(field, lastCell);
-		if(field.getPieces() != field.getColumns()*field.getRows() || winner == CellStatus.EMPTY) return false;
+		if(field.getPieces() != field.getColumns()*field.getRows() && winner == CellStatus.EMPTY) return false;
 
 		Utils.printField(field, referee);
 		if(field.getPieces() == field.getColumns() * field.getRows()) {

@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public enum Direction {

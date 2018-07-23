@@ -14,7 +14,7 @@ import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public interface RuleSet {

@@ -1,7 +1,9 @@
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
+import it.unicam.cs.pa.ConnectFour.core.Size;
+
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public enum RuleSetType {
@@ -18,13 +20,13 @@ public enum RuleSetType {
 	 */
 	FIVEINROW;
 	 
-	public String defaultSize() {
+	public Size defaultSize() {
 		switch(this) {
-			case DEFAULT: return "6x7";
-			case POP: return "6x7";
-			case FIVEINROW: return "8x8";
+			case DEFAULT: return new Size(new Integer[] { 6 , 7 });
+			case POP: return new Size(new Integer[] { 6 , 7 });
+			case FIVEINROW: return new Size(new Integer[] { 8 , 8 });
 		}
-		return "0x0";
+		return new Size(new Integer[] { 0 , 0 });
 	}
 
 	/**

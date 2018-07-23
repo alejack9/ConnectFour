@@ -15,7 +15,7 @@ import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class DefaultRuleSet implements RuleSet {
@@ -24,8 +24,8 @@ public class DefaultRuleSet implements RuleSet {
 	
 	public static final int[] DEFAULT_SIZE = { 6 , 7 };
 	
-//	private static final ActionType[] allowedActions = { ActionType.INSERT };
-
+	public static final String NAME = "DefaultRuleSet";
+	
 	private final BiFunction<Integer, List<List<Cell>>, Optional<Cell>> destinationCell = ( column , field ) -> field.get(column).stream().filter(Cell::isEmpty).reduce((prev, last) -> last);
 	
 	public DefaultRuleSet () {
@@ -53,16 +53,6 @@ public class DefaultRuleSet implements RuleSet {
 		if(isInBound(column,field.getColumns())) {
 			Cell cell = destinationCell.apply(column, field.getField()).orElseThrow(() -> new IllegalPieceLocation(column,field));
 			return cell.getLocation();
-
-			
-//			int row = 0;
-//			while(field[row++][column].isEmpty());
-//			return new PieceLocation(row - 1, column);
-//			int x = 0;
-//			for(Cell c : field[column] ) {
-//				if(c.isEmpty()) x++;
-//			}
-//			return new PieceLocation(x - 1, column);
 		}
 		return null;
 	}
@@ -137,17 +127,8 @@ public class DefaultRuleSet implements RuleSet {
 						celleConsecutive = 1;
 					}
 				}
-				if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
-				 
-//				long con = Stream.iterate(1, i -> i < list.size(), i -> i + 1)
-////					.filter(i -> (i == 0 || list.get(i - 1).getStatus() == list.get(i).getStatus()) && list.get(i).getStatus() != CellStatus.EMPTY)
-//					.filter(i -> (list.get(i-1).getStatus() == list.get(i).getStatus()) && !list.get(i).isEmpty())
-//					.peek(i -> System.out.print( i + " "))
-//					.count();
-//				Stream.iterate(0, i -> i < list.size() , (i) -> i + 1).map(i -> list.get(i)).;
-//				long con = function.apply(cell).stream().takeWhile(x -> x.getPiece().getColor() == field.getCellStatus(cell)).count();
-//				if(con >= 3) return field.getCellStatus(cell);
-				if(maxConsecutive >= 4) return field.getCellStatus(cell);
+//				if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
+				if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return field.getCellStatus(cell);
 			}
 		}
 		return CellStatus.EMPTY;

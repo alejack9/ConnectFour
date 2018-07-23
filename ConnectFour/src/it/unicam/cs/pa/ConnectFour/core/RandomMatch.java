@@ -10,7 +10,7 @@ import it.unicam.cs.pa.ConnectFour.player.RandomPlayer;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class RandomMatch {
@@ -23,7 +23,8 @@ public class RandomMatch {
 		Player p2 = new RandomPlayer("P2");
 		
 		Properties prop = new Properties();
-		prop.setProperty("size", RuleSetType.DEFAULT.defaultSize());
+		int[] size = new int[] { 9 , 9 };
+		prop.setProperty("size", Utils.sizeToString(size));
 		prop.setProperty("ruleset", RuleSetType.DEFAULT.name());
 		// REPORT FIRSTPLAYER MUST BE 0 OR 1
 		prop.setProperty("firstPlayer", "0");

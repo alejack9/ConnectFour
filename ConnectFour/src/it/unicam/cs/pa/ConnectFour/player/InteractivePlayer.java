@@ -13,6 +13,7 @@ import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.exception.InternalException;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
 import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
@@ -32,7 +33,8 @@ public class InteractivePlayer extends Player {
 		this( name , referee , System.in , System.out );
 	}
 	public InteractivePlayer( String name ) {
-		this( name , FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT) );
+//		this( name , FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT)); 
+		this( name , new DefaultRuleSet());
 	}
 	
 	

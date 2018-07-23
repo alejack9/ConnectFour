@@ -14,11 +14,12 @@ import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.exception.InternalException;
 import it.unicam.cs.pa.ConnectFour.factory.Factories;
 import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class RandomPlayer extends Player {
@@ -39,7 +40,8 @@ public class RandomPlayer extends Player {
 	}
 	
 	public RandomPlayer(String name) {
-		this(name, FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT), true);
+//		this(name, FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT), true);
+		this(name, new DefaultRuleSet(), true);
 	}
 
 	@Override

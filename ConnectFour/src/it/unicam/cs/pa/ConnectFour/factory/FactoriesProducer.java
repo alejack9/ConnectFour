@@ -3,7 +3,7 @@ package it.unicam.cs.pa.ConnectFour.factory;
 import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class FactoriesProducer {
@@ -13,7 +13,7 @@ public class FactoriesProducer {
 	public static AbstractFactory getFactory(Factories factory) throws UnknownEnumValue {
 		switch (factory) {
 		case PIECES:	return PieceFactory.getIstance();
-		case REFEREE:	return new RefereeFactory();
+//		case REFEREE:	return new RefereeFactory();
 		default:		throw new UnknownEnumValue(factory);
 		}
 	}

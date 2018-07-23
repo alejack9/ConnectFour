@@ -13,7 +13,7 @@ import it.unicam.cs.pa.ConnectFour.exception.InternalException;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public abstract class Player {

@@ -4,7 +4,7 @@
 package it.unicam.cs.pa.ConnectFour.exception;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class IllegalIdValue extends IllegalArgumentException {
