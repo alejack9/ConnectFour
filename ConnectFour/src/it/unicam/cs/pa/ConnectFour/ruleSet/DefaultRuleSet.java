@@ -1,18 +1,17 @@
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
+import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
-import it.unicam.cs.pa.ConnectFour.core.CellLocation;
+import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 /**
  * @author giacche`
@@ -22,7 +21,7 @@ public class DefaultRuleSet implements RuleSet {
 
 	private static final HashMap<Integer, ActionType> allowedActions = new HashMap<>();
 	
-	public static final int[] DEFAULT_SIZE = { 6 , 7 };
+	public static final Size DEFAULT_SIZE = new Size( 6 , 7 );
 	
 	public static final String NAME = "DefaultRuleSet";
 	
@@ -61,8 +60,8 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(PieceLocation,int)
 	 */
 	@Override
-	public boolean isInBound(CellLocation loc, int[] customSize) {
-		return loc.getRow() >= 0 && loc.getRow() < customSize[0] && loc.getColumn() >= 0 && loc.getColumn() < customSize[1];
+	public boolean isInBound(CellLocation loc, Size customSize) {
+		return loc.getRow() >= 0 && loc.getRow() < customSize.getRows() && loc.getColumn() >= 0 && loc.getColumn() < customSize.getColumns();
 	}
 	
 	/* (non-Javadoc)
@@ -78,7 +77,7 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public boolean isInBound(int column , int customColumnSize) {
-		return isInBound(new CellLocation(0, column) , new int[] { 1 , customColumnSize });
+		return isInBound(new CellLocation(0, column) , new Size( 1 , customColumnSize ));
 	}
 
 	/* (non-Javadoc)
@@ -86,7 +85,7 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public boolean isInBound(int column) {
-		return isInBound( column , DEFAULT_SIZE[1] );
+		return isInBound( column , DEFAULT_SIZE.getColumns() );
 	}
 
 

@@ -13,7 +13,6 @@ import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacche`
@@ -73,7 +72,7 @@ public final class Match {
 		if (!initialized) {
 			this.players = new Player[] { p1, p2 };
 			this.field = MatchField.getInstance();
-			this.field.initMatchField(prop.getProperty("size", RuleSetType.DEFAULT.defaultSize().toString()));
+			this.field.initMatchField(prop.getProperty("size", DefaultRuleSet.DEFAULT_SIZE.toString()));
 			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer", "0"));
 			if (currentPlayer < 0 || currentPlayer > 1)
 				throw new IllegalArgumentException(

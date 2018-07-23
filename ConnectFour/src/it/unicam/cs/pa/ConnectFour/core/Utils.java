@@ -9,6 +9,7 @@ import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacche`
@@ -23,6 +24,14 @@ public class Utils {
 	public static void clearScreen( PrintStream writer ) {
 		for(int i = 0 ; i < 100 ; i++)
 			writer.println(); 
+	}
+
+	/**
+	 * @param property
+	 * @return
+	 */
+	public static RuleSet getReferee(String rulesetName) {
+		return Enum.valueOf(RuleSetType.class, rulesetName);
 	}
 
 	public static void printField ( MatchField field, RuleSet referee ) {

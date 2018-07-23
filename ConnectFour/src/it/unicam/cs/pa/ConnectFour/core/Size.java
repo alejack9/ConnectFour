@@ -18,6 +18,11 @@ public class Size {
 		this.size = List.of(size[0] , size[1]);
 	}
 	
+	public Size(Integer rows , Integer columns ) {
+		this(new Integer[] { rows , columns });
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */
@@ -52,5 +57,13 @@ public class Size {
 	 */
 	public List<Integer> getSize() {
 		return this.size;
+	}
+
+	public int getRows () {
+		return this.size.get(0);
+	}
+	
+	public int getColumns () {
+		return this.size.get(1);
 	}
 }

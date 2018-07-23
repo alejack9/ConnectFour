@@ -12,11 +12,8 @@ import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.exception.InternalException;
-import it.unicam.cs.pa.ConnectFour.factory.Factories;
-import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacche`
