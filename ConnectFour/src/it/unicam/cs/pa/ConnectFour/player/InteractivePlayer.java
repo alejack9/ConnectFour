@@ -11,10 +11,8 @@ import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.exception.InternalException;
-import it.unicam.cs.pa.ConnectFour.factory.Factories;
-import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author Alessandra Boccuto
@@ -32,7 +30,8 @@ public class InteractivePlayer extends Player {
 		this( name , referee , System.in , System.out );
 	}
 	public InteractivePlayer( String name ) {
-		this( name , FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT) );
+//		this( name , FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT)); 
+		this( name , new DefaultRuleSet());
 	}
 	
 	
@@ -79,7 +78,7 @@ public class InteractivePlayer extends Player {
 	 */
 	@Override
 	public void loseForError(Throwable e) {
-		print("Oh no you have made a mistake ... You have lost! "+e.getMessage());		
+		print("Oh no you have made a mistake ... You have lost! " + e.getMessage());		
 	}
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.Player#startMatch()

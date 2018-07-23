@@ -6,7 +6,7 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class Piece extends AbstractPiece {

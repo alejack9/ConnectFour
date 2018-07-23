@@ -6,7 +6,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class PieceFactory implements AbstractFactory {
@@ -30,13 +30,13 @@ public class PieceFactory implements AbstractFactory {
 	public Piece getPiece(CellStatus color) throws IllegalArgumentException {
 		return new Piece(this.id++, color);
 	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getReferee(it.unicam.cs.pa.ConnectFour.RuleSetType)
-	 */
-	@Override
-	public RuleSet getReferee(RuleSetType ruleset) {
-		return null;
-	}
+//
+//	/* (non-Javadoc)
+//	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getReferee(it.unicam.cs.pa.ConnectFour.RuleSetType)
+//	 */
+//	@Override
+//	public RuleSet getReferee(RuleSetType ruleset) {
+//		return null;
+//	}
 
 }

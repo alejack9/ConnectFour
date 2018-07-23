@@ -8,7 +8,7 @@ import java.util.Optional;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 // REPORT Null Object pattern to Pieces

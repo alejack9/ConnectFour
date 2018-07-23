@@ -14,7 +14,7 @@ import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 
@@ -60,7 +60,7 @@ public final class MatchField {
 			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we
 			 * don't care
 			 */
-			this.size = Utils.sizeParse(size);
+			this.size = Utils.stringToSize(size);
 			this.initialized = true;
 			fill();
 			return true;
@@ -177,7 +177,7 @@ public final class MatchField {
 	public BiFunction<Integer, Integer, CellStatus> getView(RuleSet referee) throws UnitializedSingleton {
 		checkInit();
 		return (row, column) -> {
-			if (!referee.isInBound(new CellLocation(row, column))) {
+			if (!referee.isInBound(new CellLocation(row,column), this.size)) {
 				return null;
 			}
 			return getCellStatus(row, column);

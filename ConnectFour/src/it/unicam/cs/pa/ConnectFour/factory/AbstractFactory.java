@@ -6,7 +6,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public interface AbstractFactory {
@@ -16,6 +16,6 @@ public interface AbstractFactory {
 	 */
 	public Piece getPiece(CellStatus color) throws IllegalArgumentException;
 
-	public RuleSet getReferee(RuleSetType ruleset);
+//	public RuleSet getReferee(RuleSetType ruleset);
 	
 }
