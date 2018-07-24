@@ -50,43 +50,6 @@ public final class Match {
 		this.initialized = false;
 	}
 
-	/**
-	 * @param p1   player 1
-	 * @param p2   player 2
-	 * @param prop Properties field: must contains
-	 *             <ul>
-	 *             <li>'size' (the match field size, use
-	 *             {@link it.unicam.cs.pa.ConnectFour.core.Utils#sizeToString(int[])
-	 *             Utils.sizeToString(int[])} to convert the size in string)</li>
-	 *             <li>'firstPlayer' (the player who starts the match)</li>
-	 *             <li>'ruleset' (the referee)</li>
-	 * @throws NumberFormatException    Unable to covert 'size' or 'firstPlayer'
-	 *                                  into Integer
-	 * @throws IllegalArgumentException Some 'prop' value/s has/have not allowed
-	 *                                  values
-	 */
-
-//	public boolean initMatch(Player p1, Player p2, Properties prop)
-//			throws NumberFormatException, IllegalArgumentException {
-//		if (!initialized) {
-//			this.players = new Player[] { p1, p2 };
-//			this.field = MatchField.getInstance();
-//			this.field.initMatchField(prop.getProperty("size", DefaultRuleSet.DEFAULT_SIZE.toString()));
-//			this.currentPlayer = Integer.parseInt(prop.getProperty("firstPlayer", "0"));
-//			if (currentPlayer < 0 || currentPlayer > 1)
-//				throw new IllegalArgumentException(
-//						"firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
-//			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
-//			this.referee = Utils.getReferee(prop.getProperty("ruleset", DefaultRuleSet.NAME));
-//			this.referee = new DefaultRuleSet();
-////			this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
-////					.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
-//			this.initialized = true;
-//			return true;
-//		}
-//		return false;
-//	}
-
 	public static Match getInstance() {
 		return INSTANCE;
 	}
@@ -152,24 +115,13 @@ public final class Match {
 	 */
 	private boolean init(int player) {
 		try {
-			this.players[player].init(player, field);
+			this.players[player].init(player, field, referee);
 			return true;
 		} catch (Throwable e) {
 			this.winForError(otherPlayer(player), e);
 			return false;
 		}
 	}
-
-	// /**
-	// * Makes a piece, gets the PieceLocation from referee and requires to field to
-	// insert the piece
-	// * @param column The gotten column
-	// */
-	// private void insertAction( int column ) throws IllegalPieceLocation{
-	// Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-	// PieceLocation location = referee.insert(column, field);
-	// field.insert(location, piece);
-	// }
 
 	/**
 	 * @return true if the game ended, false otherwise
@@ -188,23 +140,10 @@ public final class Match {
 		return true;
 	}
 
-	/**
-		 * 
-		 */
 	private void tie() {
 		players[currentPlayer].youLose();
 		players[otherPlayer(currentPlayer)].youLose();
 	}
-
-//	/**
-//	 * Makes a piece, gets the PieceLocation from referee and requires to field to insert the piece
-//	 * @param column The gotten column
-//	 */
-//	private void insertAction( int column ) throws IllegalPieceLocation{
-//		Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-//		PieceLocation location = referee.insert(column, field);
-//		field.insert(location, piece);
-//	}
 
 	/**
 	 * @param player player' id
@@ -213,14 +152,6 @@ public final class Match {
 	private int otherPlayer(int player) {
 		return (player + 1) % 2;
 	}
-
-//	/**
-//	 * Gets the column from field, pops the column according to referee's rules and sets the returned column in the field
-//	 * @param column The gotten column
-//	 */
-//	private void popAction( int column ) {
-//		field.setColumn(referee.pop(field.getColumn(column)),column);
-//	}
 
 	/**
 	 * @return the player's choice (if the allowed action are more than one) or the

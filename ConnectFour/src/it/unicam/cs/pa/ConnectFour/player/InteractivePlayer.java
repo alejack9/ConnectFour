@@ -22,12 +22,12 @@ public class InteractivePlayer extends Player {
 
 	private boolean printed;
 	 
-	public InteractivePlayer( String name , RuleSet referee , InputStream in , PrintStream out ) {
-		super( name , referee , in , out );
+	public InteractivePlayer( String name , InputStream in , PrintStream out ) {
+		super( name , in , out );
 		printed = false;
 	}
 	public InteractivePlayer( String name , RuleSet referee ) {
-		this( name , referee , System.in , System.out );
+		this( name , System.in , System.out );
 	}
 	public InteractivePlayer( String name ) {
 //		this( name , FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT)); 
@@ -68,9 +68,10 @@ public class InteractivePlayer extends Player {
 	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int)
 	 */
 	@Override
-	public void init(int pid , MatchField field ) throws IllegalIdValue {
+	public void init(int pid , MatchField field , RuleSet referee ) throws IllegalIdValue {
 		this.setID(pid);
 		this.field = field;
+		super.setReferee(referee);
 	}
 
 	/* (non-Javadoc)

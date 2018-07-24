@@ -33,8 +33,10 @@ public class PopOutRuleSet implements RuleSet {
 	
 	public static final String NAME = "PopOutRuleSet";
 	
-	//private final BiFunction<Integer, List<List<Cell>>, Optional<Cell>> destinationCell = ( column , field ) -> field.get(column).stream().filter(Cell::isEmpty).reduce((prev, last) -> last);
-
+	public PopOutRuleSet () {
+		allowedActions.put(ActionType.INSERT.ordinal(), ActionType.INSERT);
+		allowedActions.put(ActionType.POP.ordinal(), ActionType.POP);
+	}
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getAllowedActions()
 	 */

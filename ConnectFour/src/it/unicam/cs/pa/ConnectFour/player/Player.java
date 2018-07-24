@@ -19,7 +19,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 public abstract class Player {
 
 	// REPORT sicche` referee e` statico, e` uguale per tutte le sottoclassi, percio` 2 giocatori avranno lo stesso referee
-	private static RuleSet referee;
+	private static RuleSet referee = null;
 	protected MatchField field;
 	
 	protected String name;
@@ -28,11 +28,10 @@ public abstract class Player {
 	protected BufferedReader in;
 	protected PrintStream out;
 	
-	protected Player( String name , RuleSet ruleset , InputStream in , PrintStream out ) {
+	protected Player( String name , InputStream in , PrintStream out ) {
 		this.name = name;
 		this.in = new BufferedReader(new InputStreamReader(in));
 		this.out = out;
-		referee = ruleset;
 	}
 	
 	/**
@@ -52,7 +51,7 @@ public abstract class Player {
 	 * @param pid The player' id
 	 * @param referee The referee
 	 */
-	public abstract void init(int pid , MatchField field ) throws IllegalIdValue;
+	public abstract void init(int pid , MatchField field , RuleSet referee ) throws IllegalIdValue;
 
 	/**
 	 * @param e The error that make player lose
@@ -84,6 +83,15 @@ public abstract class Player {
 	 */
 	public int getId() {
 		return this.ID;
+	}
+
+	/**
+	 * @param referee
+	 */
+	protected boolean setReferee(RuleSet referee1) {
+		if(referee != null) return false;
+		referee = referee1;
+		return true;
 	}
 	
 }

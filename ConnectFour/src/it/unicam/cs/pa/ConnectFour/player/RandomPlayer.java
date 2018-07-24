@@ -26,14 +26,14 @@ public class RandomPlayer extends Player {
 
 	private boolean printed;
 
-	protected RandomPlayer(String name, RuleSet ruleset, boolean echo, InputStream in, PrintStream out) {
-		super(name, ruleset, in, out);
+	protected RandomPlayer(String name, boolean echo, InputStream in, PrintStream out) {
+		super(name, in, out);
 		this.random = new Random();
 		this.echo = echo;
 	}
 
 	public RandomPlayer(String name, RuleSet ruleset, boolean echo) {
-		this(name, ruleset, echo, System.in, System.out);
+		this(name, echo, System.in, System.out);
 	}
 	
 	public RandomPlayer(String name) {
@@ -56,9 +56,10 @@ public class RandomPlayer extends Player {
 	}
 
 	@Override
-	public void init(int pid, MatchField field) throws IllegalIdValue {
+	public void init(int pid, MatchField field, RuleSet referee) throws IllegalIdValue {
 		this.ID = pid;
 		this.field = field;
+		super.setReferee(referee);
 	}
 
 	@Override
