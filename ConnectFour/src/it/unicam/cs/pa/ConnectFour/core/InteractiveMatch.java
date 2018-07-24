@@ -13,10 +13,12 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 public class InteractiveMatch {
  
 	public static void main(String[] args) throws NumberFormatException, IllegalArgumentException {
+
 		Player p1 = new InteractivePlayer("X");
 		Player p2 = new InteractivePlayer("O");
 		
 		HashMap<String, Object> proop = new HashMap<>();
+
 		proop.put("size", DefaultRuleSet.DEFAULT_SIZE);
 		proop.put("ruleset", new DefaultRuleSet());
 		proop.put("firstPlayer", 0);

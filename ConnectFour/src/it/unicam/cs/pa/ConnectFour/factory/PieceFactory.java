@@ -9,7 +9,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  * @author giacche`
  *
  */
-public class PieceFactory implements AbstractFactory {
+public class PieceFactory {
 	
 	private final static PieceFactory INSTANCE = new PieceFactory();
 	
@@ -26,7 +26,7 @@ public class PieceFactory implements AbstractFactory {
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getPiece(it.unicam.cs.pa.ConnectFour.CellStatus)
 	 */
-	@Override
+	
 	public Piece getPiece(CellStatus color) throws IllegalArgumentException {
 		return new Piece(this.id++, color);
 	}

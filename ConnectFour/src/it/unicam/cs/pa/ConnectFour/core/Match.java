@@ -5,9 +5,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
-import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
-import it.unicam.cs.pa.ConnectFour.factory.Factories;
-import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+//import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
+//import it.unicam.cs.pa.ConnectFour.factory.Factories;
+//import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.factory.PieceFactory;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
@@ -34,7 +35,7 @@ public final class Match {
 
 	private MatchStatus status = MatchStatus.INIT;
 
-	private AbstractFactory piecesFactory;
+	private PieceFactory piecesFactory;
 
 	private static Map<ActionType, Function<Integer, CellLocation>> actions;
 
@@ -68,6 +69,7 @@ public final class Match {
 	 * @throws IllegalArgumentException Some 'prop' value/s has/have not allowed
 	 *                                  values
 	 */
+
 //	public boolean initMatch(Player p1, Player p2, Properties prop)
 //			throws NumberFormatException, IllegalArgumentException {
 //		if (!initialized) {
