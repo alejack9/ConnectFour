@@ -13,7 +13,7 @@ import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
-import it.unicam.cs.pa.ConnectFour.factory.PieceFactory;
+import it.unicam.cs.pa.ConnectFour.core.PieceFactory;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 
 /**
