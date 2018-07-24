@@ -5,7 +5,7 @@ import it.unicam.cs.pa.ConnectFour.piece.NullPiece;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class Cell {

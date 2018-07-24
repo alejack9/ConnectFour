@@ -6,7 +6,7 @@ package it.unicam.cs.pa.ConnectFour.exception;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class IllegalPieceLocation extends RuntimeException {

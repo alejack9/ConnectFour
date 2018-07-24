@@ -17,7 +17,7 @@ import it.unicam.cs.pa.ConnectFour.factory.PieceFactory;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 
 /**
- * @author giacchè
+ * @author giacchï¿½
  *
  */
 class MatchFieldTest {
@@ -29,7 +29,7 @@ class MatchFieldTest {
 	 */
 	@Test
 	void testInitMatchField() {
-		mf.initMatchField(DefaultRuleSet.DEFAULT_SIZE[0] + "x" + DefaultRuleSet.DEFAULT_SIZE[1]);
+		mf.initMatchField(DefaultRuleSet.DEFAULT_SIZE);
 	}
 
 	/**

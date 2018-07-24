@@ -10,11 +10,12 @@ import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public interface RuleSet {
@@ -49,7 +50,7 @@ public interface RuleSet {
 	 * @param custumSize
 	 * @return
 	 */
-	public boolean isInBound(CellLocation loc, int[] custumSize);
+	public boolean isInBound(CellLocation loc, Size custumSize);
 	/**
 	 * @return true if the action is allowed, false otherwise
 	 */

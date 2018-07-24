@@ -12,20 +12,20 @@ import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
-import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
-import it.unicam.cs.pa.ConnectFour.factory.Factories;
-import it.unicam.cs.pa.ConnectFour.factory.FactoriesProducer;
+import it.unicam.cs.pa.ConnectFour.factory.PieceFactory;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
- * @author giacchè
+ * @author giacchï¿½
  *
  */
 class RuleSetTest {
 
-	RuleSet rs = FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT);
+	RuleSet rs = new DefaultRuleSet();
 
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#actionsNumber()}.
@@ -49,7 +49,7 @@ class RuleSetTest {
 //	@Test
 	void testGetPieceLocation() {
 		MatchField f = MatchField.getInstance();
-		f.initMatchField("6x7");
+		f.initMatchField(new Size(6,7));
 		System.out.println(rs.getPieceLocation(0, f).getRow());
 		assertTrue(rs.getPieceLocation(0, f).getRow() == 5);
 	}
@@ -91,10 +91,10 @@ class RuleSetTest {
 	 */
 	@Test
 	void testIsInBoundCellLocationIntArray() {
-		assertTrue(rs.isInBound(new CellLocation(1, 1),new int[] { 6 , 7 }));
-		assertFalse(rs.isInBound(new CellLocation(-1, 1),new int[] { 6 , 7 }));
-		assertFalse(rs.isInBound(new CellLocation(1, -1),new int[] { 6 , 7 }));
-		assertFalse(rs.isInBound(new CellLocation(-1, -1),new int[] { 6 , 7 }));
+		assertTrue(rs.isInBound(new CellLocation(1, 1),new Size ( 6 , 7 )));
+		assertFalse(rs.isInBound(new CellLocation(-1, 1),new Size ( 6 , 7 )));
+		assertFalse(rs.isInBound(new CellLocation(1, -1),new Size ( 6 , 7 )));
+		assertFalse(rs.isInBound(new CellLocation(-1, -1),new Size ( 6 , 7 )));
 	}
 
 	/**
@@ -112,7 +112,7 @@ class RuleSetTest {
 	@Test
 	void testIsValidInsert() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
+		x.initMatchField(new Size(6,7));
 		assertTrue(rs.isValidInsert(0, x));
 	}
 
@@ -122,7 +122,7 @@ class RuleSetTest {
 	@Test
 	void testPop() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
+		x.initMatchField(new Size(6,7));
 		assertTrue(rs.pop(x.getColumn(0)).equals(x.getColumn(0)));
 	}
 
@@ -132,8 +132,8 @@ class RuleSetTest {
 //	@Test
 	void testZeroNWWinner() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
-		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.initMatchField(new Size(6,7));
+		PieceFactory pf = PieceFactory.getIstance();
 		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P1));
 		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P1));
@@ -158,8 +158,8 @@ class RuleSetTest {
 //	@Test
 	void testTraslatedNWWinner() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
-		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.initMatchField(new Size(6,7));
+		PieceFactory pf = PieceFactory.getIstance();
 		x.insert(rs.getPieceLocation(0+2, x), pf.getPiece(CellStatus.P1));
 		x.insert(rs.getPieceLocation(1+2, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(1+2, x), pf.getPiece(CellStatus.P1));
@@ -184,8 +184,8 @@ class RuleSetTest {
 //	@Test
 	void testMiddleNWWinner() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
-		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.initMatchField(new Size(6,7));
+		PieceFactory pf = PieceFactory.getIstance();
 		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P2));
@@ -215,8 +215,8 @@ class RuleSetTest {
 //	@Test
 	void testFinishNWWinner() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
-		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.initMatchField(new Size(6,7));
+		PieceFactory pf = PieceFactory.getIstance();
 		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
@@ -240,8 +240,8 @@ class RuleSetTest {
 //	@Test
 	void testZeroNEWinner() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
-		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.initMatchField(new Size(6,7));
+		PieceFactory pf = PieceFactory.getIstance();
 		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
@@ -266,8 +266,8 @@ class RuleSetTest {
 //	@Test
 	void testTraslatedNEWinner() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
-		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.initMatchField(new Size(6,7));
+		PieceFactory pf = PieceFactory.getIstance();
 		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
@@ -291,8 +291,8 @@ class RuleSetTest {
 	@Test
 	void testFinishNEWinner() {
 		MatchField x = MatchField.getInstance();
-		x.initMatchField("6x7");
-		AbstractFactory pf = FactoriesProducer.getFactory(Factories.PIECES);
+		x.initMatchField(new Size(6,7));
+		PieceFactory pf = PieceFactory.getIstance();
 		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
 		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));

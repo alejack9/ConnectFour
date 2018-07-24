@@ -1,7 +1,7 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public enum ActionType {

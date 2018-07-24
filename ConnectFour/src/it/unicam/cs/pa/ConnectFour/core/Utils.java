@@ -4,13 +4,15 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 import java.io.PrintStream;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
- * @author giacchè
+ * @author giacche`
  *
  */
 public class Utils {
@@ -23,6 +25,14 @@ public class Utils {
 		for(int i = 0 ; i < 100 ; i++)
 			writer.println(); 
 	}
+//
+//	/**
+//	 * @param property
+//	 * @return
+//	 */
+//	public static RuleSet getReferee(String rulesetName) {
+//		return Enum.valueOf(RuleSetType.class, rulesetName);
+//	}
 
 	public static void printField ( MatchField field, RuleSet referee ) {
 		printField( System.out , field.getView(referee) , field.getRows() , field.getColumns() );
@@ -41,19 +51,6 @@ public class Utils {
 		for( int row = 0; row < rows ; row++ ) {
 			printRow ( writer , view , row , columns );
 			printRowDelimiter ( writer , columns );
-		}
-	}
-
-	public static int[] sizeParse (String size) throws IllegalArgumentException {
-		try {
-			int[] toReturn = Stream.of(size.split("x")).mapToInt(Integer::parseInt).takeWhile(c -> c > 1).toArray();
-	
-			if(toReturn.length == 2)
-				return toReturn;
-			throw new IllegalArgumentException();
-		}
-		catch (NumberFormatException e) {
-			throw new IllegalArgumentException(e.toString());
 		}
 	}
 
