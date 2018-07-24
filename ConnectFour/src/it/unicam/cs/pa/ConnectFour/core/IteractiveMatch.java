@@ -13,7 +13,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  * @author giacche`
  *
  */
-public class IterativeMatch {
+public class IteractiveMatch {
  
 	public static void main(String[] args) {
 		Player p1 = new InteractivePlayer("X");
