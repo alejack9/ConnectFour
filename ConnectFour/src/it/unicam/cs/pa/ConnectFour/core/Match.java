@@ -2,10 +2,7 @@ package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.function.Function;
-
-import org.junit.Rule;
 
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.factory.AbstractFactory;
@@ -258,11 +255,16 @@ public final class Match {
 	}
 
 	/**
-	 * @param p1
-	 * @param p2
-	 * @param proop
+	 * @param p1 First player
+	 * @param p2 Second player
+	 * @param prop Properties HashMap: it contains<ul>
+	 * <li>size ({@link Size} class)</li>
+	 * <li>RuleSet ({@link RuleSet} class)</li>
+	 * <li>firstPlayer ({@link Integer} class)</li>
+	 * @return true if the initialization have been done, false otherwise
+	 * @throws IllegalArgumentException one or more entries in the HashMap are not valid
 	 */
-	public boolean initMatch(Player p1, Player p2, HashMap<String, Object> prop) throws NumberFormatException, IllegalArgumentException {
+	public boolean initMatch(Player p1, Player p2, HashMap<String, Object> prop) throws IllegalArgumentException {
 		if (!initialized) {
 			this.players = new Player[] { p1, p2 };
 			this.field = MatchField.getInstance();
@@ -271,14 +273,8 @@ public final class Match {
 			this.currentPlayer = getObject(prop.getOrDefault("firstPlayer", 0), Integer.class);
 			if (currentPlayer < 0 || currentPlayer > 1)
 				throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
-			
-			System.out.println(prop.getOrDefault("ruleset", DefaultRuleSet.class).getClass());
-			Object toConvert = prop.getOrDefault("ruleset", new DefaultRuleSet()).getClass();
-//			if(RuleSet.class.isAssignableFrom(toConvert.getClass())) toConvert = toConvert.getClass().cast(toConvert);
-			this.referee = referee.getClass().cast(toConvert);
-//			this.referee = getObject(prop.getOrDefault("ruleset", DefaultRuleSet.class),RuleSet.class);
-//		this.referee = FactoriesProducer.getFactory(Factories.REFEREE)
-//				.getReferee(RuleSetType.parse(prop.getProperty("ruleset", RuleSetType.DEFAULT.name())));
+
+			this.referee = getObject(prop.getOrDefault("ruleset", new DefaultRuleSet()), RuleSet.class);
 			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
 			this.initialized = true;
 			return true;
@@ -287,12 +283,14 @@ public final class Match {
 	}
 
 	/**
-	 * @param toPass
-	 * @param class1
+	 * @param toConvert the object to be converted
+	 * @param targetClass the target class
+	 * @return the object casted
+	 * @throws IllegalArgumentException if the passed object is not castable to the target class
 	 */
-	private <T> T getObject(Object toPass, Class<T> class1) {
-		if(!class1.equals(toPass.getClass())) throw new IllegalArgumentException("HasMap must contain a " + class1.getName() + " class, not a " + toPass.getClass() + " class");
-		return class1.cast(toPass);
+	private <T> T getObject(Object toConvert, Class<? extends T> targetClass) throws IllegalArgumentException {
+		if(!targetClass.isAssignableFrom(toConvert.getClass())) throw new IllegalArgumentException("HasMap must contain a " + targetClass.getSimpleName() + " class, not a " + toConvert.getClass().getSimpleName() + " class");
+		return targetClass.cast(toConvert);
 	}
 
 }

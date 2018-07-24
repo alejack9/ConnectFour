@@ -1,13 +1,10 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.HashMap;
-import java.util.Properties;
-import java.util.Random;
 
 import it.unicam.cs.pa.ConnectFour.player.InteractivePlayer;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacche`
@@ -15,7 +12,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
  */
 public class InteractiveMatch {
  
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NumberFormatException, IllegalArgumentException {
 		Player p1 = new InteractivePlayer("X");
 		Player p2 = new InteractivePlayer("O");
 		
@@ -26,6 +23,8 @@ public class InteractiveMatch {
 		Match m = Match.getInstance();
 		m.initMatch(p1, p2, proop);
 		m.play();
+
+		// REPORT We used to use Properties class, but it's more convenient use an HashMap containing the objects and not the objects' name 
 
 //		
 //		Properties prop = new Properties();
