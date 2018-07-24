@@ -277,7 +277,7 @@ public final class Match {
 				throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
 
 			this.referee = getObject(prop.getOrDefault("ruleset", new DefaultRuleSet()), RuleSet.class);
-			this.piecesFactory = FactoriesProducer.getFactory(Factories.PIECES);
+			this.piecesFactory = PieceFactory.getIstance();
 			this.initialized = true;
 			return true;
 		}

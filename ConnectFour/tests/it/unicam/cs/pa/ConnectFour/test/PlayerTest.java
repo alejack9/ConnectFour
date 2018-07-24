@@ -9,11 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.player.InteractivePlayer;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 
 /**
- * @author giacchè
+ * @author giacchï¿½
  *
  */
 class PlayerTest {
@@ -60,7 +61,7 @@ class PlayerTest {
 	@Test
 	void testInit() {
 		MatchField mf = MatchField.getInstance();
-		mf.initMatchField("6x7");
+		mf.initMatchField(new Size(6,7));
 		p.init(0, mf);
 		assertTrue(p.getId() == 0);
 	}
