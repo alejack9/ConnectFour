@@ -25,14 +25,14 @@ public class Utils {
 		for(int i = 0 ; i < 100 ; i++)
 			writer.println(); 
 	}
-
-	/**
-	 * @param property
-	 * @return
-	 */
-	public static RuleSet getReferee(String rulesetName) {
-		return Enum.valueOf(RuleSetType.class, rulesetName);
-	}
+//
+//	/**
+//	 * @param property
+//	 * @return
+//	 */
+//	public static RuleSet getReferee(String rulesetName) {
+//		return Enum.valueOf(RuleSetType.class, rulesetName);
+//	}
 
 	public static void printField ( MatchField field, RuleSet referee ) {
 		printField( System.out , field.getView(referee) , field.getRows() , field.getColumns() );
@@ -52,32 +52,6 @@ public class Utils {
 			printRow ( writer , view , row , columns );
 			printRowDelimiter ( writer , columns );
 		}
-	}
-
-	public static Integer[] stringToSize (String size) throws IllegalArgumentException {
-		try {
-			List.of(size.split(",")).forEach(Integer::parseInt);
-			Integer[] toReturn = new Integer[] { Integer.parseInt(size.split(",")[0]) , Integer.parseInt(size.split(",")[1]) };
-			// REPORT stream is not useful in this case: there're only 2 elements
-//			int[] toReturn = Stream.of(size.split(",")).mapToInt(Integer::parseInt).takeWhile(c -> c > 1).toArray();
-	
-			if(toReturn.length == 2)
-				return toReturn;
-			throw new IllegalArgumentException();
-		}
-		catch (NumberFormatException e) {
-			throw new IllegalArgumentException(e.toString());
-		}
-	}
-	
-	/**
-	 * convert a couple of {@link Integer} to a string 
-	 * @param size an array of 2 values: [ ROWS , COLUMNS ]
-	 * @return a string in ROWS,COLUMNS form
-	 */
-	// REPORT we could use a new class "Size" and implement the "toString" method
-	public static String sizeToString (int[] size) {
-		return size[0] + "," + size[1];
 	}
 
 	private static void printColumnIndexes( PrintStream writer , int columns) {

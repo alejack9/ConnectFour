@@ -54,13 +54,13 @@ public final class MatchField {
 	 * @param size the field size
 	 * @throws IllegalArgumentException 'size' is not valid
 	 */
-	public boolean initMatchField(String size) throws IllegalArgumentException {
+	public boolean initMatchField(Size size) throws IllegalArgumentException {
 		if (!initialized) {
 			/**
 			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we
 			 * don't care
 			 */
-			this.size = new Size(Utils.stringToSize(size));
+			this.size = size;
 			this.initialized = true;
 			fill();
 			return true;
