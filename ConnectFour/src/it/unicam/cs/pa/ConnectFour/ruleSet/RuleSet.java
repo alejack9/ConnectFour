@@ -19,11 +19,13 @@ import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
  *
  */
 public interface RuleSet {
-	 
+	
 	/**
 	 * @return The number of allowed actions
 	 */
-	public int actionsNumber();
+	public default int actionsNumber() {
+		return getAllowedActions().size();
+	}
 	/**
 	 * @return Allowed actions
 	 */
@@ -34,23 +36,19 @@ public interface RuleSet {
 	 */
 	public CellLocation getPieceLocation(int column , MatchField field) throws IllegalPieceLocation;
 	/**
-	 * @return true if the column is in bound, false otherwise
-	 */
-	public boolean isInBound ( CellLocation loc );
-	/**
-	 * @param column
-	 * @param customSize
-	 * @return
-	 */
-	boolean isInBound(int column, int customSize);
-	
-	boolean isInBound(int column);
-	/**
 	 * @param loc
 	 * @param custumSize
 	 * @return
 	 */
-	public boolean isInBound(CellLocation loc, Size custumSize);
+	public boolean isInBound(CellLocation loc, Size customSize);
+	/**
+	 * @return true if the column is in bound, false otherwise
+	 */
+	public boolean isInBound ( CellLocation loc );
+
+	boolean isInBound(int column, int customColumnSize);
+	
+	boolean isInBound(int column);
 	/**
 	 * @return true if the action is allowed, false otherwise
 	 */

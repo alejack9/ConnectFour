@@ -31,17 +31,8 @@ public class DefaultRuleSet implements RuleSet {
 		allowedActions.put(ActionType.INSERT.ordinal(), ActionType.INSERT);
 	}
 
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#actionsNumber()
-	 */
-	@Override
-	public int actionsNumber() {
-		return allowedActions.size();
-	}
-
 	public HashMap<Integer , ActionType> getAllowedActions() {
 		return allowedActions;
-//		return allowedActions;
 	}
 
 	/* (non-Javadoc)
@@ -53,7 +44,7 @@ public class DefaultRuleSet implements RuleSet {
 			Cell cell = destinationCell.apply(column, field.getField()).orElseThrow(() -> new IllegalPieceLocation(column,field));
 			return cell.getLocation();
 		}
-		return null;
+		throw new IllegalPieceLocation(column,field);
 	}
 
 	/* (non-Javadoc)
@@ -88,8 +79,6 @@ public class DefaultRuleSet implements RuleSet {
 		return isInBound( column , DEFAULT_SIZE.getColumns() );
 	}
 
-
-
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int, MatchField)
 	 */
@@ -111,24 +100,18 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public CellStatus winner(MatchField field, CellLocation cell) {
-		if(field.getPieces() >= 7) {
-			for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
-				List<Cell> list = function.apply(cell);
-				
-				int maxConsecutive = 1;
-				int celleConsecutive = 1;
-				for(int i = 0; i < list.size() - 1; i++) {
-					if(list.get(i).getStatus() == list.get(i+1).getStatus() && !list.get(i).isEmpty()) celleConsecutive++;
-					else {
-						if(celleConsecutive > maxConsecutive) { 
-							maxConsecutive = celleConsecutive;
-						}
-						celleConsecutive = 1;
-					}
+		for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
+			List<Cell> list = function.apply(cell);
+			int maxConsecutive = 1;
+			int celleConsecutive = 1;
+			for(int i = 0; i < list.size() - 1; i++) {
+				if(list.get(i).getStatus() == list.get(i+1).getStatus() && !list.get(i).isEmpty()) celleConsecutive++;
+				else {
+					if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
+					celleConsecutive = 1;
 				}
-//				if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
-				if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return field.getCellStatus(cell);
 			}
+			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return field.getCellStatus(cell);
 		}
 		return CellStatus.EMPTY;
 	}
