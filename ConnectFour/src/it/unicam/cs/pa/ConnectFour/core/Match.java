@@ -23,6 +23,7 @@ public final class Match {
 
 	private static final int PLAYER1 = 0;
 	private static final int PLAYER2 = 1;
+	private int firstPlayer;
 	private int currentPlayer;
 
 	private Player[] players;
@@ -52,6 +53,35 @@ public final class Match {
 
 	public static Match getInstance() {
 		return INSTANCE;
+	}
+
+	/**
+	 * @param p1 First player
+	 * @param p2 Second player
+	 * @param prop Properties HashMap: it contains<ul>
+	 * <li>size ({@link Size} class)</li>
+	 * <li>RuleSet ({@link RuleSet} class)</li>
+	 * <li>firstPlayer ({@link Integer} class)</li>
+	 * @return true if the initialization have been done, false otherwise
+	 * @throws IllegalArgumentException one or more entries in the HashMap are not valid
+	 */
+	public boolean initMatch(Player p1, Player p2, HashMap<String, Object> prop) throws IllegalArgumentException {
+		if (!initialized) {
+			this.players = new Player[] { p1, p2 };
+			this.field = MatchField.getInstance();
+			this.field.initMatchField(getObject(prop.getOrDefault("size", DefaultRuleSet.DEFAULT_SIZE), Size.class));
+			
+			this.currentPlayer = getObject(prop.getOrDefault("firstPlayer", 0), Integer.class);
+			this.firstPlayer = currentPlayer;
+			if (currentPlayer < 0 || currentPlayer > 1)
+				throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
+	
+			this.referee = getObject(prop.getOrDefault("ruleset", new DefaultRuleSet()), RuleSet.class);
+			this.piecesFactory = PieceFactory.getIstance();
+			this.initialized = true;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -85,7 +115,6 @@ public final class Match {
 		this.players[PLAYER1].startMatch();
 		this.players[PLAYER2].startMatch();
 		while (doAction(selectAction()));
-		this.initialized = false;
 	}
 
 	/**
@@ -96,8 +125,10 @@ public final class Match {
 			if (this.referee.isValidAction(action)) {
 				int column = players[this.currentPlayer].getColumn();
 				CellLocation loc = actions.get(action).apply(column);
-				// REPORT removed if (action == ActionType.INSERT) insertAction(column);
-				// REPORT removed if (action == ActionType.POP) popAction(column);
+				// REPORT removed
+//if (action == ActionType.INSERT) insertAction(column);
+				// REPORT removed
+//if (action == ActionType.POP) popAction(column);
 				if (isEnd(loc)) return false;
 			} else
 				return true;
@@ -137,6 +168,7 @@ public final class Match {
 		} else if (winner != CellStatus.EMPTY) {
 			win(winner.ordinal());
 		}
+		this.status = MatchStatus.END;
 		return true;
 	}
 
@@ -184,34 +216,6 @@ public final class Match {
 	}
 
 	/**
-	 * @param p1 First player
-	 * @param p2 Second player
-	 * @param prop Properties HashMap: it contains<ul>
-	 * <li>size ({@link Size} class)</li>
-	 * <li>RuleSet ({@link RuleSet} class)</li>
-	 * <li>firstPlayer ({@link Integer} class)</li>
-	 * @return true if the initialization have been done, false otherwise
-	 * @throws IllegalArgumentException one or more entries in the HashMap are not valid
-	 */
-	public boolean initMatch(Player p1, Player p2, HashMap<String, Object> prop) throws IllegalArgumentException {
-		if (!initialized) {
-			this.players = new Player[] { p1, p2 };
-			this.field = MatchField.getInstance();
-			this.field.initMatchField(getObject(prop.getOrDefault("size", DefaultRuleSet.DEFAULT_SIZE), Size.class));
-			
-			this.currentPlayer = getObject(prop.getOrDefault("firstPlayer", 0), Integer.class);
-			if (currentPlayer < 0 || currentPlayer > 1)
-				throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
-
-			this.referee = getObject(prop.getOrDefault("ruleset", new DefaultRuleSet()), RuleSet.class);
-			this.piecesFactory = PieceFactory.getIstance();
-			this.initialized = true;
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * @param toConvert the object to be converted
 	 * @param targetClass the target class
 	 * @return the object casted
@@ -222,4 +226,12 @@ public final class Match {
 		return targetClass.cast(toConvert);
 	}
 
+	public void restart() {
+		this.status = MatchStatus.ARRANGE;
+		this.firstPlayer = otherPlayer(firstPlayer);
+		this.currentPlayer = this.firstPlayer;
+		this.field.clear();
+		this.piecesFactory.restart();
+		play();
+	}
 }

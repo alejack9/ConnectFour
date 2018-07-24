@@ -54,8 +54,6 @@ public interface RuleSet {
 	 */
 	public default boolean isValidAction(ActionType action) {
 		return getAllowedActions().containsValue(action);
-			
-	//		return Stream.of(getAllowedActions()).anyMatch(c -> c.equals(action));
 	}
 	
 	/**
@@ -63,6 +61,9 @@ public interface RuleSet {
 	 * @return true if the insert is valid, false otherwise 
 	 */
 	public boolean isValidInsert ( int loc, MatchField field );
+	
+	public boolean isValidPop( int column , MatchField field);
+	
 	/**
 	 * @return The column' cells popped (without the last Piece)
 	 */

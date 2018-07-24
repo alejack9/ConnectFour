@@ -11,7 +11,6 @@ import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.exception.InternalException;
-import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
@@ -26,12 +25,8 @@ public class InteractivePlayer extends Player {
 		super( name , in , out );
 		printed = false;
 	}
-	public InteractivePlayer( String name , RuleSet referee ) {
-		this( name , System.in , System.out );
-	}
 	public InteractivePlayer( String name ) {
-//		this( name , FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT)); 
-		this( name , new DefaultRuleSet());
+		this( name , System.in , System.out );
 	}
 	
 	

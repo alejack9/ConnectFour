@@ -102,6 +102,8 @@ public class PopOutRuleSet implements RuleSet {
 	 */
 	@Override
 	public List<Cell> pop(List<Cell> column) {
+		// TODO THROW AN ERROR
+		if(!isValidPop(column)) return column;
 		Collections.rotate(column, 1);
 		column.get(0).pop();
 		return column;
@@ -126,6 +128,18 @@ public class PopOutRuleSet implements RuleSet {
 			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return field.getCellStatus(cell);
 		}
 		return CellStatus.EMPTY;
+	}
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
+	 */
+	@Override
+	public boolean isValidPop(int column, MatchField field) {
+		return isValidPop(field.getColumn(column));
+	}
+	
+	private boolean isValidPop(List<Cell> column) {
+		// TODO SET THE RIGHT BOUND
+		return column.parallelStream().filter(x -> !x.isEmpty()).count() > 1;
 	}
 
 }

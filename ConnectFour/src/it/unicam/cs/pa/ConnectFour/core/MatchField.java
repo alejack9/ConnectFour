@@ -57,8 +57,7 @@ public final class MatchField {
 	public boolean initMatchField(Size size) throws IllegalArgumentException {
 		if (!initialized) {
 			/**
-			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we
-			 * don't care
+			 * ArrayList has better 'get' and 'set' than LinkedList, worst 'add' but we don't care
 			 */
 			this.size = size;
 			this.initialized = true;
@@ -242,5 +241,17 @@ public final class MatchField {
 		toReturn.add(lastCell);
 
 		return toReturn;
+	}
+
+	/**
+	 * 
+	 */
+	public void clear() {
+		for (List<Cell> list : this.field) {
+			for (Cell cell : list) {
+				cell.pop();
+			}
+		}
+		this.pieces = 0;
 	}
 }

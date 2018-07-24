@@ -13,7 +13,7 @@ public class PieceFactory {
 	private int id;
 	
 	private PieceFactory() {
-		this.id = 0;
+		restart();
 	}
 	
 	public static PieceFactory getIstance() {
@@ -26,5 +26,12 @@ public class PieceFactory {
 	
 	public Piece getPiece(CellStatus color) throws IllegalArgumentException {
 		return new Piece(this.id++, color);
+	}
+
+	/**
+	 * 
+	 */
+	public void restart() {
+		this.id = 0;
 	}
 }

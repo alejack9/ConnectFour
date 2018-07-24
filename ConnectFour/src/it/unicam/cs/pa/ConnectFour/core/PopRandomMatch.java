@@ -19,6 +19,7 @@ public class PopRandomMatch {
 		// FIXME USER COULD ONLY GET NON-EMPTY COLUMN IF HE SELECTS "POP"
 		// FIXME PLAYER MUST CONTROL IF THE POP IS VALID
 		
+		// TODO FINISH THIS
 		Player p1 = new InteractivePlayer("X");
 		Player p2 = new InteractivePlayer("O");
 

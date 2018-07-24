@@ -115,4 +115,12 @@ public class DefaultRuleSet implements RuleSet {
 		}
 		return CellStatus.EMPTY;
 	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
+	 */
+	@Override
+	public boolean isValidPop(int column, MatchField field) {
+		return false;
+	}
 }

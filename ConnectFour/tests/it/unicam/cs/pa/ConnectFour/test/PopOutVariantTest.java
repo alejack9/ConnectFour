@@ -9,8 +9,11 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import it.unicam.cs.pa.ConnectFour.core.Cell;
+import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.PieceFactory;
+import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.ruleSet.PopOutRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
@@ -105,4 +108,18 @@ class PopOutVariantTest {
 		assert(true);
 	}
 
+	@Test
+	void testIsValidPop() {
+		MatchField f = MatchField.getInstance();
+		f.initMatchField(new Size(6,7));
+		f.insert(new CellLocation(0, 0), PieceFactory.getIstance().getPiece(CellStatus.P1));
+		f.insert(new CellLocation(1, 0), PieceFactory.getIstance().getPiece(CellStatus.P1));
+//		f.insert(new CellLocation(2, 0), PieceFactory.getIstance().getPiece(CellStatus.P1));
+//		f.insert(new CellLocation(3, 0), PieceFactory.getIstance().getPiece(CellStatus.P1));
+//		f.insert(new CellLocation(4, 0), PieceFactory.getIstance().getPiece(CellStatus.P1));
+//		f.insert(new CellLocation(5, 0), PieceFactory.getIstance().getPiece(CellStatus.P1));
+		System.out.println(f.getColumn(0).size());
+		System.out.println(r.isValidPop(0, f));
+		System.out.println(f.getColumn(0).size());
+	}
 }

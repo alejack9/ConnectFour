@@ -3,6 +3,9 @@
  */
 package it.unicam.cs.pa.ConnectFour.core;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import it.unicam.cs.pa.ConnectFour.player.Player;
@@ -15,9 +18,9 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
  */
 public class RandomMatch {
 
-	public static void main(String[] args) {
-		Player p1 = new RandomPlayer("X");
-		Player p2 = new RandomPlayer("O");
+	public static void main(String[] args) throws IOException {
+		Player p1 = new RandomPlayer("X",false);
+		Player p2 = new RandomPlayer("O",false);
 		
 		HashMap<String, Object> prop = new HashMap<>();
 		prop.put("size", DefaultRuleSet.DEFAULT_SIZE);
@@ -26,6 +29,12 @@ public class RandomMatch {
 		Match m = Match.getInstance();
 		m.initMatch(p1, p2, prop);
 		m.play();
+		System.out.println("Continue?(y/N) ");
+		while(new BufferedReader(new InputStreamReader(System.in)).readLine().equals("y")) {
+			m.restart();
+			System.out.println("Continue?(y/N) ");
+		}
+		System.out.println("Bye!");
 	}
 
 }
