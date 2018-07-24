@@ -1,9 +1,6 @@
-package it.unicam.cs.pa.ConnectFour.factory;
+package it.unicam.cs.pa.ConnectFour.core;
 
-import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacche`
