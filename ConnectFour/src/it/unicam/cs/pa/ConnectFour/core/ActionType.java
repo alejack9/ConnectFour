@@ -4,7 +4,7 @@ package it.unicam.cs.pa.ConnectFour.core;
  * @author giacche`
  *
  */
-public enum ActionType {
+public enum ActionType { 
 	INSERT,
 	POP;
 
