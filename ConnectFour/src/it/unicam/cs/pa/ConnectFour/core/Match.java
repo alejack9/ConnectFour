@@ -167,7 +167,7 @@ public final class Match {
 	 * @return true if the game ended, false otherwise
 	 */
 	private boolean isEnd(CellLocation lastCell) {
-		Winner winner = referee.winner(field, lastCell);
+		Winner winner = referee.winner(field, lastCell, Utils.parsePlayer(currentPlayer));
 		if (field.getPieces() != field.getColumns() * field.getRows() && winner == Winner.NONE)
 			return false;
 

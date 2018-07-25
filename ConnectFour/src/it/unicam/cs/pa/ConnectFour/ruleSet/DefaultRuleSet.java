@@ -109,7 +109,7 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public Winner winner(MatchField field, CellLocation cell) {
+	public Winner winner(MatchField field, CellLocation cell, CellStatus player) {
 		for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
 			List<Cell> list = function.apply(cell);
 			int maxConsecutive = 1;
@@ -121,7 +121,7 @@ public class DefaultRuleSet implements RuleSet {
 					celleConsecutive = 1;
 				}
 			}
-			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return Winner.convert(field.getCellStatus(cell));
+			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return Winner.convert(player);
 		}
 		return Winner.NONE;
 	}

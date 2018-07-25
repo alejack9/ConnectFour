@@ -39,7 +39,6 @@ public class RandomPlayer extends Player {
 	}
 	
 	public RandomPlayer(String name) {
-//		this(name, FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT), true);
 		this(name, true);
 	}
 
@@ -76,7 +75,7 @@ public class RandomPlayer extends Player {
 		int selcol;
 		while(!super.getReferee().getAllowedActions().get(selectedAction.ordinal()).test(field.getColumn(selcol = random.nextInt(field.getColumns())), Utils.parsePlayer(getId())));
 //		while(!super.getReferee().isValidInsert(selcol = random.nextInt(field.getColumns()), field,));
-		if(echo) print("I've choose the column " + selcol);
+		if(echo) print("I choose " + selectedAction.toString() + " in the column " + (selcol + 1));
 		return selcol;
 	}
 
@@ -89,7 +88,7 @@ public class RandomPlayer extends Player {
 
 	@Override
 	public void loseForError(Throwable e) {
-		print("I've lost because of '" + e.getMessage() + "'");
+		print("I've lost because of '" + e.toString() + "'");
 	}
 
 	@Override
