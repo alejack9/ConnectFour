@@ -3,10 +3,7 @@
  */
 package it.unicam.cs.pa.ConnectFour.exception;
 
-import java.util.List;
-
-import it.unicam.cs.pa.ConnectFour.core.Cell;
-import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
 
 /**
  * @author Alessandro Giacche`
@@ -15,26 +12,27 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 public class IllegalColumnException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
-	private List<Cell> column;
-	private CellStatus player;
+	private int column;
+	private MatchField field;
 	
-	public IllegalColumnException(List<Cell> column, CellStatus player) {
+	public IllegalColumnException(int column, MatchField field) {
 		this.column = column;
-		this.player = player;
+		this.field = field;
 	}
 
 	/**
 	 * @return the column
 	 */
-	public List<Cell> getColumn() {
+	public int getColumn() {
 		return column;
 	}
 
 	/**
-	 * @return the player
+	 * @return the field
 	 */
-	public CellStatus getPlayer() {
-		return player;
+	public MatchField getField() {
+		return field;
 	}
+
 
 }

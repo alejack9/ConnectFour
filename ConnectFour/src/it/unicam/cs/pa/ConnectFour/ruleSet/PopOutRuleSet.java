@@ -14,8 +14,11 @@ import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.core.Match;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Size;
+import it.unicam.cs.pa.ConnectFour.core.Utils;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 
 /**
@@ -49,7 +52,7 @@ public class PopOutRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getPieceLocation(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public CellLocation getPieceLocation (int column, MatchField field) throws IllegalPieceLocation {
+	public CellLocation insertLocation (int column, MatchField field) throws IllegalPieceLocation {
 		if(isInBound(column,field.getColumns())) {
 			Cell cell = destinationCell.apply(column, field.getField()).orElseThrow(() -> new IllegalPieceLocation(column,field));
 			return cell.getLocation();
@@ -98,47 +101,63 @@ public class PopOutRuleSet implements RuleSet {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#pop(java.util.List)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#pop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public List<Cell> pop(List<Cell> column) {
-		// TODO THROW AN ERROR
-		if(!isValidPop(column)) return column;
+	public List<Cell> pop(int column, MatchField field) throws IllegalColumnException {
+		if(!isInBound(column)) throw new IllegalColumnException(column, field);
+		return pop(field.getColumn(column));
+	}
+	private List<Cell> pop(List<Cell> column) throws IllegalColumnException {
 		Collections.rotate(column, 1);
 		column.get(0).pop();
 		return column;
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)
 	 */
 	@Override
-	public CellStatus winner(MatchField field, CellLocation cell) {
+	public Winner winner(MatchField field, CellLocation cellLocation) {
+		Winner toReturn = Winner.NONE;
+		if(winner(field, cellLocation, field.getCellStatus(cellLocation))) toReturn = Winner.convert(field.getCellStatus(cellLocation));
+		if(winner(field, cellLocation, Utils.parsePlayer(Match.otherPlayer(field.getCellStatus(cellLocation).ordinal()))))
+			if(toReturn == Winner.NONE) toReturn = Winner.P2;
+			else toReturn = Winner.BOTH;
+		return toReturn;
+	}
+	
+	/**
+	 * @param field
+	 * @param cell
+	 * @param parse
+	 */
+	private boolean winner(MatchField field, CellLocation cell, CellStatus player) {
 		for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
 			List<Cell> list = function.apply(cell);
-			int maxConsecutive = 1;
-			int celleConsecutive = 1;
+			int maxConsecutive = 1 , consecutiveCell = 1;
 			for(int i = 0; i < list.size() - 1; i++) {
-				if(list.get(i).getStatus() == list.get(i+1).getStatus() && !list.get(i).isEmpty()) celleConsecutive++;
+				if(list.get(i).getStatus() == list.get(i+1).getStatus() && !list.get(i).isEmpty() && list.get(i).getStatus() == field.getCellStatus(cell)) consecutiveCell++;
 				else {
-					if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
-					celleConsecutive = 1;
+					if(consecutiveCell > maxConsecutive) maxConsecutive = consecutiveCell;
+					consecutiveCell = 1;
 				}
 			}
-			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return field.getCellStatus(cell);
+			if((consecutiveCell > maxConsecutive) ? consecutiveCell >= 4 : maxConsecutive >= 4) return true;
 		}
-		return CellStatus.EMPTY;
+		return false;
 	}
+	
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public boolean isValidPop(int column, MatchField field) {
-		return isValidPop(field.getColumn(column));
+	public boolean isValidPop(int column, MatchField field, CellStatus player) {
+		return isValidPop(field.getColumn(column), player);
 	}
 	
-	private boolean isValidPop(List<Cell> column) {
-		// TODO SET THE RIGHT BOUND
+	private boolean isValidPop(List<Cell> column, CellStatus player) {
+		if(player != column.get(column.size() - 1).getStatus()) return false;
 		return column.parallelStream().filter(x -> !x.isEmpty()).count() > 1;
 	}
 

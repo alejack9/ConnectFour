@@ -9,6 +9,7 @@ import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.Winner;
 
 /**
  * @author giacche`
@@ -39,12 +40,12 @@ public final class Match {
 	private Match() {
 		actions = new HashMap<>();
 		actions.put(ActionType.INSERT, column -> {
-			Piece piece = piecesFactory.getPiece(CellStatus.parse(currentPlayer));
-			CellLocation location = referee.getPieceLocation(column, field);
+			Piece piece = piecesFactory.getPiece(Utils.parsePlayer(currentPlayer));
+			CellLocation location = referee.insertLocation(column, field);
 			return field.insert(location, piece) ? location : null;
 		});
 		actions.put(ActionType.POP, column -> {
-			field.setColumn(referee.pop(field.getColumn(column)), column);
+			field.setColumn(referee.pop(column, field), column);
 			return field.getColumn(column).iterator().next().getLocation();
 		});
 
@@ -91,6 +92,14 @@ public final class Match {
 		if (!initialized)
 			throw new UnitializedSingleton("Match");
 		return this.status;
+	}
+
+	/**
+	 * @param player player' id
+	 * @return the other player' id
+	 */
+	public static int otherPlayer(int player) {
+		return (player + 1) % 2;
 	}
 
 	/**
@@ -158,14 +167,14 @@ public final class Match {
 	 * @return true if the game ended, false otherwise
 	 */
 	private boolean isEnd(CellLocation lastCell) {
-		CellStatus winner = referee.winner(field, lastCell);
-		if (field.getPieces() != field.getColumns() * field.getRows() && winner == CellStatus.EMPTY)
+		Winner winner = referee.winner(field, lastCell);
+		if (field.getPieces() != field.getColumns() * field.getRows() && winner == Winner.NONE)
 			return false;
 
 		Utils.printField(field, referee);
 		if (field.getPieces() == field.getColumns() * field.getRows()) {
 			tie();
-		} else if (winner != CellStatus.EMPTY) {
+		} else if (winner != Winner.NONE) {
 			win(winner.ordinal());
 		}
 		this.status = MatchStatus.END;
@@ -175,14 +184,6 @@ public final class Match {
 	private void tie() {
 		players[currentPlayer].youLose();
 		players[otherPlayer(currentPlayer)].youLose();
-	}
-
-	/**
-	 * @param player player' id
-	 * @return the other player' id
-	 */
-	private int otherPlayer(int player) {
-		return (player + 1) % 2;
 	}
 
 	/**

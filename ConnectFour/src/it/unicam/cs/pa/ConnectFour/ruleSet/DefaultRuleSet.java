@@ -12,6 +12,7 @@ import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Size;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 /**
  * @author giacche`
@@ -39,12 +40,12 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#insert(int, it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public CellLocation getPieceLocation (int column, MatchField field) throws IllegalPieceLocation {
+	public CellLocation insertLocation (int column, MatchField field) throws IllegalColumnException , IllegalPieceLocation {
 		if(isInBound(column,field.getColumns())) {
 			Cell cell = destinationCell.apply(column, field.getField()).orElseThrow(() -> new IllegalPieceLocation(column,field));
 			return cell.getLocation();
 		}
-		throw new IllegalPieceLocation(column,field);
+		throw new IllegalColumnException(column,field);
 	}
 
 	/* (non-Javadoc)
@@ -86,20 +87,28 @@ public class DefaultRuleSet implements RuleSet {
 	public boolean isValidInsert(int column, MatchField field) {
 		return destinationCell.apply(column, field.getField()).isPresent();
 	}
-
+	
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#pop(java.util.List)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#pop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public List<Cell> pop(List<Cell> column) {
-		return column;
+	public List<Cell> pop( int column , MatchField field) {
+		return null;
 	}
+	
+//	/* (non-Javadoc)
+//	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#pop(java.util.List)
+//	 */
+//	@Override
+//	public List<Cell> pop( List<Cell> column , CellStatus player ) {
+//		return null;
+//	}
 
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
 	@Override
-	public CellStatus winner(MatchField field, CellLocation cell) {
+	public Winner winner(MatchField field, CellLocation cell) {
 		for (Function<CellLocation,List<Cell>> function : field.getListsGetters()) {
 			List<Cell> list = function.apply(cell);
 			int maxConsecutive = 1;
@@ -111,16 +120,16 @@ public class DefaultRuleSet implements RuleSet {
 					celleConsecutive = 1;
 				}
 			}
-			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return field.getCellStatus(cell);
+			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return Winner.convert(field.getCellStatus(cell));
 		}
-		return CellStatus.EMPTY;
+		return Winner.NONE;
 	}
 
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public boolean isValidPop(int column, MatchField field) {
+	public boolean isValidPop(int column, MatchField field, CellStatus player) {
 		return false;
 	}
 }

@@ -34,7 +34,7 @@ class PopOutVariantTest {
 	}
 
 	/**
-	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.PopOutRuleSet#getPieceLocation(int, it.unicam.cs.pa.ConnectFour.core.MatchField)}.
+	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.PopOutRuleSet#insertLocation(int, it.unicam.cs.pa.ConnectFour.core.MatchField)}.
 	 */
 	@Test
 	void testGetPieceLocation() {

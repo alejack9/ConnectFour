@@ -8,10 +8,11 @@ import java.util.List;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
-import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
+import it.unicam.cs.pa.ConnectFour.core.CellStatus;
+import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 
 /**
@@ -34,7 +35,12 @@ public interface RuleSet {
 	/**
 	 * @return Final piece location inserted in the column
 	 */
-	public CellLocation getPieceLocation(int column , MatchField field) throws IllegalPieceLocation;
+	public CellLocation insertLocation(int column , MatchField field) throws IllegalPieceLocation;
+	/**
+	 * @return The column' cells popped (without the last Piece)
+	 */
+	public List<Cell> pop (int column, MatchField field) throws IllegalColumnException;
+//	public List<Cell> pop (List<Cell> column) throws IllegalColumnException;
 	/**
 	 * @param loc
 	 * @param custumSize
@@ -60,19 +66,14 @@ public interface RuleSet {
 	 * @param field 
 	 * @return true if the insert is valid, false otherwise 
 	 */
-	public boolean isValidInsert ( int loc, MatchField field );
+	public boolean isValidInsert ( int column , MatchField field );
 	
-	public boolean isValidPop( int column , MatchField field);
+	public boolean isValidPop( int column , MatchField field , CellStatus player );
 	
-	/**
-	 * @return The column' cells popped (without the last Piece)
-	 */
-	public List<Cell> pop (List<Cell> column);
-		
 	/**
 	 * @param field
 	 * @param cell (in pop case, send the most bottom cell)
-	 * @return P1, P2 or EMPTY if there aren't winners
+	 * @return P1, P2, BOTH or NONE if there aren't winners
 	 */
-	CellStatus winner(MatchField field, CellLocation cell);
+	Winner winner(MatchField field, CellLocation cell);
 }
