@@ -88,15 +88,6 @@ public final class MatchField {
 	}
 
 	/**
-	 * @return The field as Cells matrix
-	 * @throws UnitializedSingleton Match is not initialized
-	 */
-	public List<List<Cell>> getField() throws UnitializedSingleton {
-		checkInit();
-		return this.field;
-	}
-
-	/**
 	 * @return the listsGetters
 	 */
 	public List<Function<CellLocation, List<Cell>>> getListsGetters() {

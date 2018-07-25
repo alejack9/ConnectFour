@@ -3,7 +3,7 @@ package it.unicam.cs.pa.ConnectFour.ruleSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
@@ -20,19 +20,21 @@ import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
  */
 public class DefaultRuleSet implements RuleSet {
 
-	private static final HashMap<Integer, ActionType> allowedActions = new HashMap<>();
+	private static final HashMap<Integer, BiPredicate<List<Cell>,CellStatus>> allowedActions = new HashMap<>();
 	
 	public static final Size DEFAULT_SIZE = new Size( 6 , 7 );
 	
 	public static final String NAME = "DefaultRuleSet";
 	
-	private final BiFunction<Integer, List<List<Cell>>, Optional<Cell>> destinationCell = ( column , field ) -> field.get(column).stream().filter(Cell::isEmpty).reduce((prev, last) -> last);
+	private final Function<List<Cell>, Optional<Cell>> destinationCell = ( column ) -> column.stream().filter(Cell::isEmpty).reduce((prev, last) -> last);
+	
+	private final BiPredicate<List<Cell>,CellStatus> checkIns = (column, cell) -> destinationCell.apply(column).isPresent();
 	
 	public DefaultRuleSet () {
-		allowedActions.put(ActionType.INSERT.ordinal(), ActionType.INSERT);
+		allowedActions.put(ActionType.INSERT.ordinal(), checkIns);
 	}
 
-	public HashMap<Integer , ActionType> getAllowedActions() {
+	public HashMap<Integer, BiPredicate<List<Cell>,CellStatus>> getAllowedActions() {
 		return allowedActions;
 	}
 
@@ -41,11 +43,10 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public CellLocation insertLocation (int column, MatchField field) throws IllegalColumnException , IllegalPieceLocation {
-		if(isInBound(column,field.getColumns())) {
-			Cell cell = destinationCell.apply(column, field.getField()).orElseThrow(() -> new IllegalPieceLocation(column,field));
-			return cell.getLocation();
-		}
-		throw new IllegalColumnException(column,field);
+		if(!isInBound(column,field.getColumns())) throw new IllegalColumnException(column,field);
+
+		return destinationCell.apply(field.getColumn(column))
+				.orElseThrow(() -> new IllegalPieceLocation(column, field)).getLocation();
 	}
 
 	/* (non-Javadoc)
@@ -84,26 +85,26 @@ public class DefaultRuleSet implements RuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int, MatchField)
 	 */
 	@Override
-	public boolean isValidInsert(int column, MatchField field) {
-		return destinationCell.apply(column, field.getField()).isPresent();
+	public boolean isValidInsert(int column, MatchField field, CellStatus player ) {
+		return getAllowedActions().get(ActionType.INSERT.ordinal()).test(field.getColumn(column), player);
 	}
 	
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
+	 */
+	@Override
+	public boolean isValidPop(int column, MatchField field, CellStatus player) {
+		return false;
+	}
+
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#pop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public List<Cell> pop( int column , MatchField field) {
+	public List<Cell> popColumn( int column , MatchField field) {
 		return null;
 	}
 	
-//	/* (non-Javadoc)
-//	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#pop(java.util.List)
-//	 */
-//	@Override
-//	public List<Cell> pop( List<Cell> column , CellStatus player ) {
-//		return null;
-//	}
-
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[][])
 	 */
@@ -123,13 +124,5 @@ public class DefaultRuleSet implements RuleSet {
 			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return Winner.convert(field.getCellStatus(cell));
 		}
 		return Winner.NONE;
-	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
-	 */
-	@Override
-	public boolean isValidPop(int column, MatchField field, CellStatus player) {
-		return false;
 	}
 }

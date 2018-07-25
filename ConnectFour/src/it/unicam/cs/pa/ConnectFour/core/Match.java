@@ -45,7 +45,7 @@ public final class Match {
 			return field.insert(location, piece) ? location : null;
 		});
 		actions.put(ActionType.POP, column -> {
-			field.setColumn(referee.pop(column, field), column);
+			field.setColumn(referee.popColumn(column, field), column);
 			return field.getColumn(column).iterator().next().getLocation();
 		});
 
@@ -192,7 +192,7 @@ public final class Match {
 	 */
 	private ActionType selectAction() {
 		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction()
-				: referee.getAllowedActions().values().iterator().next();
+				: ActionType.values()[referee.getAllowedActions().keySet().iterator().next()];
 	}
 
 	private void setStatus(MatchStatus status) {

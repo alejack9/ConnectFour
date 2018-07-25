@@ -112,7 +112,7 @@ class RuleSetTest {
 	void testIsValidInsert() {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
-		assertTrue(rs.isValidInsert(0, x));
+		assertTrue(rs.isValidInsert(0, x,CellStatus.P1));
 	}
 
 	/**
@@ -122,7 +122,7 @@ class RuleSetTest {
 	void testPop() {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
-		assertTrue(rs.pop(x.getColumn(0)).equals(x.getColumn(0)));
+		assertTrue(rs.popColumn(0,x).equals(x.getColumn(0)));
 	}
 
 	/**

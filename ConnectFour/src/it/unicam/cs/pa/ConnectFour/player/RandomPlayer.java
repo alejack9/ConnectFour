@@ -43,14 +43,14 @@ public class RandomPlayer extends Player {
 	@Override
 	public ActionType chooseAction() throws InternalException {
 		if(echo) { Utils.printField(field, super.getReferee()); printed = true; }
-		return super.getReferee().getAllowedActions().get(random.nextInt(super.getReferee().actionsNumber()));
+		return super.getReferee().getAllowedActions().keySet().
 	}
 
 	@Override
 	public int getColumn() throws InternalException {
 		if(echo && !printed) { Utils.printField(field, super.getReferee()); }
 		int selcol;
-		while(!super.getReferee().isValidInsert(selcol = random.nextInt(field.getColumns()), field));
+		while(!super.getReferee().isValidInsert(selcol = random.nextInt(field.getColumns()), field,Utils.parsePlayer(getId())));
 		if(echo) print("I've choose the column " + selcol);
 		return selcol;
 	}
