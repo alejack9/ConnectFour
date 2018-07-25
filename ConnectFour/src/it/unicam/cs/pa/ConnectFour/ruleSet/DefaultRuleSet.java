@@ -121,6 +121,7 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public Winner winner(MatchField field, CellLocation cell) {
+		if(field.getPieces() == field.getColumns() * field.getRows()) return Winner.BOTH;
 		for (Entry<Function<CellLocation, List<Cell>>, Function<Cell, Integer>> functions : field.getGettersMap()
 				.entrySet()) {
 			long x = collapseIndexes(functions.getKey().apply(cell).stream().filter((c) -> !c.isEmpty())
@@ -129,17 +130,6 @@ public class DefaultRuleSet implements RuleSet {
 							.filter(l -> l >= 4).count();
 
 			if(x > 0) return Winner.convert(field.getCellStatus(cell));
-//			List<Cell> list = functions.getKey().apply(cell);
-//			int maxConsecutive = 1;
-//			int celleConsecutive = 1;
-//			for(int i = 0; i < list.size() - 1; i++) {
-//				if(list.get(i).getStatus() == list.get(i+1).getStatus() && !list.get(i).isEmpty()) celleConsecutive++;
-//				else {
-//					if(celleConsecutive > maxConsecutive) maxConsecutive = celleConsecutive;
-//					celleConsecutive = 1;
-//				}
-//			}
-//			if((celleConsecutive > maxConsecutive) ? celleConsecutive >= 4 : maxConsecutive >= 4) return Winner.convert(player);
 		}
 		return Winner.NONE;
 	}

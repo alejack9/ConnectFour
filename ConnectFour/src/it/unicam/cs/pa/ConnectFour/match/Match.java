@@ -126,6 +126,15 @@ public final class Match {
 		_play();
 	}
 
+	public void restart() {
+		this.status = MatchStatus.ARRANGE;
+		this.firstPlayer = otherPlayer(firstPlayer);
+		this.currentPlayer = this.firstPlayer;
+		this.field.clear();
+		this.piecesFactory.restart();
+		play();
+	}
+
 	private void _play() {
 		this.players[PLAYER1].startMatch();
 		this.players[PLAYER2].startMatch();
@@ -178,7 +187,7 @@ public final class Match {
 			return false;
 
 		Utils.printField(field, referee);
-		if (field.getPieces() == field.getColumns() * field.getRows()) {
+		if (winner == Winner.BOTH) {
 			tie();
 		} else if (winner != Winner.NONE) {
 			win(winner.ordinal());
@@ -231,14 +240,5 @@ public final class Match {
 	private <T> T getObject(Object toConvert, Class<? extends T> targetClass) throws IllegalArgumentException {
 		if(!targetClass.isAssignableFrom(toConvert.getClass())) throw new IllegalArgumentException("HasMap must contain a " + targetClass.getSimpleName() + " class, not a " + toConvert.getClass().getSimpleName() + " class");
 		return targetClass.cast(toConvert);
-	}
-
-	public void restart() {
-		this.status = MatchStatus.ARRANGE;
-		this.firstPlayer = otherPlayer(firstPlayer);
-		this.currentPlayer = this.firstPlayer;
-		this.field.clear();
-		this.piecesFactory.restart();
-		play();
 	}
 }

@@ -45,7 +45,7 @@ public class InteractivePlayer extends Player {
 		super.getReferee().getAllowedActions().entrySet()
 				.forEach(i -> System.out.println(i.getKey() + " - " + ActionType.values()[i.getKey()].name()));
 
-		int x = doInput("Choose the action: ", this::isValidAction, Integer::parseUnsignedInt);
+		int x = doInput("Choose the action: ", this::isValidAction, Integer::parseInt);
 		this.selectedAction = ActionType.values()[x]; 
 		return this.selectedAction;
 	}
@@ -60,8 +60,8 @@ public class InteractivePlayer extends Player {
 		if (!printed)
 			Utils.printField(field, super.getReferee());
 		int column = doInput(String.format("Choose a column from 1 to %d", field.getColumns()),
-				(x) -> super.getReferee().getAllowedActions().get(selectedAction.ordinal()).test(field.getColumn(x), Utils.parsePlayer(getId())),
-				(x) -> (Integer.parseUnsignedInt(x) - 1));
+				(x) -> super.getReferee().isInBound(x, field.getColumns()) && super.getReferee().getAllowedActions().get(selectedAction.ordinal()).test(field.getColumn(x), Utils.parsePlayer(getId())),
+				(x) -> (Integer.parseInt(x) - 1));
 		return column;
 	}
 
@@ -115,7 +115,7 @@ public class InteractivePlayer extends Player {
 	 */
 	@Override
 	public void youLose() {
-		this.print("You have lost!");
+		this.print("I lose!");
 	}
 
 	/*
@@ -125,7 +125,7 @@ public class InteractivePlayer extends Player {
 	 */
 	@Override
 	public void youWin() {
-		this.print("You win!");
+		this.print("I win!");
 	}
 
 	/**
@@ -145,9 +145,15 @@ public class InteractivePlayer extends Player {
 			} catch (IOException e) {
 				throw new InternalException(e);
 			}
-			T x = readFun.apply(line);
+			T x = null;
+			try {
+				x = readFun.apply(line);				
+			} catch (Throwable e) {
+				out.println("Input Error!");
+				continue;
+			}
 			if (!condition.test(x)) {
-				System.out.println("Input Error!");
+				out.println("Input Error!");
 			} else {
 				return x;
 			}
@@ -168,17 +174,7 @@ public class InteractivePlayer extends Player {
 		} finally { }
 		return false;
 	}
-
-//	private boolean isValidInsert(String txt) {
-//		try {
-//			int v = Integer.parseUnsignedInt(txt) - 1;
-//			return (super.getReferee().isInBound(v, field.getColumns())
-//					&& super.getReferee().isValidInsert(v, field, Utils.parsePlayer(getId())));
-//		} catch (NumberFormatException e) {
-//			return false;
-//		}
-//	}
-
+	
 	/**
 	 * @param string What to write
 	 */
