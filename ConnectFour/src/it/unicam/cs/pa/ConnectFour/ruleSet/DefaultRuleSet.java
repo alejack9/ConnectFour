@@ -40,6 +40,12 @@ public class DefaultRuleSet implements RuleSet {
 		allowedActions.put(ActionType.INSERT, checkIns);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getAllowedActions()
+	 */
+	@Override
 	public HashMap<ActionType, BiPredicate<List<Cell>, CellStatus>> getAllowedActions() {
 		return allowedActions;
 	}
@@ -47,8 +53,8 @@ public class DefaultRuleSet implements RuleSet {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#insert(int,
-	 * it.unicam.cs.pa.ConnectFour.Cell[][])
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#insertLocation(int,
+	 * it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
 	public CellLocation insertLocation(int column, MatchField field)
@@ -63,7 +69,8 @@ public class DefaultRuleSet implements RuleSet {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(PieceLocation,int)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isInBound(it.unicam.cs.pa.
+	 * ConnectFour.core.CellLocation, it.unicam.cs.pa.ConnectFour.core.Size)
 	 */
 	@Override
 	public boolean isInBound(CellLocation loc, Size customSize) {
@@ -74,17 +81,7 @@ public class DefaultRuleSet implements RuleSet {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(PieceLocation)
-	 */
-	@Override
-	public boolean isInBound(CellLocation loc) {
-		return isInBound(loc, DEFAULT_SIZE);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isInBound(int,int)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isInBound(int, int)
 	 */
 	@Override
 	public boolean isInBound(int column, int customColumnSize) {
@@ -94,17 +91,7 @@ public class DefaultRuleSet implements RuleSet {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isInBound(int)
-	 */
-	@Override
-	public boolean isInBound(int column) {
-		return isInBound(column, DEFAULT_SIZE.getColumns());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#pop(int,
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#popColumn(int,
 	 * it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
@@ -115,32 +102,36 @@ public class DefaultRuleSet implements RuleSet {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[]
-	 * [])
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.
+	 * ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)
 	 */
 	@Override
 	public Winner winner(MatchField field, CellLocation cellLocation) {
-		if(field.getPieces() == field.getColumns() * field.getRows()) return Winner.TIE;
-		
-		for(Cell cell : field.getColumn(cellLocation)) {
-			if(cell.isEmpty()) continue;
+		if (field.getPieces() == field.getColumns() * field.getRows())
+			return Winner.TIE;
+
+		for (Cell cell : field.getColumn(cellLocation)) {
+			if (cell.isEmpty())
+				continue;
 			for (Entry<Function<CellLocation, List<Cell>>, Function<Cell, Integer>> functions : field.getGettersMap()
 					.entrySet()) {
-				boolean win = collapseIndexes(functions.getKey().apply(cell.getLocation()).stream().filter((c) -> !c.isEmpty())
-						.filter((c) -> c.getStatus() == field.getCellStatus(cell.getLocation())).map(c -> functions.getValue().apply(c))
-						.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().map(l -> l.size())
-								.filter(l -> l >= 4).count() > 0;
+				boolean win = collapseIndexes(
+						functions.getKey().apply(cell.getLocation()).stream().filter((c) -> !c.isEmpty())
+								.filter((c) -> c.getStatus() == field.getCellStatus(cell.getLocation()))
+								.map(c -> functions.getValue().apply(c))
+								.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().map(l -> l.size())
+										.filter(l -> l >= 4).count() > 0;
 
-				if(win) return Winner.convert(field.getCellStatus(cell.getLocation()));
+				if (win)
+					return Winner.convert(field.getCellStatus(cell.getLocation()));
 			}
 		}
 		return Winner.NONE;
 	}
 
 	/**
-	 * @param collect
-	 * @return
+	 * @param indexes - The indexes list
+	 * @return the list of consecutive indexes sequences
 	 */
 	private List<List<Integer>> collapseIndexes(List<Integer> indexes) {
 		List<Integer> candidate = new ArrayList<>();
@@ -156,7 +147,8 @@ public class DefaultRuleSet implements RuleSet {
 				candidate.add(i);
 			}
 		}
-		if(!toReturn.contains(candidate)) toReturn.add(candidate);
+		if (!toReturn.contains(candidate))
+			toReturn.add(candidate);
 		return toReturn;
 	}
 }
