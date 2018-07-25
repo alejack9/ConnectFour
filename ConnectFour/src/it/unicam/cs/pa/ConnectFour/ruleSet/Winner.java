@@ -14,7 +14,8 @@ public enum Winner {
 	P1,
 	P2,
 	BOTH,
-	NONE;
+	NONE,
+	TIE;
 
 	/**
 	 * @param cellStatus

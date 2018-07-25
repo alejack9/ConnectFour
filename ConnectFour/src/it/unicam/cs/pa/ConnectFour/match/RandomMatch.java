@@ -20,7 +20,6 @@ public class RandomMatch {
 
 	public static void main(String[] args) throws IOException {
 		
-		// FIXME DOESN'T WORK
 		Player p1 = new RandomPlayer("X",true);
 		Player p2 = new RandomPlayer("O",true);
 		

@@ -187,10 +187,11 @@ public final class Match {
 			return false;
 
 		Utils.printField(field, referee);
-		if (winner == Winner.BOTH) {
-			tie();
-		} else if (winner != Winner.NONE) {
-			win(winner.ordinal());
+		switch(winner) {
+			case TIE: tie();break;
+			case BOTH: win(currentPlayer);break;
+			case NONE: break;
+			default: win(winner.ordinal());
 		}
 		this.status = MatchStatus.END;
 		return true;

@@ -3,11 +3,14 @@
  */
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
@@ -15,10 +18,8 @@ import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Size;
-import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
-import it.unicam.cs.pa.ConnectFour.match.Match;
 import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
 
 /**
@@ -30,15 +31,10 @@ import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
  * @author Alessandro Giacche`
  *
  */
-public class PopOutRuleSet implements RuleSet {
+public class PopOutRuleSet extends DefaultRuleSet {
 
-	private static final HashMap<Integer, BiPredicate<List<Cell>, CellStatus>> allowedActions = new HashMap<>();
+	private final HashMap<Integer, BiPredicate<List<Cell>, CellStatus>> allowedActions;
 
-	private final Function<List<Cell>, Optional<Cell>> destinationCell = (column) -> column.stream()
-			.filter(Cell::isEmpty).reduce((prev, last) -> last);
-
-	private final BiPredicate<List<Cell>, CellStatus> checkIns = (column, cell) -> destinationCell.apply(column)
-			.isPresent();
 	private final BiPredicate<List<Cell>, CellStatus> checkPop = (column, cell) -> {
 		if (cell != column.get(column.size() - 1).getStatus())
 			return false;
@@ -50,7 +46,8 @@ public class PopOutRuleSet implements RuleSet {
 	public static final String NAME = "PopOutRuleSet";
 
 	public PopOutRuleSet() {
-		allowedActions.put(ActionType.INSERT.ordinal(), checkIns);
+		super();
+		allowedActions = super.getAllowedActions();
 		allowedActions.put(ActionType.POP.ordinal(), checkPop);
 	}
 
@@ -73,11 +70,7 @@ public class PopOutRuleSet implements RuleSet {
 	@Override
 	public CellLocation insertLocation(int column, MatchField field)
 			throws IllegalColumnException, IllegalPieceLocation {
-		if (!isInBound(column, field.getColumns()))
-			throw new IllegalColumnException(column, field);
-
-		return destinationCell.apply(field.getColumn(column)).orElseThrow(() -> new IllegalPieceLocation(column, field))
-				.getLocation();
+		return super.insertLocation(column, field);
 	}
 
 	/*
@@ -124,122 +117,70 @@ public class PopOutRuleSet implements RuleSet {
 	public boolean isInBound(int column) {
 		return isInBound(column, DEFAULT_SIZE.getColumns());
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.
-	 * ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)
+	 * @see
+	 * it.unicam.cs.pa.ConnectFour.RuleSet#winner(it.unicam.cs.pa.ConnectFour.Cell[]
+	 * [])
 	 */
 	@Override
 	public Winner winner(MatchField field, CellLocation cellLocation) {
-		// CONTROLLARE OGNI CELLA DELLA COLONNA
-		// SE CI SONO PIU` DI 4 PEZZI VICINI DELLO STESSO COLORE, INVIO IL COLORE
-		Winner toReturn = Winner.NONE;
+		if(field.getPieces() == field.getColumns() * field.getRows()) return Winner.TIE;
+		
+		Map<CellStatus,List<Integer>> winnersSequences = new HashMap<CellStatus,List<Integer>>();
+		
 		for (Cell cell : field.getColumn(cellLocation)) {
-			toReturn = checkCellLines(cell, field);
+			if(!cell.isEmpty() && !winnersSequences.containsKey(cell.getStatus())) {
+				List<List<Integer>> toInsert = getWinSeq(field, cell.getLocation());
+				// REPORT we could use {@code putIfAbsent} but we had more useless loops
+				if(!toInsert.isEmpty())
+					winnersSequences.put(cell.getStatus(),toInsert.iterator().next());
+//				toInsert.forEach(x -> { if(!winnersSequences.containsKey(cell.getStatus())) winnersSequences.put(cell.getStatus(), x); });
+			}
 		}
-		return toReturn;
+		if(winnersSequences.size() == 0) return Winner.NONE;
+		if(winnersSequences.size() == 1) return Winner.convert(winnersSequences.entrySet().iterator().next().getKey());
+		return Winner.BOTH;
 	}
-//		Winner toReturn = Winner.NONE;
-//		if (_winner(field, cellLocation, player))
-//			toReturn = Winner.convert(field.getCellStatus(cellLocation));
-//		if (_winner(field, cellLocation, Utils.parsePlayer(Match.otherPlayer(player.ordinal())))) {
-//			if (toReturn == Winner.NONE)
-//				toReturn = Winner.P2;
-//			else
-//				toReturn = Winner.BOTH;
-//		}
-//		return toReturn;
-//	}
-//
-//	/**
-//	 * Check the whole column
-//	 * 
-//	 * @param field
-//	 * @param cell
-//	 * @param parse
-//	 */
-//	private boolean _winner(MatchField field, CellLocation _cell, CellStatus player) {
-//		for (Cell cell : field.getColumn(_cell)) {
-//			if (checkWinner(field, player, cell.getLocation()))
-//				return true;
-//		}
-//		return false;
-//	}
-//
-//	/**
-//	 * Check each direction from the passed cellLocation
-//	 * 
-//	 * @param location
-//	 */
-//	private boolean checkWinner(MatchField field, CellStatus player, CellLocation cellLocation) {
-//		for (Function<CellLocation, List<Cell>> function : field.getListsGetters()) {
-//			List<Cell> list = function.apply(cellLocation);
-//			if (getMaxConsecutive(list, player) >= 4)
-//				return true;
-//		}
-//		return false;
-//	}
-//
-//	/**
-//	 * Get the maximum number of consecutive cells
-//	 * 
-//	 * @return
-//	 */
-//	private int getMaxConsecutive(List<Cell> list, CellStatus player) {
-//		int maxConsecutive = 1, consecutiveCell = 1;
-//		for (int i = 0; i < list.size() - 1; i++) {
-//			if (list.get(i).getStatus() == list.get(i + 1).getStatus() && !list.get(i).isEmpty()
-//					&& list.get(i).getStatus() == player) {
-//				consecutiveCell++;
-//			} else {
-//				if (consecutiveCell > maxConsecutive) {
-//					maxConsecutive = consecutiveCell;
-//				}
-//				consecutiveCell = 1;
-//			}
-//		}
-//		return consecutiveCell > maxConsecutive ? consecutiveCell : maxConsecutive;
-//	}
 
 	/**
-	 * @param cell
-	 * @param field
+	 * @param location
 	 * @return
 	 */
-	// TODO MAKE IT STREAM OR MORE BEAUTIFOUL
-	private Winner checkCellLines(Cell cell, MatchField field) {
-		Winner toReturn = Winner.NONE;
-		for (Function<CellLocation, List<Cell>> function : field.getGettersMap().keySet()) {
-			List<Cell> list = function.apply(cell.getLocation());
-			int[] consecutive = new int[] {1,1};
-			int[] maxConsecutive = new int[] {1,1};
-			for (int i = 0; i < list.size() - 1; i++) {
-				if (list.get(i).getStatus() == list.get(i + 1).getStatus() && !list.get(i).isEmpty()) {
-					if (list.get(i).getStatus() == CellStatus.P1)
-						consecutive[0]++;
-					if (list.get(i).getStatus() == CellStatus.P2)
-						consecutive[1]++;
-				} else {
-					maxConsecutive[0] = Math.max(consecutive[0], maxConsecutive[0]);
-					maxConsecutive[1] = Math.max(consecutive[1], maxConsecutive[1]);
-					consecutive[0] = 1;
-					consecutive[1] = 1;
-				}
-			}
-			maxConsecutive[0] = Math.max(consecutive[0], maxConsecutive[0]);
-			maxConsecutive[1] = Math.max(consecutive[1], maxConsecutive[1]);
-			if (maxConsecutive[0] >= 4 && toReturn == Winner.NONE)
-				toReturn = Winner.P1;
-			else if (maxConsecutive[0] >= 4 && toReturn == Winner.P2)
-				toReturn = Winner.BOTH;
-			else if (maxConsecutive[1] >= 4 && toReturn == Winner.NONE)
-				toReturn = Winner.P2;
-			else if (maxConsecutive[1] >= 4 && toReturn == Winner.P1)
-				toReturn = Winner.BOTH;
+	private List<List<Integer>> getWinSeq(MatchField field, CellLocation cellLocation) {
+		List<List<Integer>> toReturn = new ArrayList<>();
+		
+		for (Entry<Function<CellLocation, List<Cell>>, Function<Cell, Integer>> functions : field.getGettersMap()
+				.entrySet()) {
+			List<List<Integer>> winnersIndexes = collapseIndexes(functions.getKey().apply(cellLocation).stream().filter((c) -> !c.isEmpty())
+					.filter((c) -> c.getStatus() == field.getCellStatus(cellLocation)).map(c -> functions.getValue().apply(c))
+					.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().filter(l -> l.size() >= 4).collect(Collectors.toList());
+			toReturn.addAll(winnersIndexes);
 		}
 		return toReturn;
 	}
 
+	/**
+	 * @param collect
+	 * @return
+	 */
+	private List<List<Integer>> collapseIndexes(List<Integer> indexes) {
+		List<Integer> candidate = new ArrayList<>();
+		List<List<Integer>> toReturn = new ArrayList<>();
+
+		candidate.add(indexes.get(0));
+		for (int i = 1; i < indexes.size(); i++) {
+			if (indexes.get(i) == candidate.get(candidate.size() - 1) + 1)
+				candidate.add(indexes.get(i));
+			else {
+				toReturn.add(candidate);
+				candidate = new ArrayList<>();
+				candidate.add(i);
+			}
+		}
+		if(!toReturn.contains(candidate)) toReturn.add(candidate);
+		return toReturn;
+	}
 }

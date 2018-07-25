@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import it.unicam.cs.pa.ConnectFour.player.InteractivePlayer;
 import it.unicam.cs.pa.ConnectFour.player.Player;
-import it.unicam.cs.pa.ConnectFour.player.RandomPlayer;
 import it.unicam.cs.pa.ConnectFour.ruleSet.PopOutRuleSet;
 
 /**
@@ -21,8 +20,8 @@ public class PopInteractiveMatch {
 	 */
 	public static void main(String[] args) {
 
-		Player p1 = new RandomPlayer("X");
-		Player p2 = new RandomPlayer("O");
+		Player p1 = new InteractivePlayer("X");
+		Player p2 = new InteractivePlayer("O");
 		
 		HashMap<String, Object> proop = new HashMap<>();
 

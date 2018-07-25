@@ -120,16 +120,20 @@ public class DefaultRuleSet implements RuleSet {
 	 * [])
 	 */
 	@Override
-	public Winner winner(MatchField field, CellLocation cell) {
-		if(field.getPieces() == field.getColumns() * field.getRows()) return Winner.BOTH;
-		for (Entry<Function<CellLocation, List<Cell>>, Function<Cell, Integer>> functions : field.getGettersMap()
-				.entrySet()) {
-			long x = collapseIndexes(functions.getKey().apply(cell).stream().filter((c) -> !c.isEmpty())
-					.filter((c) -> c.getStatus() == field.getCellStatus(cell)).map(c -> functions.getValue().apply(c))
-					.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().map(l -> l.size())
-							.filter(l -> l >= 4).count();
+	public Winner winner(MatchField field, CellLocation cellLocation) {
+		if(field.getPieces() == field.getColumns() * field.getRows()) return Winner.TIE;
+		
+		for(Cell cell : field.getColumn(cellLocation)) {
+			if(cell.isEmpty()) continue;
+			for (Entry<Function<CellLocation, List<Cell>>, Function<Cell, Integer>> functions : field.getGettersMap()
+					.entrySet()) {
+				boolean win = collapseIndexes(functions.getKey().apply(cell.getLocation()).stream().filter((c) -> !c.isEmpty())
+						.filter((c) -> c.getStatus() == field.getCellStatus(cell.getLocation())).map(c -> functions.getValue().apply(c))
+						.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().map(l -> l.size())
+								.filter(l -> l >= 4).count() > 0;
 
-			if(x > 0) return Winner.convert(field.getCellStatus(cell));
+				if(win) return Winner.convert(field.getCellStatus(cell.getLocation()));
+			}
 		}
 		return Winner.NONE;
 	}
