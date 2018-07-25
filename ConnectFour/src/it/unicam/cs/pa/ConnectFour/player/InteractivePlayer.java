@@ -20,7 +20,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 public class InteractivePlayer extends Player {
 	
 	private boolean printed;
-	private ActionType selectedAction;
+	private ActionType selectedAction = ActionType.INSERT;
 
 	public InteractivePlayer(String name, InputStream in, PrintStream out) {
 		super(name, in, out);

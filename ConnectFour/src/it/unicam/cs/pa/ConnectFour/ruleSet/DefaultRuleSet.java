@@ -153,15 +153,16 @@ public class DefaultRuleSet implements RuleSet {
 		List<List<Integer>> toReturn = new ArrayList<>();
 
 		candidate.add(indexes.get(0));
-		for (int i = 0; i < indexes.size(); i++) {
+		for (int i = 1; i < indexes.size(); i++) {
 			if (indexes.get(i) == candidate.get(candidate.size() - 1) + 1)
 				candidate.add(indexes.get(i));
 			else {
 				toReturn.add(candidate);
 				candidate = new ArrayList<>();
+				candidate.add(i);
 			}
 		}
-
+		if(!toReturn.contains(candidate)) toReturn.add(candidate);
 		return toReturn;
 	}
 }

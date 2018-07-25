@@ -13,6 +13,7 @@ import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.exception.InternalException;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
@@ -26,7 +27,7 @@ public class RandomPlayer extends Player {
 
 	private boolean printed;
 	
-	private ActionType selectedAction;
+	private ActionType selectedAction = ActionType.INSERT;
 
 	protected RandomPlayer(String name, boolean echo, InputStream in, PrintStream out) {
 		super(name, in, out);

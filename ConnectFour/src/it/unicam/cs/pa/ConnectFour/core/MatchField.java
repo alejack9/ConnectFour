@@ -1,7 +1,6 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,10 +50,6 @@ public final class MatchField {
 		gettersMap.put(c -> this.getColumn(c), c -> c.getLocation().getRow());
 		gettersMap.put(c -> this.getNEDiagonal(c), c -> c.getLocation().getColumn());
 		gettersMap.put(c -> this.getNWDiagonal(c), c -> c.getLocation().getColumn());
-//		listsGetters.add((c) -> this.getRow(c));
-//		listsGetters.add((c) -> this.getColumn(c));
-//		listsGetters.add((c) -> this.getNEDiagonal(c));
-//		listsGetters.add((c) -> this.getNWDiagonal(c));
 	}
 
 	/**
