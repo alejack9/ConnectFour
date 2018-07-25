@@ -43,7 +43,7 @@ public class InteractivePlayer extends Player {
 		this.print("Available Actions: "); // 0 to insert, 1 to pop etc
 
 		super.getReferee().getAllowedActions().entrySet()
-				.forEach(i -> System.out.println(i.getKey() + " - " + i.getValue()));
+				.forEach(i -> System.out.println(i.getKey() + " - " + ActionType.values()[i.getKey()].name()));
 
 		int x = doInput("Choose the action: ", this::isValidAction, Integer::parseUnsignedInt);
 		this.selectedAction = ActionType.values()[x]; 

@@ -134,7 +134,7 @@ public final class Match {
 			if (this.referee.isValidAction(action)) {
 				int column = players[this.currentPlayer].getColumn();
 				CellLocation loc = actions.get(action).apply(column);
-				// REPORT removed
+				// REPORT removed 
 //if (action == ActionType.INSERT) insertAction(column);
 				// REPORT removed
 //if (action == ActionType.POP) popAction(column);

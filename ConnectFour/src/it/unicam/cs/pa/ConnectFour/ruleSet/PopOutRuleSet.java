@@ -3,7 +3,6 @@
  */
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +19,7 @@ import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
+import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
 
 /**
  * //REPORT Molto simile al Default, e` tuttavia astrattamente impossibile sapere come sono tutte le varianti, si e` optato percio` in un "copia-incolla", anche se una soluzione plausibile sarebbe potuta essre stata insere i metodi di defaultruleset in RuleSet come default.
@@ -74,8 +74,14 @@ public class PopOutRuleSet implements RuleSet {
 	public List<Cell> popColumn(int column, MatchField field) throws IllegalColumnException {
 		if(!isInBound(column)) throw new IllegalColumnException(column, field);
 		List<Cell> toReturn = field.getColumn(column);
-		Collections.rotate(toReturn , 1);
-		toReturn.get(0).pop();
+		AbstractPiece succ = toReturn.get(0).pop();
+		for(int i = 1; i < toReturn.size() - 1; i++) {
+			AbstractPiece tmp = succ;
+			succ = toReturn.get(i+1).pop();
+			toReturn.get(i+1).setPiece(tmp);
+		}
+//		Collections.rotate(toReturn , 1);
+//		toReturn.get(0).pop();
 		return toReturn;
 	}
 
