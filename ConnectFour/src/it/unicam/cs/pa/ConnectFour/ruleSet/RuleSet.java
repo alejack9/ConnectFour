@@ -72,9 +72,9 @@ public interface RuleSet {
 	 * @param field 
 	 * @return true if the insert is valid, false otherwise 
 	 */
-	boolean isValidInsert ( int column , MatchField field , CellStatus player );
+//	boolean isValidInsert ( int column , MatchField field , CellStatus player );
 	
-	boolean isValidPop( int column , MatchField field , CellStatus player );
+//	boolean isValidPop( int column , MatchField field , CellStatus player );
 	
 	/**
 	 * @param field

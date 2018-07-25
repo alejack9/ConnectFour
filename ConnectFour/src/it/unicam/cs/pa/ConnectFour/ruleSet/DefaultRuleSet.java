@@ -81,21 +81,21 @@ public class DefaultRuleSet implements RuleSet {
 		return isInBound( column , DEFAULT_SIZE.getColumns() );
 	}
 
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int, MatchField)
-	 */
-	@Override
-	public boolean isValidInsert(int column, MatchField field, CellStatus player ) {
-		return getAllowedActions().get(ActionType.INSERT.ordinal()).test(field.getColumn(column), player);
-	}
-	
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
-	 */
-	@Override
-	public boolean isValidPop(int column, MatchField field, CellStatus player) {
-		return false;
-	}
+//	/* (non-Javadoc)
+//	 * @see it.unicam.cs.pa.ConnectFour.RuleSet#isValidInsert(int, MatchField)
+//	 */
+//	@Override
+//	public boolean isValidInsert(int column, MatchField field, CellStatus player ) {
+//		return getAllowedActions().get(ActionType.INSERT.ordinal()).test(field.getColumn(column), player);
+//	}
+//	
+//	/* (non-Javadoc)
+//	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
+//	 */
+//	@Override
+//	public boolean isValidPop(int column, MatchField field, CellStatus player) {
+//		return false;
+//	}
 
 	/* (non-Javadoc)
 	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#pop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)

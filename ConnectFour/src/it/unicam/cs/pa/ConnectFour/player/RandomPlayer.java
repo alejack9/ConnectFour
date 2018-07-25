@@ -5,6 +5,7 @@ package it.unicam.cs.pa.ConnectFour.player;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Random;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
@@ -24,6 +25,8 @@ public class RandomPlayer extends Player {
 	private boolean echo;
 
 	private boolean printed;
+	
+	private ActionType selectedAction;
 
 	protected RandomPlayer(String name, boolean echo, InputStream in, PrintStream out) {
 		super(name, in, out);
@@ -43,15 +46,36 @@ public class RandomPlayer extends Player {
 	@Override
 	public ActionType chooseAction() throws InternalException {
 		if(echo) { Utils.printField(field, super.getReferee()); printed = true; }
-		// TODO GET RANDOM ACTION IF IT'S VALID
-		return super.getReferee().getAllowedActions().keySet().
+		do {
+			this.selectedAction = ActionType.values()[new ArrayList<Integer>(super.getReferee().getAllowedActions().keySet()).get(random.nextInt(super.getReferee().getAllowedActions().size()))];
+		} while(!isValid(this.selectedAction));
+		
+		return this.selectedAction;
 	}
+	
+
+	private boolean isValid(ActionType action) {
+		try {
+			try {
+				if(super.getReferee().getAllowedActions().get(action.ordinal()) != null) {
+					for(int i = 0; i < field.getColumns(); i++) {
+						if(super.getReferee().getAllowedActions().get(action.ordinal())
+								.test(field.getColumn(i), Utils.parsePlayer(getId())))
+							return true;
+					}
+				}
+			} finally { }
+		} finally { }
+		return false;
+	}
+
 
 	@Override
 	public int getColumn() throws InternalException {
 		if(echo && !printed) { Utils.printField(field, super.getReferee()); }
 		int selcol;
-		while(!super.getReferee().isValidInsert(selcol = random.nextInt(field.getColumns()), field,Utils.parsePlayer(getId())));
+		while(!super.getReferee().getAllowedActions().get(selectedAction.ordinal()).test(field.getColumn(selcol = random.nextInt(field.getColumns())), Utils.parsePlayer(getId())));
+//		while(!super.getReferee().isValidInsert(selcol = random.nextInt(field.getColumns()), field,));
 		if(echo) print("I've choose the column " + selcol);
 		return selcol;
 	}
