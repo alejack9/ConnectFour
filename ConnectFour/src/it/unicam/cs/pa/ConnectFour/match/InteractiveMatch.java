@@ -1,4 +1,4 @@
-package it.unicam.cs.pa.ConnectFour.core;
+package it.unicam.cs.pa.ConnectFour.match;
 
 import java.util.HashMap;
 

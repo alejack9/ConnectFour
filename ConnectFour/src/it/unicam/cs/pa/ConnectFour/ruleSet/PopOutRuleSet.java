@@ -13,12 +13,12 @@ import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
-import it.unicam.cs.pa.ConnectFour.core.Match;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
+import it.unicam.cs.pa.ConnectFour.match.Match;
 import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
 
 /**

@@ -1,9 +1,15 @@
-package it.unicam.cs.pa.ConnectFour.core;
+package it.unicam.cs.pa.ConnectFour.match;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import it.unicam.cs.pa.ConnectFour.core.ActionType;
+import it.unicam.cs.pa.ConnectFour.core.CellLocation;
+import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.core.PieceFactory;
+import it.unicam.cs.pa.ConnectFour.core.Size;
+import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.player.Player;
