@@ -14,12 +14,18 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 // REPORT Null Object pattern to Pieces
 public abstract class AbstractPiece {
 
+	/**
+	 * @return {@code true} if the piece is {@code null}, {@code false} otherwise
+	 */
 	public abstract boolean isNull();
 
+	/**
+	 * @return the {@link CellStatus piece's color}
+	 */
 	public abstract CellStatus getColor();
 
 	/**
-	 * @return The id, if there's any, an empty Optional otherwise
+	 * @return The id, if there's any, an empty {@link Optional} otherwise
 	 */
 	public abstract Optional<Integer> getId();
 
