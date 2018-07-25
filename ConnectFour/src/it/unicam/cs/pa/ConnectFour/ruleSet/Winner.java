@@ -17,10 +17,6 @@ public enum Winner {
 	NONE,
 	TIE;
 
-	/**
-	 * @param cellStatus
-	 * @return
-	 */
 	public static Winner convert(CellStatus cellStatus) throws UnknownEnumValue {
 		switch(cellStatus) {
 			case P1: return Winner.P1;

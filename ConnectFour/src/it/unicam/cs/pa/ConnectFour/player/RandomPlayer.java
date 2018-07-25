@@ -25,7 +25,7 @@ public class RandomPlayer extends Player {
 	private boolean echo;
 
 	private boolean printed;
-	
+
 	private ActionType selectedAction = ActionType.INSERT;
 
 	protected RandomPlayer(String name, boolean echo, InputStream in, PrintStream out) {
@@ -37,45 +37,54 @@ public class RandomPlayer extends Player {
 	public RandomPlayer(String name, boolean echo) {
 		this(name, echo, System.in, System.out);
 	}
-	
+
 	public RandomPlayer(String name) {
 		this(name, true);
 	}
 
 	@Override
 	public ActionType chooseAction() throws InternalException {
-		if(echo) { Utils.printField(field, super.getReferee()); printed = true; }
+		if (echo) {
+			Utils.printField(field, super.getReferee());
+			printed = true;
+		}
 		do {
-			this.selectedAction = ActionType.values()[new ArrayList<Integer>(super.getReferee().getAllowedActions().keySet()).get(random.nextInt(super.getReferee().getAllowedActions().size()))];
-		} while(!isValid(this.selectedAction));
-		
+			this.selectedAction = new ArrayList<ActionType>(super.getReferee().getAllowedActions().keySet())
+					.get(random.nextInt(super.getReferee().getAllowedActions().size()));
+		} while (!isValid(this.selectedAction));
+
 		return this.selectedAction;
 	}
-	
 
 	private boolean isValid(ActionType action) {
 		try {
 			try {
-				if(super.getReferee().getAllowedActions().get(action.ordinal()) != null) {
-					for(int i = 0; i < field.getColumns(); i++) {
-						if(super.getReferee().getAllowedActions().get(action.ordinal())
-								.test(field.getColumn(i), Utils.parsePlayer(getId())))
+				if (super.getReferee().getAllowedActions().get(action) != null) {
+					for (int i = 0; i < field.getColumns(); i++) {
+						if (super.getReferee().getAllowedActions().get(action).test(field.getColumn(i),
+								Utils.parsePlayer(getId())))
 							return true;
 					}
 				}
-			} finally { }
-		} finally { }
+			} finally {
+			}
+		} finally {
+		}
 		return false;
 	}
 
-
 	@Override
 	public int getColumn() throws InternalException {
-		if(echo && !printed) { Utils.printField(field, super.getReferee()); }
+		if (echo && !printed) {
+			Utils.printField(field, super.getReferee());
+		}
 		int selcol;
-		while(!super.getReferee().getAllowedActions().get(selectedAction.ordinal()).test(field.getColumn(selcol = random.nextInt(field.getColumns())), Utils.parsePlayer(getId())));
+		while (!super.getReferee().getAllowedActions().get(selectedAction)
+				.test(field.getColumn(selcol = random.nextInt(field.getColumns())), Utils.parsePlayer(getId())))
+			;
 //		while(!super.getReferee().isValidInsert(selcol = random.nextInt(field.getColumns()), field,));
-		if(echo) print("I choose " + selectedAction.toString() + " in the column " + (selcol + 1));
+		if (echo)
+			print("I choose " + selectedAction.toString() + " in the column " + (selcol + 1));
 		return selcol;
 	}
 
@@ -104,19 +113,19 @@ public class RandomPlayer extends Player {
 	@Override
 	public void youLose() {
 //		print("I have lost!");
-		out.println(this.name+"> "+"I have lost!");
+		out.println(this.name + "> " + "I have lost!");
 	}
 
 	@Override
 	public void youWin() {
 //		print("I have win!");
-		out.println(this.name+"> "+"I have win!");
+		out.println(this.name + "> " + "I have win!");
 	}
-	
+
 	private void print(String string) {
 		if (echo) {
-			out.println(this.name+"> "+string);
+			out.println(this.name + "> " + string);
 		}
 	}
-	
+
 }

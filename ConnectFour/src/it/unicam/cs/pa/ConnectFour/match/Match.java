@@ -208,7 +208,7 @@ public final class Match {
 	 */
 	private ActionType selectAction() {
 		return referee.actionsNumber() > 1 ? players[currentPlayer].chooseAction()
-				: ActionType.values()[referee.getAllowedActions().keySet().iterator().next()];
+				: referee.getAllowedActions().keySet().iterator().next();
 	}
 
 	private void setStatus(MatchStatus status) {

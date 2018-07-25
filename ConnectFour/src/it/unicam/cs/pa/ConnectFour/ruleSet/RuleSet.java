@@ -32,7 +32,7 @@ public interface RuleSet {
 	/**
 	 * @return Allowed actions
 	 */
-	public HashMap<Integer, BiPredicate<List<Cell>,CellStatus>> getAllowedActions();
+	public HashMap<ActionType, BiPredicate<List<Cell>,CellStatus>> getAllowedActions();
 	
 	/**
 	 * @return Final piece location inserted in the column
@@ -65,16 +65,8 @@ public interface RuleSet {
 	 * @return true if the action is allowed, false otherwise
 	 */
 	public default boolean isValidAction(ActionType action) {
-		return getAllowedActions().containsKey(action.ordinal());
+		return getAllowedActions().containsKey(action);
 	}
-	
-	/**
-	 * @param field 
-	 * @return true if the insert is valid, false otherwise 
-	 */
-//	boolean isValidInsert ( int column , MatchField field , CellStatus player );
-	
-//	boolean isValidPop( int column , MatchField field , CellStatus player );
 	
 	/**
 	 * @param field

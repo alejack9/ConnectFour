@@ -43,7 +43,7 @@ public class InteractivePlayer extends Player {
 		this.print("Available Actions: "); // 0 to insert, 1 to pop etc
 
 		super.getReferee().getAllowedActions().entrySet()
-				.forEach(i -> System.out.println(i.getKey() + " - " + ActionType.values()[i.getKey()].name()));
+				.forEach(i -> System.out.println(i.getKey().ordinal() + " - " + i.getKey().name()));
 
 		int x = doInput("Choose the action: ", this::isValidAction, Integer::parseInt);
 		this.selectedAction = ActionType.values()[x]; 
@@ -60,7 +60,7 @@ public class InteractivePlayer extends Player {
 		if (!printed)
 			Utils.printField(field, super.getReferee());
 		int column = doInput(String.format("Choose a column from 1 to %d", field.getColumns()),
-				(x) -> super.getReferee().isInBound(x, field.getColumns()) && super.getReferee().getAllowedActions().get(selectedAction.ordinal()).test(field.getColumn(x), Utils.parsePlayer(getId())),
+				(x) -> super.getReferee().isInBound(x, field.getColumns()) && super.getReferee().getAllowedActions().get(selectedAction).test(field.getColumn(x), Utils.parsePlayer(getId())),
 				(x) -> (Integer.parseInt(x) - 1));
 		return column;
 	}
@@ -162,16 +162,14 @@ public class InteractivePlayer extends Player {
 
 	private boolean isValidAction(int v) {
 		try {
-			try {
-				if(super.getReferee().getAllowedActions().get(v) != null) {
-					for(int i = 0; i < field.getColumns(); i++) {
-						if(super.getReferee().getAllowedActions().get(v)
-								.test(field.getColumn(i), Utils.parsePlayer(getId())))
-							return true;
-					}
+			if(super.getReferee().getAllowedActions().get(ActionType.values()[v]) != null) {
+				for(int i = 0; i < field.getColumns(); i++) {
+					if(super.getReferee().getAllowedActions().get(ActionType.values()[v])
+							.test(field.getColumn(i), Utils.parsePlayer(getId())))
+						return true;
 				}
-			} finally { }
-		} finally { }
+			}
+		} catch (Throwable e) { }
 		return false;
 	}
 	

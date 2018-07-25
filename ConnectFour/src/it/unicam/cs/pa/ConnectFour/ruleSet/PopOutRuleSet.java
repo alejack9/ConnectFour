@@ -33,7 +33,7 @@ import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
  */
 public class PopOutRuleSet extends DefaultRuleSet {
 
-	private final HashMap<Integer, BiPredicate<List<Cell>, CellStatus>> allowedActions;
+	private final HashMap<ActionType, BiPredicate<List<Cell>, CellStatus>> allowedActions;
 
 	private final BiPredicate<List<Cell>, CellStatus> checkPop = (column, cell) -> {
 		if (cell != column.get(column.size() - 1).getStatus())
@@ -48,7 +48,7 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	public PopOutRuleSet() {
 		super();
 		allowedActions = super.getAllowedActions();
-		allowedActions.put(ActionType.POP.ordinal(), checkPop);
+		allowedActions.put(ActionType.POP, checkPop);
 	}
 
 	/*
@@ -57,7 +57,7 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getAllowedActions()
 	 */
 	@Override
-	public HashMap<Integer, BiPredicate<List<Cell>, CellStatus>> getAllowedActions() {
+	public HashMap<ActionType, BiPredicate<List<Cell>, CellStatus>> getAllowedActions() {
 		return allowedActions;
 	}
 

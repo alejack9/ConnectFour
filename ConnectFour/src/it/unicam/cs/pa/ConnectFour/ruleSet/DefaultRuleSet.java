@@ -24,7 +24,7 @@ import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
  */
 public class DefaultRuleSet implements RuleSet {
 
-	private static final HashMap<Integer, BiPredicate<List<Cell>, CellStatus>> allowedActions = new HashMap<>();
+	private static final HashMap<ActionType, BiPredicate<List<Cell>, CellStatus>> allowedActions = new HashMap<>();
 
 	public static final Size DEFAULT_SIZE = new Size(6, 7);
 
@@ -37,10 +37,10 @@ public class DefaultRuleSet implements RuleSet {
 			.isPresent();
 
 	public DefaultRuleSet() {
-		allowedActions.put(ActionType.INSERT.ordinal(), checkIns);
+		allowedActions.put(ActionType.INSERT, checkIns);
 	}
 
-	public HashMap<Integer, BiPredicate<List<Cell>, CellStatus>> getAllowedActions() {
+	public HashMap<ActionType, BiPredicate<List<Cell>, CellStatus>> getAllowedActions() {
 		return allowedActions;
 	}
 
