@@ -81,5 +81,5 @@ public interface RuleSet {
 	 * @param cell (in pop case, send the most bottom cell)
 	 * @return P1, P2, BOTH or NONE if there aren't winners
 	 */
-	Winner winner(MatchField field, CellLocation cell, CellStatus player);
+	Winner winner(MatchField field, CellLocation cell);
 }

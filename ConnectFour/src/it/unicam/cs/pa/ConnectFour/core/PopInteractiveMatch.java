@@ -21,8 +21,8 @@ public class PopInteractiveMatch {
 	 */
 	public static void main(String[] args) {
 
-		Player p1 = new InteractivePlayer("X");
-		Player p2 = new InteractivePlayer("O");
+		Player p1 = new RandomPlayer("X");
+		Player p2 = new RandomPlayer("O");
 		
 		HashMap<String, Object> proop = new HashMap<>();
 
@@ -32,6 +32,7 @@ public class PopInteractiveMatch {
 		Match m = Match.getInstance();
 		m.initMatch(p1, p2, proop);
 		m.play();
+		
 	}
 
 }

@@ -19,8 +19,10 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 public class RandomMatch {
 
 	public static void main(String[] args) throws IOException {
-		Player p1 = new RandomPlayer("X",false);
-		Player p2 = new RandomPlayer("O",false);
+		
+		// FIXME DOESN'T WORK
+		Player p1 = new RandomPlayer("X",true);
+		Player p2 = new RandomPlayer("O",true);
 		
 		HashMap<String, Object> prop = new HashMap<>();
 		prop.put("size", DefaultRuleSet.DEFAULT_SIZE);

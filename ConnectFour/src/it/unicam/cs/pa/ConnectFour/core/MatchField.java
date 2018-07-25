@@ -2,7 +2,9 @@ package it.unicam.cs.pa.ConnectFour.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,7 +37,8 @@ public final class MatchField {
 	private Size size;
 	private int pieces;
 
-	private List<Function<CellLocation, List<Cell>>> listsGetters = new ArrayList<>();
+	private Map<Function<CellLocation, List<Cell>>,Function<Cell,Integer>> gettersMap = new HashMap<>();
+//	private List<Function<CellLocation, List<Cell>>> listsGetters = new ArrayList<>();
 
 	/**
 	 * 
@@ -44,10 +47,14 @@ public final class MatchField {
 		this.field = new ArrayList<>();
 		this.initialized = false;
 
-		listsGetters.add((c) -> this.getRow(c));
-		listsGetters.add((c) -> this.getColumn(c));
-		listsGetters.add((c) -> this.getNEDiagonal(c));
-		listsGetters.add((c) -> this.getNWDiagonal(c));
+		gettersMap.put(c -> this.getRow(c), c -> c.getLocation().getColumn());
+		gettersMap.put(c -> this.getColumn(c), c -> c.getLocation().getRow());
+		gettersMap.put(c -> this.getNEDiagonal(c), c -> c.getLocation().getColumn());
+		gettersMap.put(c -> this.getNWDiagonal(c), c -> c.getLocation().getColumn());
+//		listsGetters.add((c) -> this.getRow(c));
+//		listsGetters.add((c) -> this.getColumn(c));
+//		listsGetters.add((c) -> this.getNEDiagonal(c));
+//		listsGetters.add((c) -> this.getNWDiagonal(c));
 	}
 
 	/**
@@ -87,11 +94,18 @@ public final class MatchField {
 		return getCellStatus(cell.getRow(), cell.getColumn());
 	}
 
+//	/**
+//	 * @return the listsGetters
+//	 */
+//	public List<Function<CellLocation, List<Cell>>> getListsGetters() {
+//		return Collections.unmodifiableList(listsGetters);
+//	}
+
 	/**
-	 * @return the listsGetters
+	 * @return the gettersMap
 	 */
-	public List<Function<CellLocation, List<Cell>>> getListsGetters() {
-		return Collections.unmodifiableList(listsGetters);
+	public Map<Function<CellLocation, List<Cell>>, Function<Cell, Integer>> getGettersMap() {
+		return gettersMap;
 	}
 
 	public int getPieces() {
@@ -105,9 +119,11 @@ public final class MatchField {
 	 */
 	public void setColumn(List<Cell> newColumn, int column) throws UnitializedSingleton {
 		checkInit();
+		long emptyCells = field.get(column).stream().filter(cell -> cell.isEmpty()).count();
 		for (int i = 0; i < newColumn.size(); i++) {
 			field.get(column).set(i, newColumn.get(i));
 		}
+		pieces += emptyCells - field.get(column).stream().filter(cell -> cell.isEmpty()).count();		
 	}
 
 	/**

@@ -97,6 +97,8 @@ public class PopOutRuleSet implements RuleSet {
 			succ = toReturn.get(i).pop();
 			toReturn.get(i).setPiece(tmp);
 		}
+		// REPORT USED TO USE ROTATE BUT IT ROTATES ELEMENTS AND WE HAVE TO ROTATE
+		// PIECES, NOT CELLS.
 //		Collections.rotate(toReturn , 1);
 //		toReturn.get(0).pop();
 		return toReturn;
@@ -130,67 +132,114 @@ public class PopOutRuleSet implements RuleSet {
 	 * ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)
 	 */
 	@Override
-	public Winner winner(MatchField field, CellLocation cellLocation, CellStatus player) {
+	public Winner winner(MatchField field, CellLocation cellLocation) {
+		// CONTROLLARE OGNI CELLA DELLA COLONNA
+		// SE CI SONO PIU` DI 4 PEZZI VICINI DELLO STESSO COLORE, INVIO IL COLORE
 		Winner toReturn = Winner.NONE;
-		if (_winner(field, cellLocation, player))
-			toReturn = Winner.convert(field.getCellStatus(cellLocation));
-		if (_winner(field, cellLocation, Utils.parsePlayer(Match.otherPlayer(player.ordinal())))) {
-			if (toReturn == Winner.NONE)
-				toReturn = Winner.P2;
-			else
-				toReturn = Winner.BOTH;
+		for (Cell cell : field.getColumn(cellLocation)) {
+			toReturn = checkCellLines(cell, field);
 		}
 		return toReturn;
 	}
+//		Winner toReturn = Winner.NONE;
+//		if (_winner(field, cellLocation, player))
+//			toReturn = Winner.convert(field.getCellStatus(cellLocation));
+//		if (_winner(field, cellLocation, Utils.parsePlayer(Match.otherPlayer(player.ordinal())))) {
+//			if (toReturn == Winner.NONE)
+//				toReturn = Winner.P2;
+//			else
+//				toReturn = Winner.BOTH;
+//		}
+//		return toReturn;
+//	}
+//
+//	/**
+//	 * Check the whole column
+//	 * 
+//	 * @param field
+//	 * @param cell
+//	 * @param parse
+//	 */
+//	private boolean _winner(MatchField field, CellLocation _cell, CellStatus player) {
+//		for (Cell cell : field.getColumn(_cell)) {
+//			if (checkWinner(field, player, cell.getLocation()))
+//				return true;
+//		}
+//		return false;
+//	}
+//
+//	/**
+//	 * Check each direction from the passed cellLocation
+//	 * 
+//	 * @param location
+//	 */
+//	private boolean checkWinner(MatchField field, CellStatus player, CellLocation cellLocation) {
+//		for (Function<CellLocation, List<Cell>> function : field.getListsGetters()) {
+//			List<Cell> list = function.apply(cellLocation);
+//			if (getMaxConsecutive(list, player) >= 4)
+//				return true;
+//		}
+//		return false;
+//	}
+//
+//	/**
+//	 * Get the maximum number of consecutive cells
+//	 * 
+//	 * @return
+//	 */
+//	private int getMaxConsecutive(List<Cell> list, CellStatus player) {
+//		int maxConsecutive = 1, consecutiveCell = 1;
+//		for (int i = 0; i < list.size() - 1; i++) {
+//			if (list.get(i).getStatus() == list.get(i + 1).getStatus() && !list.get(i).isEmpty()
+//					&& list.get(i).getStatus() == player) {
+//				consecutiveCell++;
+//			} else {
+//				if (consecutiveCell > maxConsecutive) {
+//					maxConsecutive = consecutiveCell;
+//				}
+//				consecutiveCell = 1;
+//			}
+//		}
+//		return consecutiveCell > maxConsecutive ? consecutiveCell : maxConsecutive;
+//	}
 
 	/**
-	 * Check the whole column
-	 * 
-	 * @param field
 	 * @param cell
-	 * @param parse
-	 */
-	private boolean _winner(MatchField field, CellLocation _cell, CellStatus player) {
-		for (Cell cell : field.getColumn(_cell)) {
-			if (checkWinner(field, player, cell.getLocation()))
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Check each direction from the passed cellLocation
-	 * 
-	 * @param location
-	 */
-	private boolean checkWinner(MatchField field, CellStatus player, CellLocation cellLocation) {
-		for (Function<CellLocation, List<Cell>> function : field.getListsGetters()) {
-			List<Cell> list = function.apply(cellLocation);
-			if (getMaxConsecutive(list, player) >= 4)
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Get the maximum number of consecutive cells
-	 * 
+	 * @param field
 	 * @return
 	 */
-	private int getMaxConsecutive(List<Cell> list, CellStatus player) {
-		int maxConsecutive = 1, consecutiveCell = 1;
-		for (int i = 0; i < list.size() - 1; i++) {
-			if (list.get(i).getStatus() == list.get(i + 1).getStatus() && !list.get(i).isEmpty()
-					&& list.get(i).getStatus() == player) {
-				consecutiveCell++;
-			} else {
-				if (consecutiveCell > maxConsecutive) {
-					maxConsecutive = consecutiveCell;
+	// TODO MAKE IT STREAM OR MORE BEAUTIFOUL
+	private Winner checkCellLines(Cell cell, MatchField field) {
+		Winner toReturn = Winner.NONE;
+		for (Function<CellLocation, List<Cell>> function : field.getGettersMap().keySet()) {
+			List<Cell> list = function.apply(cell.getLocation());
+			int[] consecutive = new int[] {1,1};
+			int[] maxConsecutive = new int[] {1,1};
+			for (int i = 0; i < list.size() - 1; i++) {
+				if (list.get(i).getStatus() == list.get(i + 1).getStatus() && !list.get(i).isEmpty()) {
+					if (list.get(i).getStatus() == CellStatus.P1)
+						consecutive[0]++;
+					if (list.get(i).getStatus() == CellStatus.P2)
+						consecutive[1]++;
+				} else {
+					maxConsecutive[0] = Math.max(consecutive[0], maxConsecutive[0]);
+					maxConsecutive[1] = Math.max(consecutive[1], maxConsecutive[1]);
+					consecutive[0] = 1;
+					consecutive[1] = 1;
 				}
-				consecutiveCell = 1;
 			}
+			maxConsecutive[0] = Math.max(consecutive[0], maxConsecutive[0]);
+			maxConsecutive[1] = Math.max(consecutive[1], maxConsecutive[1]);
+			if (maxConsecutive[0] >= 4 && toReturn == Winner.NONE)
+				toReturn = Winner.P1;
+			else if (maxConsecutive[0] >= 4 && toReturn == Winner.P2)
+				toReturn = Winner.BOTH;
+			else if (maxConsecutive[1] >= 4 && toReturn == Winner.NONE)
+				toReturn = Winner.P2;
+			else if (maxConsecutive[1] >= 4 && toReturn == Winner.P1)
+				toReturn = Winner.BOTH;
 		}
-		return consecutiveCell > maxConsecutive ? consecutiveCell : maxConsecutive;
+		return toReturn;
 	}
 
 }
