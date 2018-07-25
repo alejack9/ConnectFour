@@ -9,19 +9,19 @@ public enum CellStatus {
 	P2,
 	EMPTY;
 	
-	/**
-	 * @param p must be 0 or 1
-	 * @return the relative player
-	 * @throws IllegalArgumentException if p is not 0 or 1
-	 */
-	public static CellStatus parse( int p ) throws IllegalArgumentException {
-		switch ( p ) {
-			case 0: return CellStatus.P1;
-			case 1: return CellStatus.P2;
-			default: 
-				throw new IllegalArgumentException("'p' must be 0 or 1, '" + p + "' is not allowed.");
-		}
-	}
+//	/**
+//	 * @param p must be 0 or 1
+//	 * @return the relative player
+//	 * @throws IllegalArgumentException if p is not 0 or 1
+//	 */
+//	public static CellStatus parse( int p ) throws IllegalArgumentException {
+//		switch ( p ) {
+//			case 0: return CellStatus.P1;
+//			case 1: return CellStatus.P2;
+//			default: 
+//				throw new IllegalArgumentException("'p' must be 0 or 1, '" + p + "' is not allowed.");
+//		}
+//	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Enum#toString()

@@ -35,7 +35,7 @@ public class Cell {
 	 */
 	public AbstractPiece pop () {
 		AbstractPiece toReturn = getPiece();
-		this.piece = null;
+		this.piece = new NullPiece();
 		return toReturn;
 	}
 

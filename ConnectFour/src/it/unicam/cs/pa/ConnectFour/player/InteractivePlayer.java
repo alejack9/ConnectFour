@@ -11,7 +11,6 @@ import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 import it.unicam.cs.pa.ConnectFour.exception.InternalException;
-import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
@@ -19,105 +18,125 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
  *
  */
 public class InteractivePlayer extends Player {
-
+	
 	private boolean printed;
-	 
-	public InteractivePlayer( String name , RuleSet referee , InputStream in , PrintStream out ) {
-		super( name , referee , in , out );
+	private ActionType selectedAction = ActionType.INSERT;
+
+	public InteractivePlayer(String name, InputStream in, PrintStream out) {
+		super(name, in, out);
 		printed = false;
 	}
-	public InteractivePlayer( String name , RuleSet referee ) {
-		this( name , referee , System.in , System.out );
+
+	public InteractivePlayer(String name) {
+		this(name, System.in, System.out);
 	}
-	public InteractivePlayer( String name ) {
-//		this( name , FactoriesProducer.getFactory(Factories.REFEREE).getReferee(RuleSetType.DEFAULT)); 
-		this( name , new DefaultRuleSet());
-	}
-	
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.Player#chooseAction()
 	 */
 	@Override
-	public ActionType chooseAction( ) throws InternalException {
+	public ActionType chooseAction() throws InternalException {
 		Utils.printField(field, super.getReferee());
 		printed = true;
-		this.print("Available Actions: "); //0 to insert, 1 to pop etc
-		
-		super.getReferee().getAllowedActions().entrySet().forEach(i -> System.out.println(i.getKey() + " - " + i.getValue()));
-		
-		int x = doInput("Choose the action: ", this::isExistingAction, Integer::parseUnsignedInt);
-		return super.getReferee().getAllowedActions().get(x);
+		this.print("Available Actions: "); // 0 to insert, 1 to pop etc
+
+		super.getReferee().getAllowedActions().entrySet()
+				.forEach(i -> System.out.println(i.getKey() + " - " + ActionType.values()[i.getKey()].name()));
+
+		int x = doInput("Choose the action: ", this::isValidAction, Integer::parseInt);
+		this.selectedAction = ActionType.values()[x]; 
+		return this.selectedAction;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.Player#getColumn()
 	 */
 	@Override
 	public int getColumn() throws InternalException {
-		if(!printed) Utils.printField(field, super.getReferee());
-		int column = doInput(String.format("Choose a column from 1 to %d", field.getColumns()), this::isValidInsert , (x) -> (Integer.parseUnsignedInt(x) - 1));
+		if (!printed)
+			Utils.printField(field, super.getReferee());
+		int column = doInput(String.format("Choose a column from 1 to %d", field.getColumns()),
+				(x) -> super.getReferee().isInBound(x, field.getColumns()) && super.getReferee().getAllowedActions().get(selectedAction.ordinal()).test(field.getColumn(x), Utils.parsePlayer(getId())),
+				(x) -> (Integer.parseInt(x) - 1));
 		return column;
 	}
-	/**
-	 * @return the iD
-	 */
-	public int getID() {
-		return ID;
-	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.Player#init(int)
 	 */
 	@Override
-	public void init(int pid , MatchField field ) throws IllegalIdValue {
+	public void init(int pid, MatchField field, RuleSet referee) throws IllegalIdValue {
 		this.setID(pid);
 		this.field = field;
+		super.setReferee(referee);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.Player#loseForError(java.lang.Throwable)
 	 */
 	@Override
 	public void loseForError(Throwable e) {
-		print("Oh no you have made a mistake ... You have lost! " + e.getMessage());		
+		print("Oh no you have made a mistake ... You have lost! " + e.getMessage());
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.Player#startMatch()
 	 */
 	@Override
 	public void startMatch() {
 		this.print("My ID is " + this.ID);
-		
+
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.Player#winForError(java.lang.Throwable)
 	 */
 	@Override
 	public void winForError(Throwable e) {
 		print("The other player has made an error! You have won!");
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.Player#youLose()
 	 */
 	@Override
 	public void youLose() {
-		this.print("You have lost!");		
+		this.print("I lose!");
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.Player#youWin()
 	 */
 	@Override
 	public void youWin() {
-		this.print("You win!");
+		this.print("I win!");
 	}
+
 	/**
-	 * @param string What to ask
+	 * @param string    What to ask
 	 * @param condition Input condition/s
-	 * @param readFun Parser from String to required type
+	 * @param readFun   Parser from String to required type
 	 * @return the inserted value
 	 * @throws IOException
 	 */
-	private <T> T doInput(String request, Predicate<String> condition, Function<String, T> readFun) throws InternalException {
+	private <T> T doInput(String request, Predicate<T> condition, Function<String, T> readFun)
+			throws InternalException {
 		while (true) {
 			this.print(request);
 			String line;
@@ -126,42 +145,50 @@ public class InteractivePlayer extends Player {
 			} catch (IOException e) {
 				throw new InternalException(e);
 			}
-			if (!condition.test(line)) {
-				System.out.println("Input Error!");
+			T x = null;
+			try {
+				x = readFun.apply(line);				
+			} catch (Throwable e) {
+				out.println("Input Error!");
+				continue;
+			}
+			if (!condition.test(x)) {
+				out.println("Input Error!");
 			} else {
-				return readFun.apply(line);
+				return x;
 			}
 		}
 	}
-	private boolean isExistingAction(String txt) {
+
+	private boolean isValidAction(int v) {
 		try {
-			int v = Integer.parseUnsignedInt(txt);
-			return(super.getReferee().getAllowedActions().get(v) == null ? false : true);
-		} catch (NumberFormatException e) {
-			return false;
-		}
+			try {
+				if(super.getReferee().getAllowedActions().get(v) != null) {
+					for(int i = 0; i < field.getColumns(); i++) {
+						if(super.getReferee().getAllowedActions().get(v)
+								.test(field.getColumn(i), Utils.parsePlayer(getId())))
+							return true;
+					}
+				}
+			} finally { }
+		} finally { }
+		return false;
 	}
-	private boolean isValidInsert(String txt) {
-		try {
-			int v = Integer.parseUnsignedInt(txt) - 1;
-			return(super.getReferee().isInBound(v,field.getColumns()) && super.getReferee().isValidInsert(v,field));
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
+	
 	/**
 	 * @param string What to write
 	 */
 	private void print(String string) {
-		this.out.println(this.name+ "> " + string);
+		this.out.println(this.name + "> " + string);
 	}
+
 	/**
 	 * @param pid
 	 */
 	private void setID(int pid) throws IllegalIdValue {
-		if(pid >= 0) {
+		if (pid >= 0) {
 			this.ID = pid;
-		}
-		else throw new IllegalIdValue(pid);
+		} else
+			throw new IllegalIdValue(pid);
 	}
 }

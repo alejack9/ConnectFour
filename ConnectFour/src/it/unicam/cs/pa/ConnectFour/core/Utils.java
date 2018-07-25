@@ -22,15 +22,21 @@ public class Utils {
 		for(int i = 0 ; i < 100 ; i++)
 			writer.println(); 
 	}
-//
-//	/**
-//	 * @param property
-//	 * @return
-//	 */
-//	public static RuleSet getReferee(String rulesetName) {
-//		return Enum.valueOf(RuleSetType.class, rulesetName);
-//	}
 
+	/**
+	 * @param p must be 0 or 1
+	 * @return the relative player
+	 * @throws IllegalArgumentException if p is not 0 or 1
+	 */
+	public static CellStatus parsePlayer(int player) throws IllegalArgumentException {
+		switch ( player ) {
+			case 0: return CellStatus.P1;
+			case 1: return CellStatus.P2;
+			default: 
+				throw new IllegalArgumentException("'p' must be 0 or 1, '" + player + "' is not allowed.");
+		}
+	}
+	
 	public static void printField ( MatchField field, RuleSet referee ) {
 		printField( System.out , field.getView(referee) , field.getRows() , field.getColumns() );
 	}

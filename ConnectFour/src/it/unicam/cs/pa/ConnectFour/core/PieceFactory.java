@@ -7,13 +7,13 @@ import it.unicam.cs.pa.ConnectFour.piece.Piece;
  *
  */
 public class PieceFactory {
-	
+	// REPORT SINGLETON BECASE ID MUST BE DIFFERENT FOR EACH PIECE
 	private final static PieceFactory INSTANCE = new PieceFactory();
 	
 	private int id;
 	
 	private PieceFactory() {
-		this.id = 0;
+		restart();
 	}
 	
 	public static PieceFactory getIstance() {
@@ -27,13 +27,11 @@ public class PieceFactory {
 	public Piece getPiece(CellStatus color) throws IllegalArgumentException {
 		return new Piece(this.id++, color);
 	}
-//
-//	/* (non-Javadoc)
-//	 * @see it.unicam.cs.pa.ConnectFour.factories.AbstractFactory#getReferee(it.unicam.cs.pa.ConnectFour.RuleSetType)
-//	 */
-//	@Override
-//	public RuleSet getReferee(RuleSetType ruleset) {
-//		return null;
-//	}
 
+	/**
+	 * 
+	 */
+	public void restart() {
+		this.id = 0;
+	}
 }
