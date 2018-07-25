@@ -123,22 +123,6 @@ public class PopOutRuleSet implements RuleSet {
 		return isInBound(column, DEFAULT_SIZE.getColumns());
 	}
 
-//	/* (non-Javadoc)
-//	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidInsert(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
-//	 */
-//	@Override
-//	public boolean isValidInsert(int column, MatchField field, CellStatus player) {
-//		return getAllowedActions().get(ActionType.INSERT.ordinal()).test(field.getColumn(column), player);
-//	}
-//
-//	/* (non-Javadoc)
-//	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidPop(int, it.unicam.cs.pa.ConnectFour.core.MatchField)
-//	 */
-//	@Override
-//	public boolean isValidPop(int column, MatchField field, CellStatus player) {
-//		return getAllowedActions().get(ActionType.POP.ordinal()).test(field.getColumn(column), player);
-//	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -161,48 +145,52 @@ public class PopOutRuleSet implements RuleSet {
 
 	/**
 	 * Check the whole column
+	 * 
 	 * @param field
 	 * @param cell
 	 * @param parse
 	 */
 	private boolean _winner(MatchField field, CellLocation _cell, CellStatus player) {
 		for (Cell cell : field.getColumn(_cell)) {
-			if(checkWinner(field, player, cell.getLocation())) return true;
+			if (checkWinner(field, player, cell.getLocation()))
+				return true;
 		}
 		return false;
 	}
 
-/**
- * Check each direction from the passed cellLocation
- * @param location
- */
-private boolean checkWinner(MatchField field, CellStatus player, CellLocation cellLocation) {
-	for (Function<CellLocation, List<Cell>> function : field.getListsGetters()) {
-		List<Cell> list = function.apply(cellLocation);
-		if(getMaxConsecutive(list, player) >= 4) return true;
+	/**
+	 * Check each direction from the passed cellLocation
+	 * 
+	 * @param location
+	 */
+	private boolean checkWinner(MatchField field, CellStatus player, CellLocation cellLocation) {
+		for (Function<CellLocation, List<Cell>> function : field.getListsGetters()) {
+			List<Cell> list = function.apply(cellLocation);
+			if (getMaxConsecutive(list, player) >= 4)
+				return true;
+		}
+		return false;
 	}
-	return false;
-}
 
-/**
- * Get the maximum number of consecutive cells
- * @return
- */
-private int getMaxConsecutive(List<Cell> list, CellStatus player) {
-	int maxConsecutive = 1, consecutiveCell = 1;
-	for (int i = 0; i < list.size() - 1; i++) {
-		if (list.get(i).getStatus() == list.get(i + 1).getStatus() && !list.get(i).isEmpty()
-				&& list.get(i).getStatus() == player) {
-			consecutiveCell++;
-		}
-		else {
-			if (consecutiveCell > maxConsecutive) {
-				maxConsecutive = consecutiveCell;
+	/**
+	 * Get the maximum number of consecutive cells
+	 * 
+	 * @return
+	 */
+	private int getMaxConsecutive(List<Cell> list, CellStatus player) {
+		int maxConsecutive = 1, consecutiveCell = 1;
+		for (int i = 0; i < list.size() - 1; i++) {
+			if (list.get(i).getStatus() == list.get(i + 1).getStatus() && !list.get(i).isEmpty()
+					&& list.get(i).getStatus() == player) {
+				consecutiveCell++;
+			} else {
+				if (consecutiveCell > maxConsecutive) {
+					maxConsecutive = consecutiveCell;
+				}
+				consecutiveCell = 1;
 			}
-			consecutiveCell = 1;
 		}
+		return consecutiveCell > maxConsecutive ? consecutiveCell : maxConsecutive;
 	}
-	return consecutiveCell > maxConsecutive ? consecutiveCell : maxConsecutive;
-}
 
 }
