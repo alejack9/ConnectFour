@@ -43,6 +43,7 @@ public class RandomPlayer extends Player {
 	@Override
 	public ActionType chooseAction() throws InternalException {
 		if(echo) { Utils.printField(field, super.getReferee()); printed = true; }
+		// TODO GET RANDOM ACTION IF IT'S VALID
 		return super.getReferee().getAllowedActions().keySet().
 	}
 
