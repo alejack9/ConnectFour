@@ -1,6 +1,8 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 /**
+ * Represents the status of the cell that could be Empty or contains P1 or P2
+ * 
  * @author giacche`
  *
  */

@@ -14,8 +14,8 @@ public class InteractiveMatch {
  
 	public static void main(String[] args) throws NumberFormatException, IllegalArgumentException {
 
-		Player p1 = new InteractivePlayer("X");
-		Player p2 = new InteractivePlayer("O");
+		Player p1 = new InteractivePlayer("Jack");
+		Player p2 = new InteractivePlayer("Vale");
 		
 		HashMap<String, Object> proop = new HashMap<>();
 

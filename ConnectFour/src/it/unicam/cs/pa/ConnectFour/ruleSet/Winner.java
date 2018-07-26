@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package it.unicam.cs.pa.ConnectFour.ruleSet;
 
@@ -7,18 +7,39 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
 
 /**
+ * Winner Enum
+ * 
  * @author Alessandro Giacche`
  *
  */
 public enum Winner {
-	P1, P2, BOTH, NONE, TIE;
+	/**
+	 * Player1
+	 */
+	P1,
+	/**
+	 * Player2
+	 */
+	P2,
+	/**
+	 * Both Player
+	 */
+	BOTH,
+	/**
+	 * None have won but the Match is end
+	 */
+	TIE,
+	/**
+	 * Match is not end
+	 */
+	NONE;
 
 	/**
-	 * Convert cellStatus into Winner type
+	 * Convert cellStatus into Winner type, if possible
 	 * 
-	 * @param cellStatus the {@link CellStatus}
-	 * @return the associated {@link Winner}
-	 * @throws UnknownEnumValue - if the player is not valid
+	 * @param cellStatus The {@link CellStatus}
+	 * @return The associated Winner
+	 * @throws UnknownEnumValue if the player is not valid
 	 */
 	public static Winner convert(CellStatus cellStatus) throws UnknownEnumValue {
 		switch (cellStatus) {

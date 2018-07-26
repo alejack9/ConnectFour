@@ -6,7 +6,9 @@ package it.unicam.cs.pa.ConnectFour.core;
 import java.util.List;
 
 /**
- * @author Alessandro Giacche`
+ * Class to Store sizes of a {@link MatchField}
+ * 
+ * @author giacche`
  *
  */
 public class Size {
@@ -14,7 +16,9 @@ public class Size {
 	final List<Integer> sizes;
 
 	/**
-	 * @param sizes - The sizes array of length of 2 and with values bigger than 1
+	 * Constructor
+	 * 
+	 * @param sizes The sizes array of length of 2 and with values bigger than 1
 	 * @throws IllegalArgumentException if the above mentioned clause are not
 	 *                                  respected
 	 */
@@ -27,8 +31,10 @@ public class Size {
 	}
 
 	/**
-	 * @param rows    - The row size bigger than 1
-	 * @param columns - The column size bigger than 1
+	 * Constructor
+	 * 
+	 * @param rows    The row size bigger than 1
+	 * @param columns The column size bigger than 1
 	 * @throws IllegalArgumentException if the above mentioned clause are not
 	 *                                  respected
 	 */
@@ -72,10 +78,12 @@ public class Size {
 	 */
 	@Override
 	public String toString() {
-		return this.sizes.get(0) + "x" + this.sizes.get(1);
+		return "<" + this.sizes.get(0) + "," + this.sizes.get(1) + ">";
 	}
 
 	/**
+	 * Provides the size
+	 * 
 	 * @return The size
 	 */
 	public List<Integer> getSize() {
@@ -83,6 +91,8 @@ public class Size {
 	}
 
 	/**
+	 * Provides the rows number
+	 * 
 	 * @return The rows
 	 */
 	public int getRows() {
@@ -90,6 +100,8 @@ public class Size {
 	}
 
 	/**
+	 * Provides the columns number
+	 * 
 	 * @return the columns
 	 */
 	public int getColumns() {

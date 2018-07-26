@@ -1,6 +1,8 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 /**
+ * Represents the cell coordinates
+ * 
  * @author giacche`
  *
  */
@@ -10,8 +12,7 @@ public class CellLocation {
 	private final int column;
 
 	/**
-	 * @param row
-	 * @param column
+	 * Constructor
 	 */
 	public CellLocation(int row, int column) {
 		this.row = row;
@@ -19,6 +20,8 @@ public class CellLocation {
 	}
 
 	/**
+	 * Returns the column
+	 * 
 	 * @return The column
 	 */
 	public int getColumn() {
@@ -26,6 +29,8 @@ public class CellLocation {
 	}
 
 	/**
+	 * Returns the row
+	 * 
 	 * @return The row
 	 */
 	public int getRow() {

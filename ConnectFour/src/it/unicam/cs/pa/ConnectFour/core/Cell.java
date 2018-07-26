@@ -5,6 +5,8 @@ import it.unicam.cs.pa.ConnectFour.piece.NullPiece;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 
 /**
+ * Represents a case of AbstractPiece with coordinates
+ * 
  * @author giacche`
  *
  */
@@ -14,7 +16,9 @@ public class Cell {
 	private CellLocation location;
 
 	/**
-	 * @param location - cell location in the {@link MatchField}
+	 * Constructor
+	 * 
+	 * @param location Cell location in the {@link MatchField}
 	 */
 	public Cell(CellLocation location) {
 		this.location = location;
@@ -22,29 +26,34 @@ public class Cell {
 	}
 
 	/**
-	 * @param row
-	 * @param column
+	 * Constructor
 	 */
 	public Cell(int row, int column) {
 		this(new CellLocation(row, column));
 	}
 
 	/**
-	 * @return the {@link CellStatus color} of the piece in the cell
+	 * Returns the {@link CellStatus color} of the piece in the cell
+	 * 
+	 * @return The {@link CellStatus color} of the piece in the cell
 	 */
 	public CellStatus getStatus() {
 		return piece.getColor();
 	}
 
 	/**
-	 * @return {@code true} if it is empty, {@code false} otherwise
+	 * Returns {@code true} if it is empty, {@code false} otherwise
+	 * 
+	 * @return {@code True} if it is empty, {@code false} otherwise
 	 */
 	public boolean isEmpty() {
 		return this.piece.isNull();
 	}
 
 	/**
-	 * @return the contained {@link Piece}, removing it
+	 * Returns the contained {@link Piece}, removing it
+	 * 
+	 * @return The contained {@link Piece}, removing it
 	 */
 	public AbstractPiece pop() {
 		AbstractPiece toReturn = getPiece();
@@ -53,21 +62,27 @@ public class Cell {
 	}
 
 	/**
-	 * @return the {@link CellLocation}
+	 * Returns the {@link CellLocation}
+	 *
+	 * @return The {@link CellLocation}
 	 */
 	public CellLocation getLocation() {
 		return this.location;
 	}
 
 	/**
-	 * @return the contained {@link AbstractPiece piece}
+	 * Returns the contained {@link AbstractPiece piece}
+	 * 
+	 * @return The contained {@link AbstractPiece piece}
 	 */
 	public AbstractPiece getPiece() {
 		return this.piece;
 	}
 
 	/**
-	 * @return {@code true} if the set has been possible, {@code true} otherwise
+	 * Replace a {@link Piece} with another one, if possible
+	 *
+	 * @return {@code True} if the set has been possible, {@code false} otherwise
 	 */
 	public boolean setPiece(AbstractPiece piece) {
 		if (!this.piece.isNull()) {

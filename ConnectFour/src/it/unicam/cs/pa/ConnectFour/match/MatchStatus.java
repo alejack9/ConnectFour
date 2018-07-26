@@ -1,12 +1,24 @@
 package it.unicam.cs.pa.ConnectFour.match;
 
 /**
+ * Represents the statuses that a {@link Match} may get
+ * 
  * @author giacche`
  *
  */
 public enum MatchStatus {
-	INIT, ARRANGE, END;
-
+	/**
+	 * Initializing Parameters
+	 */
+	INIT,
+	/**
+	 * Playing the game
+	 */
+	ARRANGE,
+	/**
+	 * Match ended
+	 */
+	END;
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -10,16 +10,19 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 import it.unicam.cs.pa.ConnectFour.exception.UnitializedSingleton;
 import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
+import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
+ * Represents a match field
+ * 
  * @author giacche`
  *
  */
-
 public final class MatchField {
 	// REPORT singleton
 	private static final MatchField INSTANCE = new MatchField();
@@ -47,7 +50,9 @@ public final class MatchField {
 	}
 
 	/**
-	 * @param size - The field size
+	 * Initializes MatchField
+	 * 
+	 * @param size The field size
 	 * @return {@code True} if correctly initialized, {@code false} otherwise
 	 */
 	public boolean initMatchField(Size size) {
@@ -63,25 +68,30 @@ public final class MatchField {
 	}
 
 	/**
+	 * Provides the MatchField instance
+	 * 
 	 * @return The MatchField instance
 	 */
 	public static MatchField getInstance() {
 		return INSTANCE;
 	}
 
-//	/**
-//	 * @param row - The row
-//	 * @param column - The column
-//	 * @return The {@link CellStatus} of the {@link AbstractPiece piece} contained in the selected Cell
-//	 * @throws UnitializedSingleton MatchField is not initialized
-//	 */
-//	public CellStatus getCellStatus(int row, int column) throws UnitializedSingleton {
-//		checkInit();
-//		return this.field.get(column).get(row).getStatus();
-//	}
+	/**
+	 * Removes all the pieces in the field
+	 */
+	public void clear() {
+		for (List<Cell> list : this.field) {
+			for (Cell cell : list) {
+				cell.pop();
+			}
+		}
+		this.pieces = 0;
+	}
 
 	/**
-	 * @param cellLocation - The {@link Cell} coordinates
+	 * Returns the {@link CellStatus} of the {@link AbstractPiece piece} contained in the selected Cell
+	 * 
+	 * @param cellLocation The {@link Cell} coordinates
 	 * @return The {@link CellStatus} of the {@link AbstractPiece piece} contained
 	 *         in the selected Cell
 	 */
@@ -90,6 +100,8 @@ public final class MatchField {
 	}
 
 	/**
+	 * Return a Map, see {@code return} for details
+	 * 
 	 * @return A {@link Map} that contains a {@link Set set of entries} that are a
 	 *         couple of {@link Function functions}:
 	 *         <ol>
@@ -107,6 +119,8 @@ public final class MatchField {
 	}
 
 	/**
+	 * Returns the number of {@link AbstractPiece pieces}
+	 *
 	 * @return The number of {@link AbstractPiece pieces}
 	 */
 	public int getPieces() {
@@ -114,14 +128,11 @@ public final class MatchField {
 	}
 
 	/**
-	 * 
-	 */
-	/**
 	 * Replaces a column with another column
 	 * 
-	 * @param newColumn - The new column
-	 * @param column    - The index of the column to modify
-	 * @throws UnitializedSingleton Match is not initialized
+	 * @param newColumn The new column
+	 * @param column The index of the column to modify
+	 * @throws UnitializedSingleton if MatchField is not initialized
 	 */
 	public void setColumn(List<Cell> newColumn, int column) throws UnitializedSingleton {
 		checkInit();
@@ -133,35 +144,21 @@ public final class MatchField {
 	}
 
 	/**
-	 * @param column - The index of the column to return
+	 * Returns a column as a list of cells
+	 * 
+	 * @param column The index of the column to return
 	 * @return The column
-	 * @throws UnitializedSingleton Match is not initialized
+	 * @throws UnitializedSingleton if MatchField is not initialized
 	 */
 	public List<Cell> getColumn(int column) throws UnitializedSingleton {
 		checkInit();
 		return field.get(column);
 	}
 
-//	/**
-//	 * @param cell
-//	 * @return The column as Cell list
-//	 * @throws UnitializedSingleton Match is not initialized
-//	 */
-//	public List<Cell> getColumn(CellLocation cell) throws UnitializedSingleton {
-//		return getColumn(cell.getColumn());
-//	}
-
-//	public List<Cell> getRow(CellLocation cell) throws UnitializedSingleton {
-//		checkInit();
-//		List<Cell> toReturn = new ArrayList<>();
-//		for (List<Cell> column : this.field) {
-//			toReturn.add(column.get(cell.getRow()));
-//		}
-//		return toReturn;
-//	}
-
 	/**
-	 * @param column - The index of the row to return
+	 * Returns a row as a list of cells
+	 * 
+	 * @param row The index of the row to return
 	 * @return The row
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
@@ -175,7 +172,9 @@ public final class MatchField {
 	}
 
 	/**
-	 * @param cellLocation - The base {@link CellLocation}-
+	 * Returns a North-West diagonal as a list of cells
+	 * 
+	 * @param cellLocation The base {@link CellLocation}-
 	 * @return The North-West diagonal passing throw the given {@link CellLocation}
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
@@ -185,7 +184,9 @@ public final class MatchField {
 	}
 
 	/**
-	 * @param cellLocation - The base {@link CellLocation}-
+	 * Returns a North-East diagonal as a list of cells
+	 *
+	 * @param cellLocation The base {@link CellLocation}-
 	 * @return The North-East diagonal passing throw the given {@link CellLocation}
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
@@ -195,6 +196,8 @@ public final class MatchField {
 	}
 
 	/**
+	 * Returns the number of rows
+	 * 
 	 * @return The number of rows
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
@@ -204,6 +207,8 @@ public final class MatchField {
 	}
 
 	/**
+	 * Returns the number of columns
+	 * 
 	 * @return The number of columns
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
@@ -213,7 +218,9 @@ public final class MatchField {
 	}
 
 	/**
-	 * @param referee - The reference {@link RuleSet referee}
+	 * Returns a function to view the state of a Cell
+	 * 
+	 * @param referee The reference {@link RuleSet referee}
 	 * @return The {@link BiFunction} that given a couple (row,column) returns the
 	 *         {@link CellStatus}
 	 * @throws UnitializedSingleton Match is not initialized
@@ -232,19 +239,23 @@ public final class MatchField {
 	/**
 	 * Inserts a piece in the field
 	 * 
-	 * @param location - The {@link CellLocation location} where the {@link Piece}
+	 * @param location The {@link CellLocation location} where the {@link Piece}
 	 *                 should be inserted
-	 * @param piece    - The {@link Piece}
+	 * @param piece    The {@link Piece}
 	 * @return {@code True} if the {@link Piece} has been inserted, {@code false}
 	 *         otherwise
 	 * @throws UnitializedSingleton Match is not initialized
 	 */
-	public boolean insert(CellLocation location, Piece piece) throws UnitializedSingleton {
+	public boolean insert(CellLocation location, Piece piece) throws IllegalPieceLocation, UnitializedSingleton {
 		checkInit();
 		if (pieces < getColumns() * getRows()) {
-			if (this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece)) {
-				pieces++;
-				return true;
+			try {
+				if (this.field.get(location.getColumn()).get(location.getRow()).setPiece(piece)) {
+					pieces++;
+					return true;
+				}
+			} catch (Throwable e) {
+				throw new IllegalPieceLocation(location, this);
 			}
 		}
 		return false;
@@ -269,9 +280,9 @@ public final class MatchField {
 	}
 
 	/**
-	 * @param row - The row
-	 * @param col - The column
-	 * @param dir - The {@link Direction}
+	 * @param row The row
+	 * @param col The column
+	 * @param dir The {@link Direction}
 	 * @return The last MatchField {@link Cell} following the given direction from
 	 *         the passed {@code <row,column>} coordinate
 	 * @throws UnknownEnumValue if the passed {@link Direction} is not valid
@@ -285,8 +296,8 @@ public final class MatchField {
 	}
 
 	/**
-	 * @param cellLoc - The based {@link CellLocation cell coordinates}
-	 * @param dir     - The {@link Direction}
+	 * @param cellLoc The based {@link CellLocation cell coordinates}
+	 * @param dir     The {@link Direction}
 	 * @return The diagonal that passes throw the given coordinate in the given
 	 *         {@link Direction}
 	 */
@@ -302,17 +313,5 @@ public final class MatchField {
 		toReturn.add(lastCell);
 
 		return toReturn;
-	}
-
-	/**
-	 * Removes all the pieces in the field
-	 */
-	public void clear() {
-		for (List<Cell> list : this.field) {
-			for (Cell cell : list) {
-				cell.pop();
-			}
-		}
-		this.pieces = 0;
 	}
 }

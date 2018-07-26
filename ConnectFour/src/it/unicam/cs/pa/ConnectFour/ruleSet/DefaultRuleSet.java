@@ -27,7 +27,7 @@ public class DefaultRuleSet implements RuleSet {
 
 	public static final Size DEFAULT_SIZE = new Size(6, 7);
 
-	public static final String NAME = "DefaultRuleSet";
+	public static final String NAME = "Default";
 
 	private final Function<List<Cell>, Optional<Cell>> destinationCell = (column) -> column.stream()
 			.filter(Cell::isEmpty).reduce((prev, last) -> last);
@@ -35,6 +35,9 @@ public class DefaultRuleSet implements RuleSet {
 	private final BiPredicate<List<Cell>, CellStatus> checkIns = (column, cell) -> destinationCell.apply(column)
 			.isPresent();
 
+	/**
+	 * Constructor
+	 */
 	public DefaultRuleSet() {
 		allowedActions.put(ActionType.INSERT, checkIns);
 	}
@@ -47,6 +50,14 @@ public class DefaultRuleSet implements RuleSet {
 	@Override
 	public HashMap<ActionType, BiPredicate<List<Cell>, CellStatus>> getAllowedActions() {
 		return allowedActions;
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getDefaultSize()
+	 */
+	@Override
+	public Size getDefaultSize() {
+		return DEFAULT_SIZE;
 	}
 
 	/*
@@ -84,7 +95,7 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public boolean isInBound(int column, int customColumnSize) {
-		return isInBound(new CellLocation(0, column), new Size(1, customColumnSize));
+		return isInBound(new CellLocation(0, column), new Size(2, customColumnSize));
 	}
 
 	/*
@@ -96,6 +107,14 @@ public class DefaultRuleSet implements RuleSet {
 	@Override
 	public List<Cell> popColumn(int column, MatchField field) {
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return NAME + " (" + DEFAULT_SIZE + ")";
 	}
 
 	/*
@@ -129,6 +148,8 @@ public class DefaultRuleSet implements RuleSet {
 	}
 
 	/**
+	 * Provides a list of lists which contain consecutive indexes from the given list
+	 * 
 	 * @param indexes - The indexes list
 	 * @return the list of consecutive indexes sequences
 	 */
@@ -149,13 +170,5 @@ public class DefaultRuleSet implements RuleSet {
 		if (!toReturn.contains(candidate))
 			toReturn.add(candidate);
 		return toReturn;
-	}
-
-	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getDefaultSize()
-	 */
-	@Override
-	public Size getDefaultSize() {
-		return DEFAULT_SIZE;
 	}
 }

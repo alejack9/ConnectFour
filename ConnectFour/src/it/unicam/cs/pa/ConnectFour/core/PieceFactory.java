@@ -3,6 +3,8 @@ package it.unicam.cs.pa.ConnectFour.core;
 import it.unicam.cs.pa.ConnectFour.piece.Piece;
 
 /**
+ * Pieces producer
+ * 
  * @author giacche`
  *
  */
@@ -17,6 +19,8 @@ public class PieceFactory {
 	}
 
 	/**
+	 * Returns the instance
+	 * 
 	 * @return The instance
 	 */
 	public static PieceFactory getIstance() {
@@ -24,6 +28,8 @@ public class PieceFactory {
 	}
 
 	/**
+	 * Returns a piece of a specific 'color'
+	 * 
 	 * @param color - The {@link CellStatus color} of the piece to return
 	 * @return A new {@link Piece}
 	 * @throws IllegalArgumentException - if {@link Piece} cannot be created

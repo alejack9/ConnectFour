@@ -6,24 +6,40 @@ package it.unicam.cs.pa.ConnectFour.core;
 import java.io.PrintStream;
 import java.util.function.BiFunction;
 
+import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
 /**
+ * Static Utils class
+ * 
  * @author giacche`
  *
  */
 public class Utils {
 
+	private Utils() {
+	}
+
+	/**
+	 * Wrap several times
+	 */
 	public static void clearScreen() {
 		clearScreen(System.out);
 	}
 
+	/**
+	 * Wrap several times in a specific PrintStream
+	 *
+	 * @param writer Target PrintStream
+	 */
 	public static void clearScreen(PrintStream writer) {
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 50; i++)
 			writer.println();
 	}
 
 	/**
+	 * Converts a player id into a CellStatus, if possible
+	 * 
 	 * @param player - The {@link Player}'s id, must be 0 or 1
 	 * @return The player is {@link CellStatus} form
 	 * @throws IllegalArgumentException if {@code player} is not valid

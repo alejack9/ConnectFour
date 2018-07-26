@@ -18,11 +18,11 @@ import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
-import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
 
 /**
- * it uses {@link DefaultRuleSet} to avoid the copy of methods
+ * Definition of rules of Connect4 Pop Out variant<br>
+ * (it uses {@link DefaultRuleSet} to avoid the copy of methods)
  * 
  * @author Alessandro Giacche`
  *
@@ -37,8 +37,14 @@ public class PopOutRuleSet extends DefaultRuleSet {
 		return column.parallelStream().filter(x -> !x.isEmpty()).count() > 1;
 	};
 
-	public static final String NAME = "PopOutRuleSet";
+	/**
+	 * the name of the variant
+	 */
+	public static final String NAME = "Pop Out";
 
+	/**
+	 * Contructor
+	 */
 	public PopOutRuleSet() {
 		super();
 		allowedActions = super.getAllowedActions();
@@ -63,7 +69,7 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	 */
 	@Override
 	public CellLocation insertLocation(int column, MatchField field)
-			throws IllegalColumnException, IllegalPieceLocation {
+			throws IllegalColumnException {
 		return super.insertLocation(column, field);
 	}
 
@@ -121,8 +127,8 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	}
 
 	/**
-	 * @param field        - The {@link MatchField}
-	 * @param cellLocation - The {@link CellLocation}
+	 * @param field The {@link MatchField}
+	 * @param cellLocation The {@link CellLocation}
 	 * @return A list of sequences where there are more than 4 pieces with the same
 	 *         status which is the {@code cellLocation}'s one
 	 */
@@ -141,7 +147,7 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	}
 
 	/**
-	 * @param indexes - The indexes list
+	 * @param indexes The indexes list
 	 * @return The list of consecutive indexes sequences
 	 */
 	private List<List<Integer>> collapseIndexes(List<Integer> indexes) {

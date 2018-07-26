@@ -1,6 +1,8 @@
 package it.unicam.cs.pa.ConnectFour.core;
 
 /**
+ * Represents all allowed actions for all RuleSets
+ * 
  * @author giacche`
  *
  */

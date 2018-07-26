@@ -4,6 +4,8 @@
 package it.unicam.cs.pa.ConnectFour.exception;
 
 /**
+ * Exception that alert that an internal exception is occurred
+ *
  * @author giacche`
  *
  */

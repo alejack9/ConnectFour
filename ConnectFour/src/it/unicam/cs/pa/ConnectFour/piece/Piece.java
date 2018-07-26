@@ -6,6 +6,8 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalIdValue;
 
 /**
+ * Represents a concrete Piece
+ * 
  * @author giacche`
  *
  */
@@ -15,15 +17,13 @@ public class Piece extends AbstractPiece {
 	private final CellStatus color;
 
 	/**
-	 * @throws IllegalIdValue
-	 * @throws IllegalArgumentException Disallowed color
-	 */
-	/**
-	 * @param id    - Must be positive
-	 * @param color - {@link CellStatus#EMPTY} is not allowed, use {@link NullPiece}
+	 * Constructor
+	 * 
+	 * @param id Must be positive
+	 * @param color {@link CellStatus#EMPTY} is not allowed, use {@link NullPiece}
 	 *              instead
-	 * @throws IllegalIdValue           - if the id is negative
-	 * @throws IllegalArgumentException - if the color is not allowed
+	 * @throws IllegalIdValue if the id is negative
+	 * @throws IllegalArgumentException if the color is not allowed
 	 */
 	public Piece(int id, CellStatus color) throws IllegalIdValue, IllegalArgumentException {
 		if (id >= 0) {

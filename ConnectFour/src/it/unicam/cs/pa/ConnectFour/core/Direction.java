@@ -9,6 +9,8 @@ import java.util.function.Predicate;
 import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
 
 /**
+ * Represents the Directions in the MatchField
+ * 
  * @author giacche`
  *
  */
@@ -16,10 +18,11 @@ public enum Direction {
 	NORTH, EAST, NW, NE, SW, SE, WEST, SOUTH;
 
 	/**
-	 * @param mf - The {@link MatchField}
-	 * @return a {@link BiPredicate} that {@link BiPredicate#test(Integer, Integer)
-	 *         tests} the bounds of passed row and column (ROW , COLUMN)
-	 * @throws UnknownEnumValue if the initialized {@link Enum} is unknown
+	 * Returns a {@code BiPredicate} that will {@code tests} the bounds of passed row and column (ROW , COLUMN)
+	 * 
+	 * @param mf The {@link MatchField}
+	 * @return A {@code BiPredicate} that will {@code tests} the bounds of passed row and column (ROW , COLUMN)
+	 * @throws UnknownEnumValue if the initialized enum value is unknown
 	 */
 	public BiPredicate<Integer, Integer> limit(MatchField mf) throws UnknownEnumValue {
 		switch (this) {
@@ -42,7 +45,9 @@ public enum Direction {
 	}
 
 	/**
-	 * @return the opposite Direction based on the initialized one (e.g. NORTH ->
+	 * Returns the opposite Direction based on the initialized one
+	 * 
+	 * @return The opposite Direction based on the initialized one (e.g. NORTH -&gt;
 	 *         SOUTH, etc...)
 	 */
 	public Direction opposite() {
@@ -62,25 +67,30 @@ public enum Direction {
 	}
 
 	/**
+	 * Returns the new column index gotten by making a step in the initialized direction
+	 * 
 	 * @param col The column
-	 * @return the new column gotten by making a step in the initialized direction
+	 * @return The new column index gotten by making a step in the initialized direction
 	 */
 	public int colStep(int col) {
 		return col + getStep()[1];
 	}
 
 	/**
+	 * Returns the new row index gotten by making a step in the initialized direction
+	 * 
 	 * @param row The column
-	 * @return the new row gotten by making a step in the initialized direction
+	 * @return The new row index gotten by making a step in the initialized direction
 	 */
 	public int rowStep(int row) {
 		return row + getStep()[0];
 	}
 
 	/**
-	 * @param mf - The {@link MatchField}
-	 * @return A {@link Predicate} that {@link Predicate#test(Integer) tests} the
-	 *         bounds of passed row or column
+	 * Returns a {@code Predicate} that will {@code tests} the bounds of passed row or column
+	 * 
+	 * @param mf The {@link MatchField}
+	 * @return A {@code Predicate} that will {@code tests} the bounds of passed row or column
 	 */
 	private Predicate<Integer> getPredicate(MatchField mf) {
 		switch (this) {
@@ -97,6 +107,8 @@ public enum Direction {
 	}
 
 	/**
+	 * Returns the value to sum to make a step in the initialized direction
+	 * 
 	 * @return The value to sum to make a step in the initialized direction
 	 */
 	private int[] getStep() {

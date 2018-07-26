@@ -18,6 +18,8 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.Winner;
 
 /**
+ * Represents a Match
+ * 
  * @author giacche`
  *
  */
@@ -59,6 +61,8 @@ public final class Match {
 	}
 
 	/**
+	 * Provides the instance of the Singleton
+	 * 
 	 * @return The instance
 	 */
 	public static Match getInstance() {
@@ -66,24 +70,19 @@ public final class Match {
 	}
 
 	/**
-	 * @param prop Properties HashMap: it contains
-	 *             <ul>
-	 *             <li>size ({@link Size} class)</li>
-	 *             <li>RuleSet ({@link RuleSet} class)</li>
-	 *             <li>firstPlayer ({@link Integer} class)</li>
-	 * @throws IllegalArgumentException one or more entries in the HashMap are not
-	 *                                  valid
-	 */
-	/**
-	 * @param p1   - First player
-	 * @param p2   - Second player
-	 * @param prop - A {@link Map} that should contain {@code 'size'},
-	 *             {@code 'firstPlayer'} and {@code 'referee'} values;<br />
-	 *             in case someone of these are missing they will be used the
+	 * Initializes Match parameters
+	 * 
+	 * @param p1   First player
+	 * @param p2   Second player
+	 * @param prop A {@link Map} that should contain {@code 'size'},
+	 *             {@code 'firstPlayer'} and {@code 'referee'} values;<br>
+	 *             s * in case someone of these are missing they will be used the
 	 *             default rules
 	 * @return {@code True} if the initialization have been done, {@code false}
 	 *         otherwise
-	 * @throws IllegalArgumentException if currentPlayer parameter is not - or 1
+	 * @throws IllegalArgumentException if currentPlayer parameter is not 0 or 1 or
+	 *                                  the passed Map's values are not the correct
+	 *                                  objects
 	 */
 	public boolean initMatch(Player p1, Player p2, Map<String, Object> prop) throws IllegalArgumentException {
 		if (!initialized) {
@@ -107,6 +106,8 @@ public final class Match {
 	}
 
 	/**
+	 * Provides the status of the match
+	 * 
 	 * @return The {@link MatchStatus}
 	 * @throws UnitializedSingleton if Match is not initialized
 	 */
@@ -117,7 +118,9 @@ public final class Match {
 	}
 
 	/**
-	 * @param player - {@link Player}'s id
+	 * Provides the opposite player's id
+	 * 
+	 * @param player {@link Player}'s id
 	 * @return The other {@link Player}'s id
 	 */
 	public static int otherPlayer(int player) {
@@ -164,7 +167,7 @@ public final class Match {
 	/**
 	 * Allow a player to run a turn
 	 * 
-	 * @param action - The action choosen by the player
+	 * @param action The action choosen by the player
 	 * @return {@code False} if the game is ended, {@code true} otherwise
 	 */
 	private boolean doAction(ActionType action) {
@@ -185,7 +188,7 @@ public final class Match {
 	}
 
 	/**
-	 * @param player - The {@link Player}'s id
+	 * @param player The {@link Player}'s id
 	 * @return {@code True} if no errors occurred, {@code false} otherwise
 	 */
 	private boolean init(int player) {
@@ -199,7 +202,7 @@ public final class Match {
 	}
 
 	/**
-	 * @param lastCell - last {@link CellLocation} inserted by the current player
+	 * @param lastCell last {@link CellLocation} inserted by the current player
 	 * @return {@code True} if the game ended, {@code false} otherwise
 	 */
 	private boolean isEnd(CellLocation lastCell) {
@@ -243,7 +246,7 @@ public final class Match {
 	}
 
 	/**
-	 * @param winner - Winner player' id
+	 * @param winner Winner player' id
 	 */
 	private void win(int winner) {
 		players[winner].youWin();
@@ -251,8 +254,8 @@ public final class Match {
 	}
 
 	/**
-	 * @param player - Winner player' id
-	 * @param e      - The error
+	 * @param player Winner player' id
+	 * @param e      The error
 	 */
 	private void winForError(int player, Throwable e) {
 		this.players[player].winForError(e);
