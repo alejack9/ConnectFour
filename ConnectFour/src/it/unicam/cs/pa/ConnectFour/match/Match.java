@@ -18,6 +18,8 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.Winner;
 
 /**
+ * Represents a Match
+ * 
  * @author giacche`
  *
  */
@@ -58,32 +60,44 @@ public final class Match {
 		this.initialized = false;
 	}
 
+	/**
+	 * Provides the instance of the Singleton
+	 * 
+	 * @return The instance
+	 */
 	public static Match getInstance() {
 		return INSTANCE;
 	}
 
 	/**
-	 * @param p1 First player
-	 * @param p2 Second player
-	 * @param prop Properties HashMap: it contains<ul>
-	 * <li>size ({@link Size} class)</li>
-	 * <li>RuleSet ({@link RuleSet} class)</li>
-	 * <li>firstPlayer ({@link Integer} class)</li>
-	 * @return true if the initialization have been done, false otherwise
-	 * @throws IllegalArgumentException one or more entries in the HashMap are not valid
+	 * Initializes Match parameters
+	 * 
+	 * @param p1   First player
+	 * @param p2   Second player
+	 * @param prop A {@link Map} that should contain {@code 'size'},
+	 *             {@code 'firstPlayer'} and {@code 'referee'} values;<br>
+	 *             s * in case someone of these are missing they will be used the
+	 *             default rules
+	 * @return {@code True} if the initialization have been done, {@code false}
+	 *         otherwise
+	 * @throws IllegalArgumentException if currentPlayer parameter is not 0 or 1 or
+	 *                                  the passed Map's values are not the correct
+	 *                                  objects
 	 */
-	public boolean initMatch(Player p1, Player p2, HashMap<String, Object> prop) throws IllegalArgumentException {
+	public boolean initMatch(Player p1, Player p2, Map<String, Object> prop) throws IllegalArgumentException {
 		if (!initialized) {
 			this.players = new Player[] { p1, p2 };
 			this.field = MatchField.getInstance();
-			this.field.initMatchField(getObject(prop.getOrDefault("size", DefaultRuleSet.DEFAULT_SIZE), Size.class));
-			
+			this.referee = getObject(prop.getOrDefault("ruleset", new DefaultRuleSet()), RuleSet.class);
+
+			this.field.initMatchField(getObject(prop.getOrDefault("size", referee.getDefaultSize()), Size.class));
+
 			this.currentPlayer = getObject(prop.getOrDefault("firstPlayer", 0), Integer.class);
 			this.firstPlayer = currentPlayer;
 			if (currentPlayer < 0 || currentPlayer > 1)
-				throw new IllegalArgumentException("firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
-	
-			this.referee = getObject(prop.getOrDefault("ruleset", new DefaultRuleSet()), RuleSet.class);
+				throw new IllegalArgumentException(
+						"firstPlayer must be 0 or 1, '" + currentPlayer + "' is not allowed");
+
 			this.piecesFactory = PieceFactory.getIstance();
 			this.initialized = true;
 			return true;
@@ -92,17 +106,22 @@ public final class Match {
 	}
 
 	/**
-	 * @throws UnitializedSingleton Match is not initialized
+	 * Provides the status of the match
+	 * 
+	 * @return The {@link MatchStatus}
+	 * @throws UnitializedSingleton if Match is not initialized
 	 */
-	public MatchStatus getStatus() {
+	public MatchStatus getStatus() throws UnitializedSingleton {
 		if (!initialized)
 			throw new UnitializedSingleton("Match");
 		return this.status;
 	}
 
 	/**
-	 * @param player player' id
-	 * @return the other player' id
+	 * Provides the opposite player's id
+	 * 
+	 * @param player {@link Player}'s id
+	 * @return The other {@link Player}'s id
 	 */
 	public static int otherPlayer(int player) {
 		return (player + 1) % 2;
@@ -111,7 +130,7 @@ public final class Match {
 	/**
 	 * Initializes the players and starts the game
 	 * 
-	 * @throws UnitializedSingleton Match is not initialized
+	 * @throws UnitializedSingleton if Match is not initialized
 	 */
 	public void play() throws IllegalStateException {
 		if (!initialized)
@@ -126,6 +145,9 @@ public final class Match {
 		_play();
 	}
 
+	/**
+	 * Restarts the Match
+	 */
 	public void restart() {
 		this.status = MatchStatus.ARRANGE;
 		this.firstPlayer = otherPlayer(firstPlayer);
@@ -138,18 +160,23 @@ public final class Match {
 	private void _play() {
 		this.players[PLAYER1].startMatch();
 		this.players[PLAYER2].startMatch();
-		while (doAction(selectAction()));
+		while (doAction(selectAction()))
+			;
 	}
 
 	/**
-	 * @return false if the game ended
+	 * Allow a player to run a turn
+	 * 
+	 * @param action The action choosen by the player
+	 * @return {@code False} if the game is ended, {@code true} otherwise
 	 */
 	private boolean doAction(ActionType action) {
 		try {
 			if (this.referee.isValidAction(action)) {
 				int column = players[this.currentPlayer].getColumn();
 				CellLocation loc = actions.get(action).apply(column);
-				if (isEnd(loc)) return false;
+				if (isEnd(loc))
+					return false;
 			} else
 				return true;
 		} catch (Throwable e) {
@@ -161,8 +188,8 @@ public final class Match {
 	}
 
 	/**
-	 * @param player Player' id
-	 * @return true if all's OK, false otherwise
+	 * @param player The {@link Player}'s id
+	 * @return {@code True} if no errors occurred, {@code false} otherwise
 	 */
 	private boolean init(int player) {
 		try {
@@ -175,7 +202,8 @@ public final class Match {
 	}
 
 	/**
-	 * @return true if the game ended, false otherwise
+	 * @param lastCell last {@link CellLocation} inserted by the current player
+	 * @return {@code True} if the game ended, {@code false} otherwise
 	 */
 	private boolean isEnd(CellLocation lastCell) {
 		Winner winner = referee.winner(field, lastCell);
@@ -183,11 +211,17 @@ public final class Match {
 			return false;
 
 		Utils.printField(field, referee);
-		switch(winner) {
-			case TIE: tie();break;
-			case BOTH: win(currentPlayer);break;
-			case NONE: break;
-			default: win(winner.ordinal());
+		switch (winner) {
+		case TIE:
+			tie();
+			break;
+		case BOTH:
+			win(currentPlayer);
+			break;
+		case NONE:
+			break;
+		default:
+			win(winner.ordinal());
 		}
 		this.status = MatchStatus.END;
 		return true;
@@ -199,7 +233,7 @@ public final class Match {
 	}
 
 	/**
-	 * @return the player's choice (if the allowed action are more than one) or the
+	 * @return The player's choice (if the allowed action are more than one) or the
 	 *         only choice
 	 */
 	private ActionType selectAction() {
@@ -229,13 +263,18 @@ public final class Match {
 	}
 
 	/**
-	 * @param toConvert the object to be converted
+	 * Converts an object {@code toConvert} to a given class {@code targetClass}
+	 * 
+	 * @param toConvert   the object to be converted
 	 * @param targetClass the target class
 	 * @return the object casted
-	 * @throws IllegalArgumentException if the passed object is not castable to the target class
+	 * @throws IllegalArgumentException if the passed object is not castable to the
+	 *                                  target class
 	 */
 	private <T> T getObject(Object toConvert, Class<? extends T> targetClass) throws IllegalArgumentException {
-		if(!targetClass.isAssignableFrom(toConvert.getClass())) throw new IllegalArgumentException("HasMap must contain a " + targetClass.getSimpleName() + " class, not a " + toConvert.getClass().getSimpleName() + " class");
+		if (!targetClass.isAssignableFrom(toConvert.getClass()))
+			throw new IllegalArgumentException("HasMap must contain a " + targetClass.getSimpleName() + " class, not a "
+					+ toConvert.getClass().getSimpleName() + " class");
 		return targetClass.cast(toConvert);
 	}
 }

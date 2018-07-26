@@ -4,6 +4,8 @@
 package it.unicam.cs.pa.ConnectFour.exception;
 
 /**
+ * Exception that alert that the passed enum value is unknown
+ * 
  * @author giacche`
  *
  */
@@ -11,10 +13,10 @@ public class UnknownEnumValue extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public final Enum<?> e;
+	private final Enum<?> e;
 	
 	public UnknownEnumValue(Enum<?> e) {
-		super("Enum Value '" + e.toString() + "' is unknown.");
+		super("Enum Value '" + e.toString() + "' is not valid.");
 		this.e = e;
 	}
 

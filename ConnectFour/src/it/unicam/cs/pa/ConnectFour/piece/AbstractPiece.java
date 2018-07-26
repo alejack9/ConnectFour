@@ -8,6 +8,8 @@ import java.util.Optional;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 
 /**
+ * Represents a Piece that can be concrete or null
+ * 
  * @author giacche`
  *
  */
@@ -29,28 +31,33 @@ public abstract class AbstractPiece {
 	 */
 	public abstract Optional<Integer> getId();
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null) return false;
-		if(this == obj) return true;
-		if(this.getClass() != obj.getClass()) return false;
+		if (obj == null)
+			return false;
+		if (this == obj)
+			return true;
+		if (this.getClass() != obj.getClass())
+			return false;
 		AbstractPiece otherPiece = (AbstractPiece) obj;
-		if( otherPiece.getColor() == this.getColor() &&
-			otherPiece.getId().equals(this.getId()) )
-				return true;
-		
+		if (otherPiece.getColor() == this.getColor() && otherPiece.getId().equals(this.getId()))
+			return true;
+
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return getColor().toString();
 	}
-
 }

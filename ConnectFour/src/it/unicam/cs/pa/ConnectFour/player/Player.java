@@ -36,14 +36,16 @@ public abstract class Player {
 	}
 
 	/**
+	 * Allows player to choose the action to apply
+	 * 
 	 * @return The action prompted by the player
-	 * @throws InternalException
 	 */
 	public abstract ActionType chooseAction() throws InternalException;
 
 	/**
+	 * Allow player to choose the column where apply the action
+	 * 
 	 * @return The column prompted by the player
-	 * @throws InternalException
 	 */
 	public abstract int getColumn() throws InternalException;
 
@@ -55,6 +57,8 @@ public abstract class Player {
 	}
 
 	/**
+	 * Initializes the player
+	 * 
 	 * @param pid     - The player's id
 	 * @param field   - The {@link MatchField}
 	 * @param referee - The {@link RuleSet referee}
@@ -63,6 +67,8 @@ public abstract class Player {
 	public abstract void init(int pid, MatchField field, RuleSet referee) throws IllegalIdValue;
 
 	/**
+	 * Receives the alert that it has lost because of an error
+	 * 
 	 * @param e The error that make player lose
 	 */
 	public abstract void loseForError(Throwable e);
@@ -73,21 +79,25 @@ public abstract class Player {
 	public abstract void startMatch();
 
 	/**
+	 * Receives the alert that it has won because of an error
+	 *
 	 * @param e The error that make player win
 	 */
 	public abstract void winForError(Throwable e);
 
 	/**
-	 * Notify the player that it's lost
+	 * Receives the alert that it's lost
 	 */
 	public abstract void youLose();
 
 	/**
-	 * Notify the player that it's won
+	 * Receives the alert that it's won
 	 */
 	public abstract void youWin();
 
 	/**
+	 * Provides the id
+	 * 
 	 * @return the player's id
 	 */
 	public int getId() {
@@ -95,8 +105,10 @@ public abstract class Player {
 	}
 
 	/**
-	 * @param referee1 - the {@link RuleSet referee}
-	 * @return {@code true} if all's ok, {@code false} otherwise (e.g.
+	 * Sets the referee if null
+	 * 
+	 * @param referee1 the {@link RuleSet referee}
+	 * @return {@code true} if no problems occurred, {@code false} otherwise (e.g.
 	 *         {@link RuleSet referee} is already assigned)
 	 */
 	protected boolean setReferee(RuleSet referee1) {
