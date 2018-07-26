@@ -12,6 +12,7 @@ import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.player.InteractivePlayer;
 import it.unicam.cs.pa.ConnectFour.player.Player;
+import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 
 /**
  * @author giacch�
@@ -62,7 +63,7 @@ class PlayerTest {
 	void testInit() {
 		MatchField mf = MatchField.getInstance();
 		mf.initMatchField(new Size(6,7));
-		p.init(0, mf);
+		p.init(0, mf,new DefaultRuleSet());
 		assertTrue(p.getId() == 0);
 	}
 

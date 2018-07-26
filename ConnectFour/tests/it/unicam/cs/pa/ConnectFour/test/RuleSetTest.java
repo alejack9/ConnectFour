@@ -12,12 +12,11 @@ import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
+import it.unicam.cs.pa.ConnectFour.core.PieceFactory;
 import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
-import it.unicam.cs.pa.ConnectFour.factory.PieceFactory;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
-import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSetType;
 
 /**
  * @author giacch�
@@ -44,14 +43,14 @@ class RuleSetTest {
 	}
 
 	/**
-	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getPieceLocation(int, it.unicam.cs.pa.ConnectFour.core.MatchField)}.
+	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#insertLocation(int, it.unicam.cs.pa.ConnectFour.core.MatchField)}.
 	 */
 //	@Test
 	void testGetPieceLocation() {
 		MatchField f = MatchField.getInstance();
 		f.initMatchField(new Size(6,7));
-		System.out.println(rs.getPieceLocation(0, f).getRow());
-		assertTrue(rs.getPieceLocation(0, f).getRow() == 5);
+		System.out.println(rs.insertLocation(0, f).getRow());
+		assertTrue(rs.insertLocation(0, f).getRow() == 5);
 	}
 
 	/**
@@ -113,7 +112,7 @@ class RuleSetTest {
 	void testIsValidInsert() {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
-		assertTrue(rs.isValidInsert(0, x));
+		assertTrue(rs.isValidInsert(0, x,CellStatus.P1));
 	}
 
 	/**
@@ -123,7 +122,7 @@ class RuleSetTest {
 	void testPop() {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
-		assertTrue(rs.pop(x.getColumn(0)).equals(x.getColumn(0)));
+		assertTrue(rs.popColumn(0,x).equals(x.getColumn(0)));
 	}
 
 	/**
@@ -134,17 +133,17 @@ class RuleSetTest {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
 		PieceFactory pf = PieceFactory.getIstance();
-		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
-		CellLocation lastloc = rs.getPieceLocation(3, x);
+		x.insert(rs.insertLocation(0, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(5, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P2));
+		CellLocation lastloc = rs.insertLocation(3, x);
 		x.insert(lastloc, pf.getPiece(CellStatus.P1));
 		Utils.printField(x, rs);
 		
@@ -160,17 +159,17 @@ class RuleSetTest {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
 		PieceFactory pf = PieceFactory.getIstance();
-		x.insert(rs.getPieceLocation(0+2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(1+2, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(1+2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(2+2, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(2+2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(3+2, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(2+2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3+2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(3+2, x), pf.getPiece(CellStatus.P2));
-		CellLocation lastloc = rs.getPieceLocation(3+2, x);
+		x.insert(rs.insertLocation(0+2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(1+2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(1+2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(2+2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(2+2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(3+2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(2+2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3+2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(3+2, x), pf.getPiece(CellStatus.P2));
+		CellLocation lastloc = rs.insertLocation(3+2, x);
 		x.insert(lastloc, pf.getPiece(CellStatus.P1));
 		Utils.printField(x, rs);
 		
@@ -186,23 +185,23 @@ class RuleSetTest {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
 		PieceFactory pf = PieceFactory.getIstance();
-		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P1));
 		
 		
-		CellLocation lastloc = rs.getPieceLocation(4, x);
+		CellLocation lastloc = rs.insertLocation(4, x);
 		x.insert(lastloc, pf.getPiece(CellStatus.P1));
 		Utils.printField(x, rs);
 		
@@ -217,17 +216,17 @@ class RuleSetTest {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
 		PieceFactory pf = PieceFactory.getIstance();
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(6, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(6, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(6, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(5, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(5, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(6, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(6, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(6, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(5, x), pf.getPiece(CellStatus.P1));
 		
-		CellLocation lastloc = rs.getPieceLocation(6, x);
+		CellLocation lastloc = rs.insertLocation(6, x);
 		x.insert(lastloc, pf.getPiece(CellStatus.P1));
 		Utils.printField(x, rs);
 		
@@ -242,17 +241,17 @@ class RuleSetTest {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
 		PieceFactory pf = PieceFactory.getIstance();
-		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(0, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(1, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(2, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(0, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(2, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(0, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(2, x), pf.getPiece(CellStatus.P1));
 		
-		CellLocation lastloc = rs.getPieceLocation(3, x);
+		CellLocation lastloc = rs.insertLocation(3, x);
 		x.insert(lastloc, pf.getPiece(CellStatus.P1));
 		Utils.printField(x, rs);
 		
@@ -268,17 +267,17 @@ class RuleSetTest {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
 		PieceFactory pf = PieceFactory.getIstance();
-		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(1+1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(1+1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(2+1, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(0+1, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(1+1, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(2+1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(0+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(0+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(0+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(1+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(1+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(2+1, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(0+1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(1+1, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(2+1, x), pf.getPiece(CellStatus.P1));
 		
-		CellLocation lastloc = rs.getPieceLocation(3+1, x);
+		CellLocation lastloc = rs.insertLocation(3+1, x);
 		x.insert(lastloc, pf.getPiece(CellStatus.P1));
 		Utils.printField(x, rs);
 		
@@ -293,17 +292,17 @@ class RuleSetTest {
 		MatchField x = MatchField.getInstance();
 		x.initMatchField(new Size(6,7));
 		PieceFactory pf = PieceFactory.getIstance();
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(5, x), pf.getPiece(CellStatus.P2));
-		x.insert(rs.getPieceLocation(3, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(4, x), pf.getPiece(CellStatus.P1));
-		x.insert(rs.getPieceLocation(6, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(5, x), pf.getPiece(CellStatus.P2));
+		x.insert(rs.insertLocation(3, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(4, x), pf.getPiece(CellStatus.P1));
+		x.insert(rs.insertLocation(6, x), pf.getPiece(CellStatus.P1));
 		
-		CellLocation lastloc = rs.getPieceLocation(5, x);
+		CellLocation lastloc = rs.insertLocation(5, x);
 		x.insert(lastloc, pf.getPiece(CellStatus.P1));
 		Utils.printField(x, rs);
 		

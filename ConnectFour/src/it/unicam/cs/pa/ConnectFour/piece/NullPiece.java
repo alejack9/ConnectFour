@@ -8,13 +8,15 @@ import java.util.Optional;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 
 /**
+ * Represents a null piece, used "NullObject Pattern"
+ * 
  * @author giacche`
  *
  */
 public class NullPiece extends AbstractPiece {
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#isNull()
+	 * @see it.unicam.cs.pa.ConnectFour.piece.AbstractPiece#isNull()
 	 */
 	@Override
 	public boolean isNull() {
@@ -22,7 +24,7 @@ public class NullPiece extends AbstractPiece {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#getColor()
+	 * @see it.unicam.cs.pa.ConnectFour.piece.AbstractPiece#getColor()
 	 */
 	@Override
 	public CellStatus getColor() {
@@ -30,11 +32,10 @@ public class NullPiece extends AbstractPiece {
 	}
 
 	/* (non-Javadoc)
-	 * @see it.unicam.cs.pa.ConnectFour.AbstractPiece#getId()
+	 * @see it.unicam.cs.pa.ConnectFour.piece.AbstractPiece#getId()
 	 */
 	@Override
 	public Optional<Integer> getId() {
 		return Optional.empty();
 	}
-
 }
