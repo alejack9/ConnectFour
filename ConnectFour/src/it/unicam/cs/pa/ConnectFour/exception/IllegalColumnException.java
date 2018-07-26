@@ -21,18 +21,24 @@ public class IllegalColumnException extends IllegalArgumentException {
 	}
 
 	/**
-	 * @return the column
+	 * @return The column
 	 */
 	public int getColumn() {
 		return column;
 	}
 
 	/**
-	 * @return the field
+	 * @return The {@link MatchField}
 	 */
 	public MatchField getField() {
 		return field;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see java.lang.Throwable#getMessage()
+	 */
+	@Override
+	public String getMessage() {
+		return String.format("Column %d is not valid for field %s (with %d columns)", getColumn(),getField(),getField().getColumns());
+	}
 }

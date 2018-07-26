@@ -14,11 +14,11 @@ public class UnitializedSingleton extends IllegalStateException {
 	public final String obj;
 	
 	public UnitializedSingleton(String obj) {
-		super("'" + obj + "' must be initialized");
+		super("'" + obj.getClass().getName() + "' must be initialized");
 		this.obj = obj;
 	}
 
-	public String getId() {
+	public String getObj() {
 		return this.obj;
 	}
 

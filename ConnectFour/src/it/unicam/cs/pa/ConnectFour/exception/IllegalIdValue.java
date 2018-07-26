@@ -18,8 +18,10 @@ public class IllegalIdValue extends IllegalArgumentException {
 		this.id = id;
 	}
 
+	/**
+	 * @return The id
+	 */
 	public int getId() {
 		return this.id;
 	}
-
 }

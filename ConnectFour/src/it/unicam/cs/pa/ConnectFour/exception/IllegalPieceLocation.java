@@ -3,6 +3,7 @@
  */
 package it.unicam.cs.pa.ConnectFour.exception;
 
+import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 
 /**
@@ -11,31 +12,28 @@ import it.unicam.cs.pa.ConnectFour.core.MatchField;
  */
 public class IllegalPieceLocation extends RuntimeException {
 
-	private int column;
+	private CellLocation cellLocation;
 	private MatchField field;
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
-	public IllegalPieceLocation ( int column , MatchField field ) {
-		super("Column '" + column + "' in selected field is not valid.");
-		this.column = column;
+	public IllegalPieceLocation ( CellLocation cellLocation , MatchField field ) {
+		super("CellLocation '" + cellLocation + "' in selected field is not valid.");
+		this.cellLocation = cellLocation;
 		this.field = field;
 	}
 
 	/**
-	 * @return the column
+	 * @return The column
 	 */
-	public int getColumn() {
-		return column;
+	public CellLocation getCellLocation() {
+		return cellLocation;
 	}
 
 	/**
-	 * @return the field
+	 * @return The {@link MatchField}
 	 */
 	public MatchField getField() {
 		return field;
 	}
-
 }

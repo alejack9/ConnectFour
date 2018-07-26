@@ -16,7 +16,6 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
 import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
-import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 
 /**
  * @author giacche`
@@ -58,11 +57,11 @@ public class DefaultRuleSet implements RuleSet {
 	 */
 	@Override
 	public CellLocation insertLocation(int column, MatchField field)
-			throws IllegalColumnException, IllegalPieceLocation {
+			throws IllegalColumnException {
 		if (!isInBound(column, field.getColumns()))
 			throw new IllegalColumnException(column, field);
 
-		return destinationCell.apply(field.getColumn(column)).orElseThrow(() -> new IllegalPieceLocation(column, field))
+		return destinationCell.apply(field.getColumn(column)).orElseThrow(() -> new IllegalColumnException(column, field))
 				.getLocation();
 	}
 
@@ -110,15 +109,15 @@ public class DefaultRuleSet implements RuleSet {
 		if (field.getPieces() == field.getColumns() * field.getRows())
 			return Winner.TIE;
 
-		for (Cell cell : field.getColumn(cellLocation)) {
+		for (Cell cell : field.getColumn(cellLocation.getColumn())) {
 			if (cell.isEmpty())
 				continue;
-			for (Entry<Function<CellLocation, List<Cell>>, Function<Cell, Integer>> functions : field.getGettersMap()
+			for (Entry<Function<CellLocation, List<Cell>>, Function<CellLocation, Integer>> functions : field.getGettersMap()
 					.entrySet()) {
 				boolean win = collapseIndexes(
 						functions.getKey().apply(cell.getLocation()).stream().filter((c) -> !c.isEmpty())
 								.filter((c) -> c.getStatus() == field.getCellStatus(cell.getLocation()))
-								.map(c -> functions.getValue().apply(c))
+								.map(c -> functions.getValue().apply(c.getLocation()))
 								.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().map(l -> l.size())
 										.filter(l -> l >= 4).count() > 0;
 
@@ -150,5 +149,13 @@ public class DefaultRuleSet implements RuleSet {
 		if (!toReturn.contains(candidate))
 			toReturn.add(candidate);
 		return toReturn;
+	}
+
+	/* (non-Javadoc)
+	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getDefaultSize()
+	 */
+	@Override
+	public Size getDefaultSize() {
+		return DEFAULT_SIZE;
 	}
 }

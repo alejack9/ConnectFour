@@ -14,7 +14,7 @@ public class UnknownEnumValue extends IllegalArgumentException {
 	public final Enum<?> e;
 	
 	public UnknownEnumValue(Enum<?> e) {
-		super("Enum Value '" + e.toString() + "' is unknown.");
+		super("Enum Value '" + e.toString() + "' is not valid.");
 		this.e = e;
 	}
 

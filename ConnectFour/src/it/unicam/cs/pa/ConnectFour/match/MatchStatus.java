@@ -5,19 +5,22 @@ package it.unicam.cs.pa.ConnectFour.match;
  *
  */
 public enum MatchStatus {
-	INIT,
-	ARRANGE,
-	END;
+	INIT, ARRANGE, END;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override
 	public String toString() {
 		switch (this) {
-			case INIT: return "Initializing";
-			case ARRANGE: return "Playing";
-			case END: return "Game over";
+		case INIT:
+			return "Initializing";
+		case ARRANGE:
+			return "Playing";
+		case END:
+			return "Game over";
 		}
 		return super.name();
 	}

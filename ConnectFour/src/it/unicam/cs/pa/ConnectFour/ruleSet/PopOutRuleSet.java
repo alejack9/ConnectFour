@@ -17,7 +17,6 @@ import it.unicam.cs.pa.ConnectFour.core.Cell;
 import it.unicam.cs.pa.ConnectFour.core.CellLocation;
 import it.unicam.cs.pa.ConnectFour.core.CellStatus;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
-import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalColumnException;
 import it.unicam.cs.pa.ConnectFour.exception.IllegalPieceLocation;
 import it.unicam.cs.pa.ConnectFour.piece.AbstractPiece;
@@ -37,8 +36,6 @@ public class PopOutRuleSet extends DefaultRuleSet {
 			return false;
 		return column.parallelStream().filter(x -> !x.isEmpty()).count() > 1;
 	};
-
-	public static final Size DEFAULT_SIZE = new Size(6, 7);
 
 	public static final String NAME = "PopOutRuleSet";
 
@@ -108,13 +105,12 @@ public class PopOutRuleSet extends DefaultRuleSet {
 
 		Map<CellStatus, List<Integer>> winnersSequences = new HashMap<CellStatus, List<Integer>>();
 
-		for (Cell cell : field.getColumn(cellLocation)) {
+		for (Cell cell : field.getColumn(cellLocation.getColumn())) {
 			if (!cell.isEmpty() && !winnersSequences.containsKey(cell.getStatus())) {
 				List<List<Integer>> toInsert = getWinSeq(field, cell.getLocation());
 				// REPORT we could use {@code putIfAbsent} but we had more useless loops
 				if (!toInsert.isEmpty())
 					winnersSequences.put(cell.getStatus(), toInsert.iterator().next());
-//				toInsert.forEach(x -> { if(!winnersSequences.containsKey(cell.getStatus())) winnersSequences.put(cell.getStatus(), x); });
 			}
 		}
 		if (winnersSequences.size() == 0)
@@ -127,17 +123,17 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	/**
 	 * @param field        - The {@link MatchField}
 	 * @param cellLocation - The {@link CellLocation}
-	 * @return a list of sequences where there are more than 4 pieces with the same
+	 * @return A list of sequences where there are more than 4 pieces with the same
 	 *         status which is the {@code cellLocation}'s one
 	 */
 	private List<List<Integer>> getWinSeq(MatchField field, CellLocation cellLocation) {
 		List<List<Integer>> toReturn = new ArrayList<>();
 
-		for (Entry<Function<CellLocation, List<Cell>>, Function<Cell, Integer>> functions : field.getGettersMap()
+		for (Entry<Function<CellLocation, List<Cell>>, Function<CellLocation, Integer>> functions : field.getGettersMap()
 				.entrySet()) {
 			List<List<Integer>> winnersIndexes = collapseIndexes(functions.getKey().apply(cellLocation).stream()
 					.filter((c) -> !c.isEmpty()).filter((c) -> c.getStatus() == field.getCellStatus(cellLocation))
-					.map(c -> functions.getValue().apply(c)).collect(Collectors.toCollection(ArrayList<Integer>::new)))
+					.map(c -> functions.getValue().apply(c.getLocation())).collect(Collectors.toCollection(ArrayList<Integer>::new)))
 							.stream().filter(l -> l.size() >= 4).collect(Collectors.toList());
 			toReturn.addAll(winnersIndexes);
 		}
@@ -146,7 +142,7 @@ public class PopOutRuleSet extends DefaultRuleSet {
 
 	/**
 	 * @param indexes - The indexes list
-	 * @return the list of consecutive indexes sequences
+	 * @return The list of consecutive indexes sequences
 	 */
 	private List<List<Integer>> collapseIndexes(List<Integer> indexes) {
 		List<Integer> candidate = new ArrayList<>();

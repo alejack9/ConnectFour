@@ -39,6 +39,8 @@ public interface RuleSet {
 	 */
 	public Map<ActionType, BiPredicate<List<Cell>, CellStatus>> getAllowedActions();
 
+	public Size getDefaultSize();
+	
 	/**
 	 * @param column - The column number
 	 * @param field  - The {@link MatchField}
@@ -49,7 +51,7 @@ public interface RuleSet {
 	 *                                valid (e.g. full column)
 	 */
 	public CellLocation insertLocation(int column, MatchField field)
-			throws IllegalColumnException, IllegalPieceLocation;
+			throws IllegalColumnException;
 
 	/**
 	 * @param column - The column number
