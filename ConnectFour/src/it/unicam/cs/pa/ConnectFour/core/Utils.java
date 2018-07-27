@@ -95,23 +95,17 @@ public class Utils {
 		while (true) {
 			out.println(request);
 			String line;
-			try {
-				line = in.readLine();
-			} catch (IOException e) {
-				throw new InternalException(e);
-			}
+			try { line = in.readLine(); }
+			catch (IOException e) { throw new InternalException(e); }
 			T x = null;
 			try {
 				x = readFun.apply(line);				
+				if (!condition.test(x)) throw new Throwable("Wrong input");
 			} catch (Throwable e) {
 				out.println("Input Error!");
 				continue;
 			}
-			if (!condition.test(x)) {
-				out.println("Input Error!");
-			} else {
-				return x;
-			}
+			return x;
 		}
 	}
 
