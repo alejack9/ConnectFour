@@ -82,12 +82,13 @@ public class Utils {
 	}
 
 	/**
-	 * @param in
-	 * @param out
-	 * @param string
-	 * @param object
-	 * @param object2
-	 * @return
+	 * @param in		the stream reader (designed as BufferedReader)
+	 * @param out		the output stream
+//	 * @param string    What to ask
+//	 * @param condition Input condition/s
+//	 * @param readFun   Parser from String to required type
+//	 * @return the inserted value
+//	 * @throws IOException
 	 */
 	public static <T> T doInput(BufferedReader in, PrintStream out, String request, Predicate<T> condition, Function<String, T> readFun) {
 		while (true) {
@@ -114,11 +115,6 @@ public class Utils {
 	}
 
 //	/**
-//	 * @param string    What to ask
-//	 * @param condition Input condition/s
-//	 * @param readFun   Parser from String to required type
-//	 * @return the inserted value
-//	 * @throws IOException
 //	 */
 //	private static <T> T doInput(String request, Predicate<T> condition, Function<String, T> readFun)
 //			throws InternalException {
