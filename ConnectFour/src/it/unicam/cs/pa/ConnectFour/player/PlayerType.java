@@ -21,6 +21,10 @@ public String toString() {
 	return super.name();
 }
 
+/**
+ * @param playername
+ * @return Player object
+ */
 public Player getPlayer(String playername) {
 		switch(this) {
 			case INTERACTIVEPLAYER: return new InteractivePlayer(playername);

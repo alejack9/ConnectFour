@@ -20,6 +20,9 @@ public String toString() {
 	return super.name();
 }
 
+/**
+ * @return Ruleset object
+ */
 public RuleSet getRuleSet() {
 		switch(this) {
 			case DEFAULT: return new DefaultRuleSet();
