@@ -14,7 +14,7 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.PopOutRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
-/**
+/** 
  * @author Alessandra Boccuto
  *
  */
