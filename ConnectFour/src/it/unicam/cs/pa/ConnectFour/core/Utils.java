@@ -3,9 +3,14 @@
  */
 package it.unicam.cs.pa.ConnectFour.core;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
+import it.unicam.cs.pa.ConnectFour.exception.InternalException;
 import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
 
@@ -75,6 +80,71 @@ public class Utils {
 			printRowDelimiter(writer, columns);
 		}
 	}
+
+	/**
+	 * @param in
+	 * @param out
+	 * @param string
+	 * @param object
+	 * @param object2
+	 * @return
+	 */
+	public static <T> T doInput(BufferedReader in, PrintStream out, String request, Predicate<T> condition, Function<String, T> readFun) {
+		while (true) {
+			out.println(request);
+			String line;
+			try {
+				line = in.readLine();
+			} catch (IOException e) {
+				throw new InternalException(e);
+			}
+			T x = null;
+			try {
+				x = readFun.apply(line);				
+			} catch (Throwable e) {
+				out.println("Input Error!");
+				continue;
+			}
+			if (!condition.test(x)) {
+				out.println("Input Error!");
+			} else {
+				return x;
+			}
+		}
+	}
+
+//	/**
+//	 * @param string    What to ask
+//	 * @param condition Input condition/s
+//	 * @param readFun   Parser from String to required type
+//	 * @return the inserted value
+//	 * @throws IOException
+//	 */
+//	private static <T> T doInput(String request, Predicate<T> condition, Function<String, T> readFun)
+//			throws InternalException {
+//		return doInput(new BufferedReader(new InputStreamReader(System.in)), System.out, request,condition,readFun);
+//		while (true) {
+//			this.print(request);
+//			String line;
+//			try {
+//				line = this.in.readLine();
+//			} catch (IOException e) {
+//				throw new InternalException(e);
+//			}
+//			T x = null;
+//			try {
+//				x = readFun.apply(line);				
+//			} catch (Throwable e) {
+//				out.println("Input Error!");
+//				continue;
+//			}
+//			if (!condition.test(x)) {
+//				out.println("Input Error!");
+//			} else {
+//				return x;
+//			}
+//		}
+//	}
 
 	private static void printColumnIndexes(PrintStream writer, int columns) {
 		writer.print("    ");
