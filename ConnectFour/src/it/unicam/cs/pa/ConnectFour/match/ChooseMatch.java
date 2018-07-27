@@ -20,8 +20,6 @@ public class ChooseMatch {
 	
 	private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	private static PrintStream out = System.out;
-	HashMap <RuleSetType,RuleSet> rulesetList = new HashMap<>();
-	
 	/**
 	 * @param args
 	 */
@@ -50,11 +48,6 @@ public class ChooseMatch {
 		return new Size(chooseNumber("rows"), chooseNumber("columns"));
 	}
 
-	public void setHashmap() {
-		for (RuleSetType x : RuleSetType.values()) {
-			rulesetList.put(x, x.getRuleSet());
-	}
-	}
 	/**
 	 * @return number of rows or columns
 	 */
