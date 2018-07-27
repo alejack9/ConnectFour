@@ -49,7 +49,7 @@ public abstract class Player {
 	/**
 	 * @return the {@link RuleSet referee}
 	 */
-	protected RuleSet getReferee() {
+	protected final RuleSet getReferee() {
 		return referee;
 	}
 
@@ -108,7 +108,7 @@ public abstract class Player {
 	 * @return {@code true} if no problems occurred, {@code false} otherwise (e.g.
 	 *         {@link RuleSet referee} is already assigned)
 	 */
-	protected boolean setReferee(RuleSet referee1) {
+	protected final boolean setReferee(RuleSet referee1) {
 		if (referee != null)
 			return false;
 		referee = referee1;
