@@ -1,10 +1,7 @@
 package it.unicam.cs.pa.ConnectFour.player;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import it.unicam.cs.pa.ConnectFour.core.ActionType;
 import it.unicam.cs.pa.ConnectFour.core.MatchField;
@@ -44,7 +41,7 @@ public class InteractivePlayer extends Player {
 
 		super.getReferee().getAllowedActions().entrySet()
 				.forEach(i -> out.println(i.getKey().ordinal() + " - " + i.getKey()));
-		int x = doInput("Choose the action: ", this::isValidAction, Integer::parseInt);
+		int x = Utils.doInput(in,out,parseRequest("Choose the action: "), this::isValidAction, Integer::parseInt);
 		this.selectedAction = ActionType.values()[x]; 
 		return this.selectedAction;
 	}
@@ -58,7 +55,7 @@ public class InteractivePlayer extends Player {
 	public int getColumn() throws InternalException {
 		if (!printed)
 			Utils.printField(field, super.getReferee());
-		int column = doInput(String.format("Choose a column from 1 to %d", field.getColumns()),
+		int column = Utils.doInput(in,out,parseRequest(String.format("Choose a column from 1 to %d", field.getColumns())),
 				(x) -> super.getReferee().isInBound(x, field.getColumns()) && super.getReferee().getAllowedActions().get(selectedAction).test(field.getColumn(x), Utils.parsePlayer(getId())),
 				(x) -> (Integer.parseInt(x) - 1));
 		return column;
@@ -127,38 +124,6 @@ public class InteractivePlayer extends Player {
 		this.print("I win!");
 	}
 
-	/**
-	 * @param string    What to ask
-	 * @param condition Input condition/s
-	 * @param readFun   Parser from String to required type
-	 * @return the inserted value
-	 * @throws IOException
-	 */
-	private <T> T doInput(String request, Predicate<T> condition, Function<String, T> readFun)
-			throws InternalException {
-		while (true) {
-			this.print(request);
-			String line;
-			try {
-				line = this.in.readLine();
-			} catch (IOException e) {
-				throw new InternalException(e);
-			}
-			T x = null;
-			try {
-				x = readFun.apply(line);				
-			} catch (Throwable e) {
-				out.println("Input Error!");
-				continue;
-			}
-			if (!condition.test(x)) {
-				out.println("Input Error!");
-			} else {
-				return x;
-			}
-		}
-	}
-
 	private boolean isValidAction(int v) {
 		try {
 			if(super.getReferee().getAllowedActions().get(ActionType.values()[v]) != null) {
@@ -176,7 +141,11 @@ public class InteractivePlayer extends Player {
 	 * @param string What to write
 	 */
 	private void print(String string) {
-		this.out.println(this.name + "> " + string);
+		this.out.println(parseRequest(string));
+	}
+	
+	private String parseRequest(String request) {
+		return this.name + "> " + request;
 	}
 
 	/**
