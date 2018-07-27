@@ -17,13 +17,13 @@ public class InteractiveMatch {
 		Player p1 = new InteractivePlayer("Jack");
 		Player p2 = new InteractivePlayer("Vale");
 		
-		HashMap<String, Object> proop = new HashMap<>();
+		HashMap<String, Object> prop = new HashMap<>();
 
-		proop.put("size", DefaultRuleSet.DEFAULT_SIZE);
-		proop.put("ruleset", new DefaultRuleSet());
-		proop.put("firstPlayer", 0);
+		prop.put("size", DefaultRuleSet.DEFAULT_SIZE);
+		prop.put("ruleset", new DefaultRuleSet());
+		prop.put("firstPlayer", 0);
 		Match m = Match.getInstance();
-		m.initMatch(p1, p2, proop);
+		m.initMatch(p1, p2, prop);
 		m.play();
 
 		// REPORT We used to use Properties class, but it's more convenient use an HashMap containing the objects and not the objects' name 

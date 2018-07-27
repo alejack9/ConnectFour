@@ -76,7 +76,7 @@ public final class Match {
 	 * @param p2   Second player
 	 * @param prop A {@link Map} that should contain {@code 'size'},
 	 *             {@code 'firstPlayer'} and {@code 'referee'} values;<br>
-	 *             s * in case someone of these are missing they will be used the
+	 *             in case someone of these are missing they will be used the
 	 *             default rules
 	 * @return {@code True} if the initialization have been done, {@code false}
 	 *         otherwise
