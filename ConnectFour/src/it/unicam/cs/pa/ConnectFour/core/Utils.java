@@ -90,7 +90,8 @@ public class Utils {
 	 * @return the inserted value
 	 * @throws IOException
 	 */
-	public static <T> T doInput(BufferedReader in, PrintStream out, String request, Predicate<T> condition, Function<String, T> readFun) {
+	public static <T> T doInput(BufferedReader in, PrintStream out, String request, Predicate<T> condition, Function<String, T> readFun)
+			throws InternalException {
 		while (true) {
 			out.println(request);
 			String line;
