@@ -89,7 +89,8 @@ public final class MatchField {
 	}
 
 	/**
-	 * Returns the {@link CellStatus} of the {@link AbstractPiece piece} contained in the selected Cell
+	 * Returns the {@link CellStatus} of the {@link AbstractPiece piece} contained
+	 * in the selected Cell
 	 * 
 	 * @param cellLocation The {@link Cell} coordinates
 	 * @return The {@link CellStatus} of the {@link AbstractPiece piece} contained
@@ -131,7 +132,7 @@ public final class MatchField {
 	 * Replaces a column with another column
 	 * 
 	 * @param newColumn The new column
-	 * @param column The index of the column to modify
+	 * @param column    The index of the column to modify
 	 * @throws UnitializedSingleton if MatchField is not initialized
 	 */
 	public void setColumn(List<Cell> newColumn, int column) throws UnitializedSingleton {

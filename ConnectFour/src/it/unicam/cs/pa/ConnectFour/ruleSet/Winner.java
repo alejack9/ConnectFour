@@ -9,7 +9,7 @@ import it.unicam.cs.pa.ConnectFour.exception.UnknownEnumValue;
 /**
  * Winner Enum
  * 
- * @author Alessandro Giacche`
+ * @author giacche`
  *
  */
 public enum Winner {

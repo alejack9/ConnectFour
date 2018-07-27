@@ -15,7 +15,9 @@ import it.unicam.cs.pa.ConnectFour.core.CellStatus;
  */
 public class NullPiece extends AbstractPiece {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.piece.AbstractPiece#isNull()
 	 */
 	@Override
@@ -23,7 +25,9 @@ public class NullPiece extends AbstractPiece {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.piece.AbstractPiece#getColor()
 	 */
 	@Override
@@ -31,7 +35,9 @@ public class NullPiece extends AbstractPiece {
 		return CellStatus.EMPTY;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.piece.AbstractPiece#getId()
 	 */
 	@Override

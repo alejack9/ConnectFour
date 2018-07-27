@@ -12,9 +12,9 @@ package it.unicam.cs.pa.ConnectFour.exception;
 public class UnknownEnumValue extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final Enum<?> e;
-	
+
 	public UnknownEnumValue(Enum<?> e) {
 		super("Enum Value '" + e.toString() + "' is not valid.");
 		this.e = e;

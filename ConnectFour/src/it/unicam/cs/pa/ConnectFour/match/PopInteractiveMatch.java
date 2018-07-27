@@ -10,7 +10,7 @@ import it.unicam.cs.pa.ConnectFour.player.Player;
 import it.unicam.cs.pa.ConnectFour.ruleSet.PopOutRuleSet;
 
 /**
- * @author Alessandro Giacche`
+ * @author giacche`
  *
  */
 public class PopInteractiveMatch {
@@ -22,7 +22,7 @@ public class PopInteractiveMatch {
 
 		Player p1 = new InteractivePlayer("X");
 		Player p2 = new InteractivePlayer("O");
-		
+
 		HashMap<String, Object> proop = new HashMap<>();
 
 		proop.put("size", PopOutRuleSet.DEFAULT_SIZE);
@@ -31,7 +31,7 @@ public class PopInteractiveMatch {
 		Match m = Match.getInstance();
 		m.initMatch(p1, p2, proop);
 		m.play();
-		
+
 	}
 
 }

@@ -12,9 +12,9 @@ package it.unicam.cs.pa.ConnectFour.exception;
 public class IllegalIdValue extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public final int id;
-	
+
 	/**
 	 * Constructor
 	 * 
