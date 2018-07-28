@@ -152,13 +152,11 @@ public class PopOutRuleSet extends DefaultRuleSet {
 
 		candidate.add(indexes.get(0));
 		for (int i = 1; i < indexes.size(); i++) {
-			if (indexes.get(i) == candidate.get(candidate.size() - 1) + 1)
-				candidate.add(indexes.get(i));
-			else {
+			if (indexes.get(i) != candidate.get(candidate.size() - 1) + 1) {
 				toReturn.add(candidate);
 				candidate = new ArrayList<>();
-				candidate.add(i);
 			}
+			candidate.add(indexes.get(i));
 		}
 		if (!toReturn.contains(candidate))
 			toReturn.add(candidate);

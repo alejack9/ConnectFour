@@ -138,7 +138,7 @@ public class DefaultRuleSet implements RuleSet {
 					.getGettersMap().entrySet()) {
 				boolean win = collapseIndexes(
 						functions.getKey().apply(cell.getLocation()).stream().filter((c) -> !c.isEmpty())
-								.filter((c) -> c.getStatus() == field.getCellStatus(cell.getLocation()))
+								.filter((c) -> c.getStatus() == cell.getStatus())
 								.map(c -> functions.getValue().apply(c.getLocation()))
 								.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().map(l -> l.size())
 										.filter(l -> l >= 4).count() > 0;
@@ -163,13 +163,11 @@ public class DefaultRuleSet implements RuleSet {
 
 		candidate.add(indexes.get(0));
 		for (int i = 1; i < indexes.size(); i++) {
-			if (indexes.get(i) == candidate.get(candidate.size() - 1) + 1)
-				candidate.add(indexes.get(i));
-			else {
+			if (indexes.get(i) != candidate.get(candidate.size() - 1) + 1) {
 				toReturn.add(candidate);
 				candidate = new ArrayList<>();
-				candidate.add(i);
 			}
+			candidate.add(indexes.get(i));
 		}
 		if (!toReturn.contains(candidate))
 			toReturn.add(candidate);
