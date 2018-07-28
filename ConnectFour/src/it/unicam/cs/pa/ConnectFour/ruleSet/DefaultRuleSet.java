@@ -52,7 +52,9 @@ public class DefaultRuleSet implements RuleSet {
 		return allowedActions;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#getDefaultSize()
 	 */
 	@Override
@@ -67,13 +69,12 @@ public class DefaultRuleSet implements RuleSet {
 	 * it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public CellLocation insertLocation(int column, MatchField field)
-			throws IllegalColumnException {
+	public CellLocation insertLocation(int column, MatchField field) throws IllegalColumnException {
 		if (!isInBound(column, field.getColumns()))
 			throw new IllegalColumnException(column, field);
 
-		return destinationCell.apply(field.getColumn(column)).orElseThrow(() -> new IllegalColumnException(column, field))
-				.getLocation();
+		return destinationCell.apply(field.getColumn(column))
+				.orElseThrow(() -> new IllegalColumnException(column, field)).getLocation();
 	}
 
 	/*
@@ -109,7 +110,9 @@ public class DefaultRuleSet implements RuleSet {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -131,11 +134,11 @@ public class DefaultRuleSet implements RuleSet {
 		for (Cell cell : field.getColumn(cellLocation.getColumn())) {
 			if (cell.isEmpty())
 				continue;
-			for (Entry<Function<CellLocation, List<Cell>>, Function<CellLocation, Integer>> functions : field.getGettersMap()
-					.entrySet()) {
+			for (Entry<Function<CellLocation, List<Cell>>, Function<CellLocation, Integer>> functions : field
+					.getGettersMap().entrySet()) {
 				boolean win = collapseIndexes(
 						functions.getKey().apply(cell.getLocation()).stream().filter((c) -> !c.isEmpty())
-								.filter((c) -> c.getStatus() == field.getCellStatus(cell.getLocation()))
+								.filter((c) -> c.getStatus() == cell.getStatus())
 								.map(c -> functions.getValue().apply(c.getLocation()))
 								.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().map(l -> l.size())
 										.filter(l -> l >= 4).count() > 0;
@@ -148,9 +151,10 @@ public class DefaultRuleSet implements RuleSet {
 	}
 
 	/**
-	 * Provides a list of lists which contain consecutive indexes from the given list
+	 * Provides a list of lists which contain consecutive indexes from the given
+	 * list
 	 * 
-	 * @param indexes - The indexes list
+	 * @param indexes The indexes list
 	 * @return the list of consecutive indexes sequences
 	 */
 	private List<List<Integer>> collapseIndexes(List<Integer> indexes) {
@@ -159,13 +163,11 @@ public class DefaultRuleSet implements RuleSet {
 
 		candidate.add(indexes.get(0));
 		for (int i = 1; i < indexes.size(); i++) {
-			if (indexes.get(i) == candidate.get(candidate.size() - 1) + 1)
-				candidate.add(indexes.get(i));
-			else {
+			if (indexes.get(i) != candidate.get(candidate.size() - 1) + 1) {
 				toReturn.add(candidate);
 				candidate = new ArrayList<>();
-				candidate.add(i);
 			}
+			candidate.add(indexes.get(i));
 		}
 		if (!toReturn.contains(candidate))
 			toReturn.add(candidate);

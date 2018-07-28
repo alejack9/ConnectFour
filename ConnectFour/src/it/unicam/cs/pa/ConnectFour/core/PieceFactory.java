@@ -30,9 +30,9 @@ public class PieceFactory {
 	/**
 	 * Returns a piece of a specific 'color'
 	 * 
-	 * @param color - The {@link CellStatus color} of the piece to return
+	 * @param color The {@link CellStatus color} of the piece to return
 	 * @return A new {@link Piece}
-	 * @throws IllegalArgumentException - if {@link Piece} cannot be created
+	 * @throws IllegalArgumentException if {@link Piece} cannot be created
 	 */
 	public Piece getPiece(CellStatus color) throws IllegalArgumentException {
 		return new Piece(this.id++, color);

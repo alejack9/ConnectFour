@@ -28,14 +28,12 @@ public class RandomPlayer extends Player {
 
 	private ActionType selectedAction = ActionType.INSERT;
 
-	// TODO CHECK ECHO
-
 	/**
-	 * @param name - The player's name
-	 * @param echo - {@code true} if the actions have to be written, {@code false}
+	 * @param name The player's name
+	 * @param echo {@code true} if the actions have to be written, {@code false}
 	 *             otherwise
-	 * @param in   - The input {@link InputStream}
-	 * @param out  - The output {@link PrintStream}
+	 * @param in   The input {@link InputStream}
+	 * @param out  The output {@link PrintStream}
 	 */
 	public RandomPlayer(String name, boolean echo, InputStream in, PrintStream out) {
 		super(name, in, out);
@@ -44,8 +42,8 @@ public class RandomPlayer extends Player {
 	}
 
 	/**
-	 * @param name - The player's name
-	 * @param echo - {@code true} if the actions have to be written, {@code false}
+	 * @param name The player's name
+	 * @param echo {@code true} if the actions have to be written, {@code false}
 	 *             otherwise
 	 */
 	public RandomPlayer(String name, boolean echo) {
@@ -53,7 +51,7 @@ public class RandomPlayer extends Player {
 	}
 
 	/**
-	 * @param name - The player's name
+	 * @param name The player's name
 	 */
 	public RandomPlayer(String name) {
 		this(name, true);
@@ -79,7 +77,7 @@ public class RandomPlayer extends Player {
 	}
 
 	/**
-	 * @param action - The {@link ActionType}
+	 * @param action The {@link ActionType}
 	 * @return {@code true} if it is valid, {@code false} otherwise
 	 */
 	private boolean isValid(ActionType action) {
@@ -185,7 +183,7 @@ public class RandomPlayer extends Player {
 	}
 
 	/**
-	 * @param string - The {@link String} to be printed
+	 * @param string The {@link String} to be printed
 	 */
 	private void print(String string) {
 		if (echo) {

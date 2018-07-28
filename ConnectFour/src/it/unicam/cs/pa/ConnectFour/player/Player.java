@@ -17,9 +17,6 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
  */
 public abstract class Player {
 
-	// REPORT sicche` referee e` statico, e` uguale per tutte le sottoclassi,
-	// percio` 2 giocatori avranno lo stesso referee
-	// TODO SICURO?!
 	private static RuleSet referee = null;
 	protected MatchField field;
 
@@ -52,16 +49,16 @@ public abstract class Player {
 	/**
 	 * @return the {@link RuleSet referee}
 	 */
-	protected RuleSet getReferee() {
+	protected final RuleSet getReferee() {
 		return referee;
 	}
 
 	/**
 	 * Initializes the player
 	 * 
-	 * @param pid     - The player's id
-	 * @param field   - The {@link MatchField}
-	 * @param referee - The {@link RuleSet referee}
+	 * @param pid     The player's id
+	 * @param field   The {@link MatchField}
+	 * @param referee The {@link RuleSet referee}
 	 * @throws IllegalIdValue
 	 */
 	public abstract void init(int pid, MatchField field, RuleSet referee) throws IllegalIdValue;
@@ -111,7 +108,7 @@ public abstract class Player {
 	 * @return {@code true} if no problems occurred, {@code false} otherwise (e.g.
 	 *         {@link RuleSet referee} is already assigned)
 	 */
-	protected boolean setReferee(RuleSet referee1) {
+	protected final boolean setReferee(RuleSet referee1) {
 		if (referee != null)
 			return false;
 		referee = referee1;
