@@ -17,6 +17,7 @@ import it.unicam.cs.pa.ConnectFour.core.Size;
 import it.unicam.cs.pa.ConnectFour.core.Utils;
 import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 import it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet;
+import it.unicam.cs.pa.ConnectFour.ruleSet.Winner;
 
 /**
  * @author giacch�
@@ -39,7 +40,7 @@ class RuleSetTest {
 	 */
 	@Test
 	void testGetAllowedActions() {
-		assertTrue(rs.getAllowedActions().getOrDefault(ActionType.INSERT.ordinal(), ActionType.POP) == ActionType.INSERT);
+		assertTrue(rs.getAllowedActions().containsKey(ActionType.INSERT));
 	}
 
 	/**
@@ -58,11 +59,11 @@ class RuleSetTest {
 	 */
 	@Test
 	void testIsInBoundCellLocation() {
-		assertTrue(rs.isInBound(new CellLocation(1,1)));
-		assertFalse(rs.isInBound(new CellLocation(-1,1)));
-		assertFalse(rs.isInBound(new CellLocation(1,-1)));
-		assertFalse(rs.isInBound(new CellLocation(-1,-1)));
-		assertFalse(rs.isInBound(new CellLocation(8,1)));
+		assertTrue(rs.isInBound(new CellLocation(1,1),DefaultRuleSet.DEFAULT_SIZE));
+		assertFalse(rs.isInBound(new CellLocation(-1,1),DefaultRuleSet.DEFAULT_SIZE));
+		assertFalse(rs.isInBound(new CellLocation(1,-1),DefaultRuleSet.DEFAULT_SIZE));
+		assertFalse(rs.isInBound(new CellLocation(-1,-1),DefaultRuleSet.DEFAULT_SIZE));
+		assertFalse(rs.isInBound(new CellLocation(8,1),DefaultRuleSet.DEFAULT_SIZE));
 	}
 
 	/**
@@ -80,9 +81,9 @@ class RuleSetTest {
 	 */
 	@Test
 	void testIsInBoundInt() {
-		assertTrue(rs.isInBound(1));
-		assertFalse(rs.isInBound(-1));
-		assertFalse(rs.isInBound(8));
+		assertTrue(rs.isInBound(1,6));
+		assertFalse(rs.isInBound(-1,6));
+		assertFalse(rs.isInBound(8,6));
 	}
 
 	/**
@@ -103,16 +104,6 @@ class RuleSetTest {
 	void testIsValidAction() {
 		assertTrue(rs.isValidAction(ActionType.INSERT));
 		assertFalse(rs.isValidAction(ActionType.POP));
-	}
-
-	/**
-	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#isValidInsert(int, it.unicam.cs.pa.ConnectFour.core.MatchField)}.
-	 */
-	@Test
-	void testIsValidInsert() {
-		MatchField x = MatchField.getInstance();
-		x.initMatchField(new Size(6,7));
-		assertTrue(rs.isValidInsert(0, x,CellStatus.P1));
 	}
 
 	/**
@@ -148,7 +139,7 @@ class RuleSetTest {
 		Utils.printField(x, rs);
 		
 		System.out.println(rs.winner(x, lastloc).name().toString());
-		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+		assertTrue(rs.winner(x, lastloc) == Winner.P1);		
 	}
 
 	/**
@@ -174,7 +165,7 @@ class RuleSetTest {
 		Utils.printField(x, rs);
 		
 		System.out.println(rs.winner(x, lastloc).name().toString());
-		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+		assertTrue(rs.winner(x, lastloc) == Winner.P1);
 	}
 
 	/**
@@ -206,7 +197,7 @@ class RuleSetTest {
 		Utils.printField(x, rs);
 		
 		System.out.println(rs.winner(x, lastloc).name().toString());
-		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+		assertTrue(rs.winner(x, lastloc) == Winner.P1);
 	}
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
@@ -231,7 +222,7 @@ class RuleSetTest {
 		Utils.printField(x, rs);
 		
 		System.out.println(rs.winner(x, lastloc).name().toString());
-		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+		assertTrue(rs.winner(x, lastloc) == Winner.P1);
 	}
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
@@ -256,7 +247,7 @@ class RuleSetTest {
 		Utils.printField(x, rs);
 		
 		System.out.println(rs.winner(x, lastloc).name().toString());
-		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+		assertTrue(rs.winner(x, lastloc) == Winner.P1);
 	}
 
 	/**
@@ -282,7 +273,7 @@ class RuleSetTest {
 		Utils.printField(x, rs);
 		
 		System.out.println(rs.winner(x, lastloc).name().toString());
-		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+		assertTrue(rs.winner(x, lastloc) == Winner.P1);
 	}
 	/**
 	 * Test method for {@link it.unicam.cs.pa.ConnectFour.ruleSet.RuleSet#winner(it.unicam.cs.pa.ConnectFour.core.MatchField, it.unicam.cs.pa.ConnectFour.core.CellLocation)}.
@@ -307,7 +298,7 @@ class RuleSetTest {
 		Utils.printField(x, rs);
 		
 		System.out.println(rs.winner(x, lastloc).name().toString());
-		assertTrue(rs.winner(x, lastloc) == CellStatus.P1);		
+		assertTrue(rs.winner(x, lastloc) == Winner.P1);
 	}	
 
 }

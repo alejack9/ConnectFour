@@ -23,9 +23,9 @@ public class IllegalPieceLocation extends RuntimeException {
 	 * Constructor
 	 * 
 	 * @param cellLocation The illegal {@link CellLocation}
-	 * @param field The {@link MatchField}
+	 * @param field        The {@link MatchField}
 	 */
-	public IllegalPieceLocation ( CellLocation cellLocation , MatchField field ) {
+	public IllegalPieceLocation(CellLocation cellLocation, MatchField field) {
 		super("CellLocation '" + cellLocation + "' in selected field is not valid.");
 		this.cellLocation = cellLocation;
 		this.field = field;

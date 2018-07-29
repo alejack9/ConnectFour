@@ -49,8 +49,8 @@ class MatchFieldTest {
 		testInitMatchField();
 		for(int i = 0 ; i < mf.getColumns() ; i++)
 			for(int j = 0 ; j < mf.getRows() ; j++ )
-				System.out.println(mf.getCellStatus(j, i));
-//				assertEquals(mf.getCellStatus(j, i), CellStatus.EMPTY);
+//				System.out.println(mf.getCellStatus(j, i));
+				assertEquals(mf.getCellStatus(new CellLocation(j, i)), CellStatus.EMPTY);
 	}
 
 	/**
@@ -61,8 +61,8 @@ class MatchFieldTest {
 		testInitMatchField();
 		for(int i = 0 ; i < mf.getColumns() ; i++)
 			for(int j = 0 ; j < mf.getRows() ; j++ )
-				System.out.println(mf.getCellStatus(j, i));
-//				assertEquals(mf.getCellStatus(new CellLocation(j, i)), CellStatus.EMPTY);
+//				System.out.println(mf.getCellStatus(j, i));
+				assertEquals(mf.getCellStatus(new CellLocation(j, i)), CellStatus.EMPTY);
 	}
 
 	/**
@@ -71,7 +71,7 @@ class MatchFieldTest {
 	@Test
 	void testGetField() {
 		testInitMatchField();
-		assertNotNull(mf.getField());
+		assertNotNull(mf.getColumn(0));
 	}
 
 	/**
@@ -80,7 +80,7 @@ class MatchFieldTest {
 	@Test
 	void testGetListsGetters() {
 		testInitMatchField();
-		assertNotNull(mf.getListsGetters());
+		assertNotNull(mf.getGettersMap());
 		//assertTrue(mf.getListsGetters().size() == 4);
 	}
 
@@ -119,7 +119,7 @@ class MatchFieldTest {
 	@Test
 	void testGetColumnCellLocation() {
 		testInitMatchField();
-		for(Cell cell : mf.getColumn(new CellLocation(1, 0))) {
+		for(Cell cell : mf.getColumn(0)) {
 			assertTrue(cell.getLocation().getColumn() == 0);
 		}
 			
@@ -131,7 +131,7 @@ class MatchFieldTest {
 	@Test
 	void testGetRow() {
 		testInitMatchField();
-		for(Cell cell : mf.getRow(new CellLocation(1,0))) {
+		for(Cell cell : mf.getRow(1)) {
 			assertTrue(cell.getLocation().getRow() == 1);
 		}
 	}

@@ -19,10 +19,10 @@ import it.unicam.cs.pa.ConnectFour.ruleSet.DefaultRuleSet;
 public class RandomMatch {
 
 	public static void main(String[] args) throws IOException {
-		
-		Player p1 = new RandomPlayer("X",true);
-		Player p2 = new RandomPlayer("O",true);
-		
+
+		Player p1 = new RandomPlayer("X", true);
+		Player p2 = new RandomPlayer("O", true);
+
 		HashMap<String, Object> prop = new HashMap<>();
 		prop.put("size", DefaultRuleSet.DEFAULT_SIZE);
 		prop.put("ruleset", new DefaultRuleSet());
@@ -31,7 +31,7 @@ public class RandomMatch {
 		m.initMatch(p1, p2, prop);
 		m.play();
 		System.out.println("Continue?(y/N) ");
-		while(new BufferedReader(new InputStreamReader(System.in)).readLine().equals("y")) {
+		while (new BufferedReader(new InputStreamReader(System.in)).readLine().equals("y")) {
 			m.restart();
 			System.out.println("Continue?(y/N) ");
 		}

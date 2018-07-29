@@ -68,8 +68,7 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	 * it.unicam.cs.pa.ConnectFour.core.MatchField)
 	 */
 	@Override
-	public CellLocation insertLocation(int column, MatchField field)
-			throws IllegalColumnException {
+	public CellLocation insertLocation(int column, MatchField field) throws IllegalColumnException {
 		return super.insertLocation(column, field);
 	}
 
@@ -90,10 +89,6 @@ public class PopOutRuleSet extends DefaultRuleSet {
 			succ = toReturn.get(i).pop();
 			toReturn.get(i).setPiece(tmp);
 		}
-		// REPORT USED TO USE ROTATE BUT IT ROTATES ELEMENTS AND WE HAVE TO ROTATE
-		// PIECES, NOT CELLS.
-//		Collections.rotate(toReturn , 1);
-//		toReturn.get(0).pop();
 		return toReturn;
 	}
 
@@ -127,7 +122,7 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	}
 
 	/**
-	 * @param field The {@link MatchField}
+	 * @param field        The {@link MatchField}
 	 * @param cellLocation The {@link CellLocation}
 	 * @return A list of sequences where there are more than 4 pieces with the same
 	 *         status which is the {@code cellLocation}'s one
@@ -135,12 +130,13 @@ public class PopOutRuleSet extends DefaultRuleSet {
 	private List<List<Integer>> getWinSeq(MatchField field, CellLocation cellLocation) {
 		List<List<Integer>> toReturn = new ArrayList<>();
 
-		for (Entry<Function<CellLocation, List<Cell>>, Function<CellLocation, Integer>> functions : field.getGettersMap()
-				.entrySet()) {
+		for (Entry<Function<CellLocation, List<Cell>>, Function<CellLocation, Integer>> functions : field
+				.getGettersMap().entrySet()) {
 			List<List<Integer>> winnersIndexes = collapseIndexes(functions.getKey().apply(cellLocation).stream()
 					.filter((c) -> !c.isEmpty()).filter((c) -> c.getStatus() == field.getCellStatus(cellLocation))
-					.map(c -> functions.getValue().apply(c.getLocation())).collect(Collectors.toCollection(ArrayList<Integer>::new)))
-							.stream().filter(l -> l.size() >= 4).collect(Collectors.toList());
+					.map(c -> functions.getValue().apply(c.getLocation()))
+					.collect(Collectors.toCollection(ArrayList<Integer>::new))).stream().filter(l -> l.size() >= 4)
+							.collect(Collectors.toList());
 			toReturn.addAll(winnersIndexes);
 		}
 		return toReturn;
@@ -156,13 +152,11 @@ public class PopOutRuleSet extends DefaultRuleSet {
 
 		candidate.add(indexes.get(0));
 		for (int i = 1; i < indexes.size(); i++) {
-			if (indexes.get(i) == candidate.get(candidate.size() - 1) + 1)
-				candidate.add(indexes.get(i));
-			else {
+			if (indexes.get(i) != candidate.get(candidate.size() - 1) + 1) {
 				toReturn.add(candidate);
 				candidate = new ArrayList<>();
-				candidate.add(i);
 			}
+			candidate.add(indexes.get(i));
 		}
 		if (!toReturn.contains(candidate))
 			toReturn.add(candidate);

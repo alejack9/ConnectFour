@@ -65,20 +65,21 @@ public interface RuleSet {
 	public CellLocation insertLocation(int column, MatchField field) throws IllegalColumnException;
 
 	/**
-	 * Provides a list of cell computed from a column of field after the pop operation
+	 * Provides a list of cell computed from a column of field after the pop
+	 * operation
 	 * 
 	 * @param column The column number
-	 * @param field The {@link MatchField}
+	 * @param field  The {@link MatchField}
 	 * @return The result column where the cells has been popped
-	 * @throws IllegalColumnException if the column number is not valid (e.g.
-	 *                                column out of MatchField bounds)
+	 * @throws IllegalColumnException if the column number is not valid (e.g. column
+	 *                                out of MatchField bounds)
 	 */
 	public List<Cell> popColumn(int column, MatchField field) throws IllegalColumnException;
 
 	/**
 	 * Checks if a {@link CellLocation location} is in bound
 	 * 
-	 * @param loc The cell location
+	 * @param loc        The cell location
 	 * @param customSize The field {@link Size sizes}
 	 * @return {@code True} if the cell is in bound, {@code false} otherwise
 	 */
@@ -90,7 +91,7 @@ public interface RuleSet {
 	/**
 	 * Checks if a column is in bound
 	 * 
-	 * @param column The column number
+	 * @param column           The column number
 	 * @param customColumnSize The field's column size
 	 * @return {@code True} if the column is in bound, {@code false} otherwise
 	 */
@@ -112,7 +113,7 @@ public interface RuleSet {
 	 * Gives the Winner
 	 * 
 	 * @param field The {@link MatchField}
-	 * @param cell (in pop case, pass the most bottom cell)
+	 * @param cell  (in pop case, pass the most bottom cell)
 	 * @return the {@link Winner}
 	 */
 	Winner winner(MatchField field, CellLocation cell);

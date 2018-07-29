@@ -18,10 +18,12 @@ public enum Direction {
 	NORTH, EAST, NW, NE, SW, SE, WEST, SOUTH;
 
 	/**
-	 * Returns a {@code BiPredicate} that will {@code tests} the bounds of passed row and column (ROW , COLUMN)
+	 * Returns a {@code BiPredicate} that will {@code tests} the bounds of passed
+	 * row and column (ROW , COLUMN)
 	 * 
 	 * @param mf The {@link MatchField}
-	 * @return A {@code BiPredicate} that will {@code tests} the bounds of passed row and column (ROW , COLUMN)
+	 * @return A {@code BiPredicate} that will {@code tests} the bounds of passed
+	 *         row and column (ROW , COLUMN)
 	 * @throws UnknownEnumValue if the initialized enum value is unknown
 	 */
 	public BiPredicate<Integer, Integer> limit(MatchField mf) throws UnknownEnumValue {
@@ -67,30 +69,36 @@ public enum Direction {
 	}
 
 	/**
-	 * Returns the new column index gotten by making a step in the initialized direction
+	 * Returns the new column index gotten by making a step in the initialized
+	 * direction
 	 * 
 	 * @param col The column
-	 * @return The new column index gotten by making a step in the initialized direction
+	 * @return The new column index gotten by making a step in the initialized
+	 *         direction
 	 */
 	public int colStep(int col) {
 		return col + getStep()[1];
 	}
 
 	/**
-	 * Returns the new row index gotten by making a step in the initialized direction
+	 * Returns the new row index gotten by making a step in the initialized
+	 * direction
 	 * 
 	 * @param row The column
-	 * @return The new row index gotten by making a step in the initialized direction
+	 * @return The new row index gotten by making a step in the initialized
+	 *         direction
 	 */
 	public int rowStep(int row) {
 		return row + getStep()[0];
 	}
 
 	/**
-	 * Returns a {@code Predicate} that will {@code tests} the bounds of passed row or column
+	 * Returns a {@code Predicate} that will {@code tests} the bounds of passed row
+	 * or column
 	 * 
 	 * @param mf The {@link MatchField}
-	 * @return A {@code Predicate} that will {@code tests} the bounds of passed row or column
+	 * @return A {@code Predicate} that will {@code tests} the bounds of passed row
+	 *         or column
 	 */
 	private Predicate<Integer> getPredicate(MatchField mf) {
 		switch (this) {
