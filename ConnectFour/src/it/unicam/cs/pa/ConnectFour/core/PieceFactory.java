@@ -8,7 +8,7 @@ import it.unicam.cs.pa.ConnectFour.piece.Piece;
  * @author giacche`
  *
  */
-public class PieceFactory {
+public final class PieceFactory {
 	// REPORT SINGLETON BECASE ID MUST BE DIFFERENT FOR EACH PIECE
 	private final static PieceFactory INSTANCE = new PieceFactory();
 
