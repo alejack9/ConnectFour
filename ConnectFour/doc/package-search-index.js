@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"it.unicam.cs.pa.ConnectFour.core"},{"l":"it.unicam.cs.pa.ConnectFour.exception"},{"l":"it.unicam.cs.pa.ConnectFour.match"},{"l":"it.unicam.cs.pa.ConnectFour.piece"},{"l":"it.unicam.cs.pa.ConnectFour.player"},{"l":"it.unicam.cs.pa.ConnectFour.ruleSet"}]
